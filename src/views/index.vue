@@ -1,17 +1,17 @@
 <template>
-    <div class="content">
-        初始化
-    </div>
+    <div class="three-content" id="three-dom"></div>
 </template>
 
 <script>
+import ThreeMap from './ThreeMap.js';
 export default {
     name: 'index',
     created () {
         
     },
     mounted() {
-        
+        let props={dom:"three-dom"}
+        this.map = new ThreeMap(props);
     },
     
     data(){
