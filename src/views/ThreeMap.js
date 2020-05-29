@@ -94,39 +94,197 @@ export default class ThreeMap {
         }
     }
     //添加3D对象
-    InitAddObject(_obj){
-        console.log(this)
-        let _this = this;
-        if (_obj.show == null || typeof (_obj.show) == 'undefined' || _obj.show) {
-            let _tempObj = null;
-            switch (_obj.objType) {
+    InitAddObject(obj){
+        if (obj.show == null || typeof (obj.show) == 'undefined' || obj.show) {
+            let tempObj = null;
+            switch (obj.objType) {
                 case 'floor':
-                    _tempObj = _this.CreateFloor(_obj)
-                    _this.addObject(_tempObj);
+                    tempObj = this.CreateFloor(obj)
+                    this.addObject(tempObj);
                     break;
-                
+                case 'wall':
+                    this.CreateWall(obj);
+                    break;
             }
         }
     }
     //创建地板
-    CreateFloor(_obj){
-        console.log(this)
-        var _this = this;
-        var _cube = _this.createCube(_this, _obj);
-        return _cube;
+    CreateFloor(obj){
+        return this.createCube(obj);
+    }
+    CreateWall (obj) {
+        let _this=this;
+        var commonThick = obj.thick || 40;//墙体厚度
+        var commonLength = obj.length || 100;//墙体厚度
+        var commonHeight = obj.height || 300;//强体高度
+        var commonSkin = obj.style.skinColor || 0x98750f;
+        //建立墙面
+        obj.wallData.forEach(function(wallobj, index){
+            var wallLength = commonLength;
+            var wallWidth = wallobj.thick||commonThick;
+            var positionX = ((wallobj.startDot.x||0) + (wallobj.endDot.x||0)) / 2;
+            var positionY = ((wallobj.startDot.y || 0) + (wallobj.endDot.y || 0)) / 2;
+            var positionZ = ((wallobj.startDot.z || 0) + (wallobj.endDot.z || 0)) / 2;
+            //z相同 表示x方向为长度
+            if (wallobj.startDot.z == wallobj.endDot.z) {
+                wallLength = Math.abs(wallobj.startDot.x - wallobj.endDot.x);
+                wallWidth = wallobj.thick || commonThick;
+            } else if (wallobj.startDot.x == wallobj.endDot.x) {
+                wallLength = wallobj.thick || commonThick;
+                wallWidth = Math.abs(wallobj.startDot.z - wallobj.endDot.z);
+            }
+            var cubeobj = {
+                length: wallLength,
+                width: wallWidth,
+                height: wallobj.height || commonHeight,
+                rotation: wallobj.rotation,
+                x: positionX,
+                y: positionY,
+                z: positionZ,
+                uuid: wallobj.uuid,
+                name:wallobj.name,
+                style: {
+                    skinColor: commonSkin,
+                    skin:wallobj.skin 
+                }
+            }
+            var cube = _this.createCube(cubeobj);
+            if (_this.commonFunc.hasObj(wallobj.childrens) && wallobj.childrens.length > 0) {
+                wallobj.childrens.forEach(function(walchildobj, index){
+                    var newobj = _this.CreateHole(walchildobj);
+                    cube = _this.mergeModel(walchildobj.op, cube, newobj);
+                })
+            }
+            _this.addObject(cube);
+        });
+    }
+    mergeModel(mergeOP, fobj, sobj) {
+        var fobjBSP = new ThreeBSP(fobj);
+        var sobjBSP = new ThreeBSP(sobj);
+       // var sobjBSP = new ThreeBSP(sobj);
+        var resultBSP = null; 
+        if (mergeOP == '-') {
+            resultBSP = fobjBSP.subtract(sobjBSP);
+        } else if (mergeOP == '+') {
+            var subMesh = new THREE.Mesh(sobj);
+            sobj.updateMatrix();
+            fobj.geometry.merge(sobj.geometry, sobj.matrix);
+            return fobj;
+           // resultBSP = fobjBSP.union(sobjBSP);
+        } else if (mergeOP == '&') {//交集
+            resultBSP = fobjBSP.intersect(sobjBSP);
+        } else {
+            this.addObject(sobj);
+            return fobj;
+        }
+        var cubeMaterialArray = [];
+        for (var i = 0; i < 1; i++) {
+            cubeMaterialArray.push(new THREE.MeshLambertMaterial({
+                //map: this.createSkin(128, 128, { imgurl: '../datacenterdemo/res2/'+(i%11)+'.jpg' }),
+                vertexColors: THREE.FaceColors
+            }));
+        }
+        var result = resultBSP.toMesh(cubeMaterialArray);
+        result.material.shading = THREE.FlatShading;
+        result.geometry.computeFaceNormals();
+        result.geometry.computeVertexNormals();
+        result.uuid= fobj.uuid+mergeOP+sobj.uuid;
+        result.name=fobj.name+mergeOP+sobj.name;
+        result.material.needsUpdate = true;
+        result.geometry.buffersNeedUpdate = true;
+        result.geometry.uvsNeedUpdate = true;
+        var foreFaceSkin = null;
+        for (var i = 0; i < result.geometry.faces.length; i++) {
+            var faceset = false;
+            for (var j = 0; j < fobj.geometry.faces.length; j++) {
+                if (result.geometry.faces[i].vertexNormals[0].x === fobj.geometry.faces[j].vertexNormals[0].x
+                    && result.geometry.faces[i].vertexNormals[0].y === fobj.geometry.faces[j].vertexNormals[0].y
+                    && result.geometry.faces[i].vertexNormals[0].z === fobj.geometry.faces[j].vertexNormals[0].z
+                     && result.geometry.faces[i].vertexNormals[1].x === fobj.geometry.faces[j].vertexNormals[1].x
+                    && result.geometry.faces[i].vertexNormals[1].y === fobj.geometry.faces[j].vertexNormals[1].y
+                    && result.geometry.faces[i].vertexNormals[1].z === fobj.geometry.faces[j].vertexNormals[1].z
+                    && result.geometry.faces[i].vertexNormals[2].x === fobj.geometry.faces[j].vertexNormals[2].x
+                    && result.geometry.faces[i].vertexNormals[2].y === fobj.geometry.faces[j].vertexNormals[2].y
+                    && result.geometry.faces[i].vertexNormals[2].z === fobj.geometry.faces[j].vertexNormals[2].z) {
+                    result.geometry.faces[i].color.setHex(fobj.geometry.faces[j].color.r * 0xff0000 + fobj.geometry.faces[j].color.g * 0x00ff00 + fobj.geometry.faces[j].color.b * 0x0000ff);
+                    foreFaceSkin = fobj.geometry.faces[j].color.r * 0xff0000 + fobj.geometry.faces[j].color.g * 0x00ff00 + fobj.geometry.faces[j].color.b * 0x0000ff;
+                    faceset =true;
+                }
+            }
+            if (faceset == false){
+                for(var j = 0; j < sobj.geometry.faces.length; j++) {
+                    if (result.geometry.faces[i].vertexNormals[0].x === sobj.geometry.faces[j].vertexNormals[0].x
+                        && result.geometry.faces[i].vertexNormals[0].y === sobj.geometry.faces[j].vertexNormals[0].y
+                        && result.geometry.faces[i].vertexNormals[0].z === sobj.geometry.faces[j].vertexNormals[0].z
+                         && result.geometry.faces[i].vertexNormals[1].x === sobj.geometry.faces[j].vertexNormals[1].x
+                        && result.geometry.faces[i].vertexNormals[1].y === sobj.geometry.faces[j].vertexNormals[1].y
+                        && result.geometry.faces[i].vertexNormals[1].z === sobj.geometry.faces[j].vertexNormals[1].z
+                        && result.geometry.faces[i].vertexNormals[2].x === sobj.geometry.faces[j].vertexNormals[2].x
+                        && result.geometry.faces[i].vertexNormals[2].y === sobj.geometry.faces[j].vertexNormals[2].y
+                        && result.geometry.faces[i].vertexNormals[2].z === sobj.geometry.faces[j].vertexNormals[2].z
+                        && result.geometry.faces[i].vertexNormals[2].z === sobj.geometry.faces[j].vertexNormals[2].z) {
+                        result.geometry.faces[i].color.setHex(sobj.geometry.faces[j].color.r * 0xff0000 + sobj.geometry.faces[j].color.g * 0x00ff00 + sobj.geometry.faces[j].color.b * 0x0000ff);
+                        foreFaceSkin = sobj.geometry.faces[j].color.r * 0xff0000 + sobj.geometry.faces[j].color.g * 0x00ff00 + sobj.geometry.faces[j].color.b * 0x0000ff;
+                        faceset = true;
+                    }
+                }
+            }
+            if (faceset == false) {
+                result.geometry.faces[i].color.setHex(foreFaceSkin);
+            }
+        // result.geometry.faces[i].materialIndex = i
+        }
+        result.castShadow = true;
+        result.receiveShadow = true;
+        return result;
+    }
+    //挖洞
+    CreateHole ( obj) {
+        var commonThick =  40;//墙体厚度
+        var commonLength =  100;//墙体厚度
+        var commonHeight =  300;//强体高度
+        var commonSkin = 0x98750f;
+        //建立墙面
+            var wallLength = commonLength;
+            var wallWidth = obj.thick || commonThick;
+            var positionX = ((obj.startDot.x || 0) + (obj.endDot.x || 0)) / 2;
+            var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2;
+            var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2;
+            //z相同 表示x方向为长度
+            if (obj.startDot.z == obj.endDot.z) {
+                wallLength = Math.abs(obj.startDot.x - obj.endDot.x);
+                wallWidth = obj.thick || commonThick;
+            } else if (obj.startDot.x == obj.endDot.x) {
+                wallLength = obj.thick || commonThick;
+                wallWidth = Math.abs(obj.startDot.z - obj.endDot.z);
+            }
+            var cubeobj = {
+                length: wallLength,
+                width: wallWidth,
+                height: obj.height || commonHeight,
+                rotation: obj.rotation,
+                x: positionX,
+                uuid: obj.uuid,
+                name: obj.name,
+                y: positionY,
+                z: positionZ,
+                style: {
+                    skinColor: commonSkin,
+                    skin: obj.skin
+                }
+            }
+            var cube = this.createCube(cubeobj);
+            return cube;
     }
     //创建盒子体
-    createCube(_this, _obj){
-        if (_this == null) {
-            _this = this;
-        }
-        var _length = _obj.length || 1000;//默认1000
-        var _width = _obj.width || _length;
-        var _height = _obj.height || 10;
-        var _x = _obj.x || 0, _y = _obj.y || 0, _z = _obj.z || 0;
-        var skinColor = _obj.style.skinColor || 0x98750f;
-        var cubeGeometry = new THREE.CubeGeometry(_length, _height, _width, 0, 0, 1);
-    
+    createCube(obj){
+        var length = obj.length || 1000;//默认1000
+        var width = obj.width || length;
+        var height = obj.height || 10;
+        var x = obj.x || 0, y = obj.y || 0, z = obj.z || 0;
+        var skinColor = obj.style.skinColor || 0x98750f;
+        var cubeGeometry = new THREE.CubeGeometry(length, height, width, 0, 0, 1);
+
         //六面颜色
         for (var i = 0; i < cubeGeometry.faces.length; i += 2) {
             var hex = skinColor || Math.random() * 0x531844;
@@ -143,25 +301,25 @@ export default class ThreeMap {
             skin_left_obj = skin_up_obj,
             skin_right_obj = skin_up_obj;
         var skin_opacity = 1;
-        if (_obj.style != null && typeof (_obj.style) != 'undefined'
-            && _obj.style.skin != null && typeof (_obj.style.skin) != 'undefined') {
+        if (obj.style != null && typeof (obj.style) != 'undefined'
+            && obj.style.skin != null && typeof (obj.style.skin) != 'undefined') {
             //透明度
-            if (_obj.style.skin.opacity != null && typeof (_obj.style.skin.opacity) != 'undefined') {
-                skin_opacity = _obj.style.skin.opacity;
+            if (obj.style.skin.opacity != null && typeof (obj.style.skin.opacity) != 'undefined') {
+                skin_opacity = obj.style.skin.opacity;
                 console.log(skin_opacity)
             }
             //上
-            skin_up_obj = _this.createSkinOptionOnj(_this, _length, _width, _obj.style.skin.skin_up, cubeGeometry, 4);
+            skin_up_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_up, cubeGeometry, 4);
             //下
-            skin_down_obj = _this.createSkinOptionOnj(_this, _length, _width, _obj.style.skin.skin_down, cubeGeometry, 6);
+            skin_down_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_down, cubeGeometry, 6);
             //前
-            skin_fore_obj = _this.createSkinOptionOnj(_this, _length, _width, _obj.style.skin.skin_fore, cubeGeometry, 0);
+            skin_fore_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_fore, cubeGeometry, 0);
             //后
-            skin_behind_obj = _this.createSkinOptionOnj(_this, _length, _width, _obj.style.skin.skin_behind, cubeGeometry, 2);
+            skin_behind_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_behind, cubeGeometry, 2);
             //左
-            skin_left_obj = _this.createSkinOptionOnj(_this, _length, _width, _obj.style.skin.skin_left, cubeGeometry, 8);
+            skin_left_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_left, cubeGeometry, 8);
             //右
-            skin_right_obj = _this.createSkinOptionOnj(_this, _length, _width, _obj.style.skin.skin_right, cubeGeometry, 10);
+            skin_right_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_right, cubeGeometry, 10);
         }
         var cubeMaterialArray = [];
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_fore_obj));
@@ -170,15 +328,14 @@ export default class ThreeMap {
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_down_obj));
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_right_obj));
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_left_obj));
-        var cubeMaterials = new THREE.MeshFaceMaterial(cubeMaterialArray);
-        var cube = new THREE.Mesh(cubeGeometry, cubeMaterials);
+        var cube = new THREE.Mesh(cubeGeometry, cubeMaterialArray);
         cube.castShadow = true;
         cube.receiveShadow = true;
-        cube.uuid = _obj.uuid;
-        cube.name = _obj.name;
-        cube.position.set(_x, _y, _z);
-        if (_obj.rotation != null && typeof (_obj.rotation) != 'undefined' && _obj.rotation.length > 0) {
-            _obj.rotation.forEach(function(rotation_obj, index){
+        cube.uuid = obj.uuid;
+        cube.name = obj.name;
+        cube.position.set(x, y, z);
+        if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
+            obj.rotation.forEach(function(rotation_obj, index){
                 switch (rotation_obj.direction) {
                     case 'x':
                         cube.rotateX(rotation_obj.degree);
@@ -199,20 +356,20 @@ export default class ThreeMap {
         return cube;
     }
     //添加对象
-    addObject (_obj) {
-        this.objects.push(_obj);
-        this.scene.add(_obj);
+    addObject (obj) {
+        this.objects.push(obj);
+        this.scene.add(obj);
     }
-    createSkinOptionOnj = function (_this, flength, fwidth, _obj, _cube, _cubefacenub) {
-        if (_this.commonFunc.hasObj(_obj)) {
-            if (_this.commonFunc.hasObj(_obj.imgurl)) {
+    createSkinOptionOnj = function (flength, fwidth, obj, cube, cubefacenub) {
+        if (this.commonFunc.hasObj(obj)) {
+            if (this.commonFunc.hasObj(obj.imgurl)) {
                 return {
-                    map: _this.createSkin(flength, fwidth, _obj),transparent:true
+                    map: this.createSkin(flength, fwidth, obj),transparent:true
                 }
             } else {
-                if (_this.commonFunc.hasObj(_obj.skinColor)) {
-                    _cube.faces[_cubefacenub].color.setHex(_obj.skinColor);
-                    _cube.faces[_cubefacenub + 1].color.setHex(_obj.skinColor);
+                if (this.commonFunc.hasObj(obj.skinColor)) {
+                    cube.faces[cubefacenub].color.setHex(obj.skinColor);
+                    cube.faces[cubefacenub + 1].color.setHex(obj.skinColor);
                 }
                 return {
                     vertexColors: THREE.FaceColors
@@ -224,21 +381,21 @@ export default class ThreeMap {
             }
         }
     }
-    createSkin = function (flength,fwidth,_obj) {
+    createSkin = function (flength,fwidth,obj) {
         var imgwidth = 128,imgheight=128;
-        if (_obj.width != null&& typeof (_obj.width) != 'undefined') {
-            imgwidth = _obj.width;
+        if (obj.width != null&& typeof (obj.width) != 'undefined') {
+            imgwidth = obj.width;
         }
-        if (_obj.height != null && typeof (_obj.height) != 'undefined') {
-            imgheight = _obj.height;
+        if (obj.height != null && typeof (obj.height) != 'undefined') {
+            imgheight = obj.height;
         }
-        var texture = new THREE.TextureLoader().load(_obj.imgurl);
+        var texture = new THREE.TextureLoader().load(obj.imgurl);
         var _repeat = false;
-        if (_obj.repeatx != null && typeof (_obj.repeatx) != 'undefined' && _obj.repeatx==true) {
+        if (obj.repeatx != null && typeof (obj.repeatx) != 'undefined' && obj.repeatx==true) {
             texture.wrapS = THREE.RepeatWrapping;
             _repeat = true;
         }
-        if (_obj.repeaty != null && typeof (_obj.repeaty) != 'undefined' && _obj.repeaty == true) {
+        if (obj.repeaty != null && typeof (obj.repeaty) != 'undefined' && obj.repeaty == true) {
             texture.wrapT = THREE.RepeatWrapping;
             _repeat = true;
         }
@@ -249,8 +406,8 @@ export default class ThreeMap {
     }
     commonFunc={
         //判断对象
-        hasObj: function (_obj) {
-            if (_obj != null && typeof (_obj) != 'undefined') {
+        hasObj: function (obj) {
+            if (obj != null && typeof (obj) != 'undefined') {
                 return true;
             }else{
                 return false;
