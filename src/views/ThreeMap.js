@@ -50,7 +50,8 @@ export default class ThreeMap {
     initCamera() {
         this.camera = new THREE.PerspectiveCamera(45, this.dom.offsetWidth / this.dom.offsetHeight, 1, 100000);
         this.camera.name = 'mainCamera';
-        this.camera.position.set(0,1000,-1800)
+        this.camera.position.set(0,1000,1800)
+        //默认就是以Y轴为上方的
         // this.camera.up.x = 0;
         // this.camera.up.y =1;
         // this.camera.up.z =0;
@@ -60,12 +61,9 @@ export default class ThreeMap {
     //初始化场景
     initScene() {
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xffffff);
+        this.scene.background = new THREE.Color(0xECF2F6);
         let ambientLight=new THREE.AmbientLight(0xffffff);
-        ambientLight.position.set(0,10,0);
-        let spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(0, 50, 0);
-        this.scene.add(spotLight);
+        ambientLight.position.set(0,0,0);
         this.scene.add(ambientLight);
     }
     //渲染
@@ -114,29 +112,29 @@ export default class ThreeMap {
     }
     CreateWall (obj) {
         let _this=this;
-        var commonThick = obj.thick || 40;//墙体厚度
-        var commonLength = obj.length || 100;//墙体厚度
-        var commonHeight = obj.height || 300;//强体高度
+        var commonDepth = obj.depth || 40;//墙体厚度
+        var commonHeight = obj.height || 100;//墙体高度
+        var commonWidth = obj.width || 300;//墙体宽度
         var commonSkin = obj.style.skinColor || 0x98750f;
         //建立墙面
         obj.wallData.forEach(function(wallobj, index){
-            var wallLength = commonLength;
-            var wallWidth = wallobj.thick||commonThick;
+            var wallWidth = commonWidth;
+            var wallDepth = wallobj.depth||commonDepth;
             var positionX = ((wallobj.startDot.x||0) + (wallobj.endDot.x||0)) / 2;
             var positionY = ((wallobj.startDot.y || 0) + (wallobj.endDot.y || 0)) / 2;
             var positionZ = ((wallobj.startDot.z || 0) + (wallobj.endDot.z || 0)) / 2;
             //z相同 表示x方向为长度
             if (wallobj.startDot.z == wallobj.endDot.z) {
-                wallLength = Math.abs(wallobj.startDot.x - wallobj.endDot.x);
-                wallWidth = wallobj.thick || commonThick;
+                wallWidth = Math.abs(wallobj.startDot.x - wallobj.endDot.x);
+                wallDepth = wallobj.depth || commonDepth;
             } else if (wallobj.startDot.x == wallobj.endDot.x) {
-                wallLength = wallobj.thick || commonThick;
-                wallWidth = Math.abs(wallobj.startDot.z - wallobj.endDot.z);
+                wallWidth = wallobj.depth || commonDepth;
+                wallDepth = Math.abs(wallobj.startDot.z - wallobj.endDot.z);
             }
             var cubeobj = {
-                length: wallLength,
                 width: wallWidth,
                 height: wallobj.height || commonHeight,
+                depth: wallDepth,
                 rotation: wallobj.rotation,
                 x: positionX,
                 y: positionY,
@@ -278,12 +276,13 @@ export default class ThreeMap {
     }
     //创建盒子体
     createCube(obj){
-        var length = obj.length || 1000;//默认1000
-        var width = obj.width || length;
-        var height = obj.height || 10;
+        var width = obj.width || 1000;  //x轴
+        var height = obj.height || 10;  //y轴
+        var depth=obj.depth || width;  //z轴
         var x = obj.x || 0, y = obj.y || 0, z = obj.z || 0;
         var skinColor = obj.style.skinColor || 0x98750f;
-        var cubeGeometry = new THREE.CubeGeometry(length, height, width, 0, 0, 1);
+        //width：是x方向上的长度；height：是y方向上的长度；depth：是z方向上的长度；
+        var cubeGeometry = new THREE.CubeGeometry(width, height, depth, 0, 0, 1);
 
         //六面颜色
         for (var i = 0; i < cubeGeometry.faces.length; i += 2) {
@@ -291,6 +290,7 @@ export default class ThreeMap {
             cubeGeometry.faces[i].color.setHex(hex);
             cubeGeometry.faces[i + 1].color.setHex(hex);
         }
+        console.log(THREE.FaceColors)
         //六面纹理
         var skin_up_obj = {
             vertexColors: THREE.FaceColors
@@ -306,28 +306,30 @@ export default class ThreeMap {
             //透明度
             if (obj.style.skin.opacity != null && typeof (obj.style.skin.opacity) != 'undefined') {
                 skin_opacity = obj.style.skin.opacity;
-                console.log(skin_opacity)
             }
-            //上
-            skin_up_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_up, cubeGeometry, 4);
-            //下
-            skin_down_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_down, cubeGeometry, 6);
-            //前
-            skin_fore_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_fore, cubeGeometry, 0);
-            //后
-            skin_behind_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_behind, cubeGeometry, 2);
-            //左
-            skin_left_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_left, cubeGeometry, 8);
             //右
-            skin_right_obj = this.createSkinOptionOnj(length, width, obj.style.skin.skin_right, cubeGeometry, 10);
+            skin_right_obj = this.createSkinOptionOnj(depth, height, obj.style.skin.skin_right, cubeGeometry, 0);
+            //左
+            skin_left_obj = this.createSkinOptionOnj(depth, height, obj.style.skin.skin_left, cubeGeometry, 2);
+            //上
+            skin_up_obj = this.createSkinOptionOnj(width, depth, obj.style.skin.skin_up, cubeGeometry, 4);
+            //下
+            skin_down_obj = this.createSkinOptionOnj(width, depth, obj.style.skin.skin_down, cubeGeometry, 6);
+            //前
+            skin_fore_obj = this.createSkinOptionOnj(width, height, obj.style.skin.skin_fore, cubeGeometry, 8);
+            //后
+            skin_behind_obj = this.createSkinOptionOnj(width, height, obj.style.skin.skin_behind, cubeGeometry, 10);
         }
-        var cubeMaterialArray = [];
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_fore_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_behind_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_up_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_down_obj));
+        var cubeMaterialArray = [];//右，左，上，下，前，后
+        //右：134、364；左：570、720；上：451、501；下：762、632；前：021、231；后：465、675；
+        //正面：上左上右下左下右(0123)；后面正对看：上左上右下左下右(4567)
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_right_obj));
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_left_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_up_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_down_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_fore_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_behind_obj));
+        
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterialArray);
         cube.castShadow = true;
         cube.receiveShadow = true;
@@ -346,7 +348,7 @@ export default class ThreeMap {
                     case 'z':
                         cube.rotateZ(rotation_obj.degree);
                         break;
-                    case 'arb':
+                    case 'arb':  //{ direction: 'arb', degree: [x,y,z,angle] }
                         cube.rotateOnAxis(new THREE.Vector3(rotation_obj.degree[0], rotation_obj.degree[1], rotation_obj.degree[2]), rotation_obj.degree[3]);
                         break;
                 }
@@ -360,11 +362,11 @@ export default class ThreeMap {
         this.objects.push(obj);
         this.scene.add(obj);
     }
-    createSkinOptionOnj = function (flength, fwidth, obj, cube, cubefacenub) {
+    createSkinOptionOnj (width,height, obj, cube, cubefacenub) {
         if (this.commonFunc.hasObj(obj)) {
             if (this.commonFunc.hasObj(obj.imgurl)) {
                 return {
-                    map: this.createSkin(flength, fwidth, obj),transparent:true
+                    map: this.createSkin(width, height, obj),transparent:true
                 }
             } else {
                 if (this.commonFunc.hasObj(obj.skinColor)) {
@@ -381,7 +383,8 @@ export default class ThreeMap {
             }
         }
     }
-    createSkin = function (flength,fwidth,obj) {
+    createSkin (width,height,obj) {
+        
         var imgwidth = 128,imgheight=128;
         if (obj.width != null&& typeof (obj.width) != 'undefined') {
             imgwidth = obj.width;
@@ -390,17 +393,17 @@ export default class ThreeMap {
             imgheight = obj.height;
         }
         var texture = new THREE.TextureLoader().load(obj.imgurl);
-        var _repeat = false;
+        var repeat = false;
         if (obj.repeatx != null && typeof (obj.repeatx) != 'undefined' && obj.repeatx==true) {
             texture.wrapS = THREE.RepeatWrapping;
-            _repeat = true;
+            repeat = true;
         }
         if (obj.repeaty != null && typeof (obj.repeaty) != 'undefined' && obj.repeaty == true) {
             texture.wrapT = THREE.RepeatWrapping;
-            _repeat = true;
+            repeat = true;
         }
-        if (_repeat) {
-            texture.repeat.set(flength / imgheight, fwidth / imgheight);
+        if (repeat) {
+            texture.repeat.set(width / imgwidth, height / imgheight);
         }
         return texture;
     }

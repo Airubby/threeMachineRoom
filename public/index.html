@@ -5,12 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link href="<%= BASE_URL %>style/style.css" rel="stylesheet">
-    <!-- 使用CDN加速的CSS文件，配置在vue.config.js下 -->
-    <% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.css) { %>
-      <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style">
-      <% } %>
-    <title>腾讯微模块</title>
+    <title>Three-3D机房</title>
     <style>
       html,
       body,
@@ -232,16 +227,12 @@
         <div id="loader"></div>
         <div class="loader-section section-left"></div>
         <div class="loader-section section-right"></div>
-        <div class="load_title">正在加载 腾讯微模块,请耐心等待
+        <div class="load_title">正在加载 Three-3D机房,请耐心等待
           <br>
-          <span>V0.3</span>
+          <span>V0.1</span>
         </div>
       </div>
     </div>
-    <!-- 使用CDN加速的JS文件，配置在vue.config.js下 -->
-    <% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.js) { %>
-      <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>" rel="preload" as="script"></script>
-      <% } %>
     <!-- built files will be auto injected -->
   </body>
 </html>
