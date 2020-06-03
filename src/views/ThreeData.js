@@ -54,11 +54,9 @@ export const ThreeData={
                             imgurl: "/images/wall.png",
                             repeatx: true,
                             repeaty: true,
-                            width: 130,
-                            height: 130
-                            
+                            width: 128,
+                            height: 128
                         }
-                        
                     },
                     startDot: {
                         x: -500,
@@ -71,6 +69,37 @@ export const ThreeData={
                         z: 450
                     },
                     rotation: [{ direction: 'x', degree: 0 }], 
+                    childrens:[
+                        {
+                            op: '-',
+                            show: true,
+                            uuid: "",
+                            name: 'doorhole',
+                            objType: 'doorhole',
+                            depth: 20,
+                            height: 220,
+                            startDot: {
+                                x: 190,
+                                y: 110,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 410,
+                                y: 110,
+                                z: 450
+                            },
+                            skin: {
+                                skin_behind: {
+                                    skinColor: 0xb0cee0,
+                                    imgurl: "/images/wall.png",
+                                    repeatx: true,
+                                    repeaty: true,
+                                    width: 128,
+                                    height: 128
+                                }
+                            },
+                        },
+                    ]
                 },
                 {//后面墙
                     uuid: "",
@@ -81,8 +110,8 @@ export const ThreeData={
                             imgurl: "/images/wall.png",
                             repeatx: true,
                             repeaty: true,
-                            width: 130,
-                            height: 130
+                            width: 128,
+                            height: 128
                         },
                         
                     },
@@ -107,19 +136,19 @@ export const ThreeData={
                             imgurl: "/images/wall.png",
                             repeatx: true,
                             repeaty: true,
-                            width: 130,
-                            height: 130
+                            width: 128,
+                            height: 128
                         },
                     },
                     startDot: {
-                        x: -490,
+                        x: -510,
                         y: 120,
-                        z: -350
+                        z: -360
                     },
                     endDot: {
-                        x: -490,
+                        x: -510,
                         y: 120,
-                        z: 450
+                        z: 460
                     },
                     rotation: [{ direction: 'x', degree: 0 }], 
                 },
@@ -134,19 +163,19 @@ export const ThreeData={
                             imgurl: "/images/wall.png",
                             repeatx: true,
                             repeaty: true,
-                            width: 130,
-                            height: 130
+                            width: 128,
+                            height: 128
                         }
                     },
                     startDot: {
-                        x: 490,
+                        x: 510,
                         y: 120,
-                        z: -350
+                        z: -360
                     },
                     endDot: {
-                        x: 490,
+                        x: 510,
                         y: 120,
-                        z: 450
+                        z: 460
                     },
                 },
             ],
