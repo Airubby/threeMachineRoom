@@ -277,7 +277,7 @@ export default class ThreeMap {
             y: positionY,
             z: positionZ,
             style: {
-                skinColor: commonSkin,
+                skinColor: obj.skinColor || commonSkin,
                 skin: obj.skin
             }
         }

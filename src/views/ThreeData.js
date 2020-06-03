@@ -108,6 +108,101 @@ export const ThreeData={
                                 z: 450
                             }
                         },
+                        {
+                            show: true,
+                            name: 'windowCaseBottom',
+                            uuid: "",
+                            objType: 'cube',
+                            depth: 30,
+                            height: 10,
+                            startDot: {
+                                x: -450,
+                                y: 50,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 50,
+                                y: 50,
+                                z: 450
+                            },
+                            skinColor:0xc0dee0,
+                        },
+                        {
+                            show: true,
+                            uuid: "",
+                            name: 'doorCaseRight',
+                            objType: 'cube',
+                            depth: 24,
+                            height: 220,
+                            startDot: {
+                                x: 405,
+                                y: 110,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 410,
+                                y: 110,
+                                z: 450
+                            },
+                            skinColor:0xc0dee0,
+                        },
+                        {
+                            show: true,
+                            name: 'doorCaseLeft',
+                            uuid: "",
+                            objType: 'cube',
+                            depth: 24,
+                            height: 220,
+                            startDot: {
+                                x: 190,
+                                y: 110,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 195,
+                                y: 110,
+                                z: 450
+                            },
+                            skinColor:0xc0dee0,
+                        },
+                        {
+                            show: true,
+                            name: 'doorCaseTop',
+                            uuid: "",
+                            objType: 'cube',
+                            depth: 24,
+                            height: 5,
+                            startDot: {
+                                x: 190,
+                                y: 220,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 410,
+                                y: 220,
+                                z: 450
+                            },
+                            skinColor:0xc0dee0,
+                        },
+                        {
+                            show: true,
+                            name: 'doorCaseBottom',
+                            uuid: "",
+                            objType: 'cube',
+                            depth: 24,
+                            height: 5,
+                            startDot: {
+                                x: 195,
+                                y: 5,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 405,
+                                y: 5,
+                                z: 450
+                            },
+                            skinColor:0x5f7071,
+                        },
                     ]
                 },
                 {//后面墙
