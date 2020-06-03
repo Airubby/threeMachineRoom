@@ -88,16 +88,25 @@ export const ThreeData={
                                 y: 110,
                                 z: 450
                             },
-                            skin: {
-                                skin_behind: {
-                                    skinColor: 0xb0cee0,
-                                    imgurl: "/images/wall.png",
-                                    repeatx: true,
-                                    repeaty: true,
-                                    width: 128,
-                                    height: 128
-                                }
+                        },
+                        {
+                            op: '-',
+                            show: true,
+                            uuid: "",
+                            name: 'windowHole',
+                            objType: 'windowHole',
+                            thick: 20,
+                            height: 160,
+                            startDot: {
+                                x: -450,
+                                y: 130,
+                                z: 450
                             },
+                            endDot: {
+                                x: 50,
+                                y: 130,
+                                z: 450
+                            }
                         },
                     ]
                 },

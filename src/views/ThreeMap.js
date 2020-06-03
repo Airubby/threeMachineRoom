@@ -32,6 +32,7 @@ export default class ThreeMap {
         this.initRenderer();
         this.initCamera();
         this.initScene();
+        this.initLight();
         this.render();
         // this.setHelper();
         this.setControl();
@@ -62,7 +63,9 @@ export default class ThreeMap {
     initScene() {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0xECF2F6);
-        
+    }
+    //初始化灯光
+    initLight(){
         var light = new THREE.AmbientLight(0xcccccc);
         light.position.set(0, 0,0);
         this.scene.add(light);
