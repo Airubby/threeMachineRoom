@@ -19,7 +19,7 @@ export const ThreeData={
             y: 0,
             z: 0,
             style: {
-                skinColor: 0xdddddd,
+                skinColor: 0x6EA1B5,
                 skin: {
                     skin_up: {
                         skinColor: 0x98750f,
@@ -202,6 +202,87 @@ export const ThreeData={
                                 z: 450
                             },
                             skinColor:0x5f7071,
+                        },
+                        {
+                            show: true,
+                            name: 'doorControl',
+                            uuid: "",
+                            objType: 'cube',
+                            depth: 10,
+                            height: 40,
+                            startDot: {
+                                x: 160,
+                                y: 140,
+                                z: 460
+                            },
+                            endDot: {
+                                x: 180,
+                                y: 140,
+                                z: 460
+                            },
+                            skinColor:0x333333,
+                            skin: {
+                                skin_fore: {
+                                    skinColor: 0x333333,
+                                    width: 20,
+                                    height:40,
+                                    imgurl: "/images/doorControl.jpg",
+                                },
+                            },
+                        },
+                        {
+                            show: true,
+                            name: 'doorLeft',
+                            uuid: "",
+                            objType: 'cube',
+                            depth: 4,
+                            height: 210,
+                            skinColor: 0x51443e,
+                            skin: {
+                                skin_fore: {
+                                    imgurl: "/images/door_left.png",
+                                },
+                                skin_behind: {
+                                    imgurl: "/images/door_right.png",
+                                },
+                            },
+                            startDot: {
+                                x: 300,
+                                y: 112,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 405,
+                                y: 112,
+                                z: 450
+                            },
+                        },
+                        {
+                            show: true,
+                            name: 'doorRight',
+                            uuid: "",
+                            objType: 'cube',
+                            depth: 4,
+                            height: 210,
+                            skinColor: 0x51443e,
+                            skin: {
+                                skin_fore: {
+                                    imgurl: "/images/door_right.png",
+                                },
+                                skin_behind: {
+                                    imgurl: "/images/door_left.png",
+                                },
+                            },
+                            startDot: {
+                                x: 195,
+                                y: 112,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 300,
+                                y: 112,
+                                z: 450
+                            },
                         },
                     ]
                 },

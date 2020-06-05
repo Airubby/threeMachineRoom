@@ -62,7 +62,7 @@ export default class ThreeMap {
     //初始化场景
     initScene() {
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xECF2F6);
+        this.scene.background = new THREE.Color(0x225F93);
     }
     //初始化灯光
     initLight(){
