@@ -95,7 +95,7 @@ export const ThreeData={
                             uuid: "",
                             name: 'windowHole',
                             objType: 'windowHole',
-                            thick: 20,
+                            depth: 20,
                             height: 160,
                             startDot: {
                                 x: -450,
@@ -241,18 +241,22 @@ export const ThreeData={
                             skin: {
                                 skin_fore: {
                                     imgurl: "/images/door_left.png",
+                                    opacity: 1,
+                                    transparent: true,
                                 },
                                 skin_behind: {
                                     imgurl: "/images/door_right.png",
+                                    opacity: 1,
+                                    transparent: true,
                                 },
                             },
                             startDot: {
-                                x: 300,
+                                x: 195,
                                 y: 112,
                                 z: 450
                             },
                             endDot: {
-                                x: 405,
+                                x: 300,
                                 y: 112,
                                 z: 450
                             },
@@ -268,21 +272,60 @@ export const ThreeData={
                             skin: {
                                 skin_fore: {
                                     imgurl: "/images/door_right.png",
+                                    opacity: 1,
+                                    transparent: true,
                                 },
                                 skin_behind: {
                                     imgurl: "/images/door_left.png",
+                                    opacity: 1,
+                                    transparent: true,
                                 },
                             },
                             startDot: {
-                                x: 195,
-                                y: 112,
-                                z: 450
-                            },
-                            endDot: {
                                 x: 300,
                                 y: 112,
                                 z: 450
                             },
+                            endDot: {
+                                x: 405,
+                                y: 112,
+                                z: 450
+                            },
+                        },
+                        {
+                            show: true,
+                            uuid: "",
+                            name: 'windowGlasses',
+                            objType: 'glasses',
+                            depth: 20,
+                            height: 160,
+                            skin: {
+                                opacity: 0.1,
+                                skin_fore: {
+                                    imgurl: "/images/glass.png",
+                                    transparent: true,
+                                    opacity: 0.25,
+                                    repeatx: true,
+                                    repeaty: true,
+                                },
+                                skin_behind: {
+                                    imgurl: "/images/glass.png",
+                                    transparent: true,
+                                    opacity: 0.25,
+                                    repeatx: true,
+                                    repeaty: true,
+                                },
+                            },
+                            startDot: {
+                                x: -450,
+                                y: 130,
+                                z: 450
+                            },
+                            endDot: {
+                                x: 50,
+                                y: 130,
+                                z: 450
+                            }
                         },
                     ]
                 },
@@ -364,7 +407,21 @@ export const ThreeData={
                     },
                 },
             ],
-
+        },
+        //玻璃
+        {
+            show: true,
+            name: 'windowGlass',
+            uuid: "",
+            objType: 'glasses',
+            width: 500,
+            height: 160,
+            pic: "/images/glass.png",
+            transparent: true,
+            opacity: 0.1,
+            position: { x: 200, y: 130, z: -350 },
+            rotation: { x: 0, y: 0 * Math.PI, z: 0 },
+            blending: false,
         },
     ],
     events: {

@@ -120,6 +120,7 @@ export default class ThreeMap {
     CreateFloor(obj){
         return this.createCube(obj);
     }
+    //创建墙
     CreateWall (obj) {
         let _this=this;
         var commonDepth = obj.depth || 40;//墙体厚度
@@ -246,7 +247,7 @@ export default class ThreeMap {
         result.receiveShadow = true;
         return result;
     }
-    //挖洞
+    //挖洞、玻璃、挂东西
     CreateHole ( obj) {
         var commonDepth =  40;//厚度
         var commonHeight =  100;//高度
@@ -271,9 +272,10 @@ export default class ThreeMap {
             height: obj.height || commonHeight,
             depth: wallDepth,
             rotation: obj.rotation,
-            x: positionX,
             uuid: obj.uuid,
             name: obj.name,
+            objType: obj.objType,
+            x: positionX,
             y: positionY,
             z: positionZ,
             style: {
@@ -281,7 +283,7 @@ export default class ThreeMap {
                 skin: obj.skin
             }
         }
-        var cube = this.createCube(cubeobj);
+        var cube=this.createCube(cubeobj);
         return cube;
     }
     //创建盒子体
@@ -317,17 +319,17 @@ export default class ThreeMap {
                 skin_opacity = obj.style.skin.opacity;
             }
             //右
-            skin_right_obj = this.createSkinOptionOnj(depth, height, obj.style.skin.skin_right, cubeGeometry, 0);
+            skin_right_obj = this.createSkinOption(depth, height, obj.style.skin.skin_right, cubeGeometry, 0);
             //左
-            skin_left_obj = this.createSkinOptionOnj(depth, height, obj.style.skin.skin_left, cubeGeometry, 2);
+            skin_left_obj = this.createSkinOption(depth, height, obj.style.skin.skin_left, cubeGeometry, 2);
             //上
-            skin_up_obj = this.createSkinOptionOnj(width, depth, obj.style.skin.skin_up, cubeGeometry, 4);
+            skin_up_obj = this.createSkinOption(width, depth, obj.style.skin.skin_up, cubeGeometry, 4);
             //下
-            skin_down_obj = this.createSkinOptionOnj(width, depth, obj.style.skin.skin_down, cubeGeometry, 6);
+            skin_down_obj = this.createSkinOption(width, depth, obj.style.skin.skin_down, cubeGeometry, 6);
             //前
-            skin_fore_obj = this.createSkinOptionOnj(width, height, obj.style.skin.skin_fore, cubeGeometry, 8);
+            skin_fore_obj = this.createSkinOption(width, height, obj.style.skin.skin_fore, cubeGeometry, 8);
             //后
-            skin_behind_obj = this.createSkinOptionOnj(width, height, obj.style.skin.skin_behind, cubeGeometry, 10);
+            skin_behind_obj = this.createSkinOption(width, height, obj.style.skin.skin_behind, cubeGeometry, 10);
         }
         var cubeMaterialArray = [];//右，左，上，下，前，后
         //右：134、364；左：570、720；上：451、501；下：762、632；前：021、231；后：465、675；
@@ -370,12 +372,19 @@ export default class ThreeMap {
         this.objects.push(obj);
         this.scene.add(obj);
     }
-    createSkinOptionOnj (width,height, obj, cube, cubefacenub) {
+    //创建皮肤材质操作
+    createSkinOption (width,height, obj, cube, cubefacenub) {
         if (this.commonFunc.hasObj(obj)) {
             if (this.commonFunc.hasObj(obj.imgurl)) {
-                return {
-                    map: this.createSkin(width, height, obj),transparent:true
+                var MaterParam={
+                    map: this.createSkin(width, height, obj),
+                    transparent:obj.transparent,
+                    opacity: obj.opacity||1,
                 }
+                if (obj.blending) {
+                    MaterParam.blending = THREE.AdditiveBlending//使用饱和度叠加渲染
+                }
+                return MaterParam;
             } else {
                 if (this.commonFunc.hasObj(obj.skinColor)) {
                     cube.faces[cubefacenub].color.setHex(obj.skinColor);
@@ -391,8 +400,8 @@ export default class ThreeMap {
             }
         }
     }
+    //使用材质图片
     createSkin (width,height,obj) {
-        
         var imgwidth = 128,imgheight=128;
         if (obj.width != null&& typeof (obj.width) != 'undefined') {
             imgwidth = obj.width;
@@ -425,6 +434,7 @@ export default class ThreeMap {
             }
         }
     }
+    //测试ThreeBSP用的
     add(){
         //几何体对象
         let cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
