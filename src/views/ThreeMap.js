@@ -10,7 +10,8 @@ this.map.init();
 */
 import * as THREE from 'three';
 import 'imports-loader?THREE=three!threebsp'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   //r100及以上
+// var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
 export default class ThreeMap {
     constructor(props,dataJson) {
         
@@ -42,7 +43,6 @@ export default class ThreeMap {
 
     //初始化渲染场景
     initRenderer() {
-        console.log(this.props)
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(this.dom.offsetWidth,this.dom.offsetHeight);
         this.dom.appendChild(this.renderer.domElement);
@@ -81,7 +81,7 @@ export default class ThreeMap {
         this.animate()
     }
     animate() {
-        requestAnimationFrame(this.animate.bind(this));
+        requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
     }
     setHelper() {
@@ -187,7 +187,7 @@ export default class ThreeMap {
             return fobj;
         }
         var cubeMaterialArray = [];
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial({
+        cubeMaterialArray.push(new THREE.MeshBasicMaterial({
             // map: this.createSkin(128, 128, { imgurl: '/images/wall.png' }),
             vertexColors: THREE.FaceColors
         }));
@@ -334,12 +334,12 @@ export default class ThreeMap {
         var cubeMaterialArray = [];//右，左，上，下，前，后
         //右：134、364；左：570、720；上：451、501；下：762、632；前：021、231；后：465、675；
         //正面：上左上右下左下右(0123)；后面正对看：上左上右下左下右(4567)
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_right_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_left_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_up_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_down_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_fore_obj));
-        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_behind_obj));
+        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_right_obj));
+        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_left_obj));
+        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_up_obj));
+        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_down_obj));
+        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_fore_obj));
+        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_behind_obj));
         
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterialArray);
         cube.castShadow = true;
@@ -349,6 +349,7 @@ export default class ThreeMap {
         cube.position.set(x, y, z);
         if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
             obj.rotation.forEach(function(rotation_obj, index){
+                // rotation: [{ direction: 'x', degree: 0 }], 
                 switch (rotation_obj.direction) {
                     case 'x':
                         cube.rotateX(rotation_obj.degree);
@@ -378,8 +379,10 @@ export default class ThreeMap {
             if (this.commonFunc.hasObj(obj.imgurl)) {
                 var MaterParam={
                     map: this.createSkin(width, height, obj),
-                    transparent:obj.transparent,
                     opacity: obj.opacity||1,
+                }
+                if(obj.transparent){
+                    MaterParam.transparent=obj.transparent;
                 }
                 if (obj.blending) {
                     MaterParam.blending = THREE.AdditiveBlending//使用饱和度叠加渲染

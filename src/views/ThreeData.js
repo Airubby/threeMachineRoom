@@ -14,7 +14,6 @@ export const ThreeData={
             width: 2000,
             depth: 1600,
             height: 10,
-            rotation: [{ direction: 'x', degree: 0 }], 
             x: 0,
             y: 0,
             z: 0,
@@ -68,7 +67,6 @@ export const ThreeData={
                         y: 120,
                         z: 450
                     },
-                    rotation: [{ direction: 'x', degree: 0 }], 
                     childrens:[
                         {
                             op: '-',
@@ -241,12 +239,10 @@ export const ThreeData={
                             skin: {
                                 skin_fore: {
                                     imgurl: "/images/door_left.png",
-                                    opacity: 1,
                                     transparent: true,
                                 },
                                 skin_behind: {
                                     imgurl: "/images/door_right.png",
-                                    opacity: 1,
                                     transparent: true,
                                 },
                             },
@@ -297,10 +293,9 @@ export const ThreeData={
                             uuid: "",
                             name: 'windowGlasses',
                             objType: 'glasses',
-                            depth: 20,
+                            depth: 5,
                             height: 160,
                             skin: {
-                                opacity: 0.1,
                                 skin_fore: {
                                     imgurl: "/images/glass.png",
                                     transparent: true,
@@ -353,7 +348,32 @@ export const ThreeData={
                         y: 120,
                         z: -350
                     },
-                    rotation: [{ direction: 'x', degree: 0 }], 
+                    childrens:[
+                        {
+                            show: true,
+                            uuid: "",
+                            name: 'windowMessage',
+                            objType: 'cube',
+                            depth: 2,
+                            height: 100,
+                            skinColor: 0xffffff,
+                            skin: {
+                                skin_fore: {
+                                    imgurl: "/images/message.jpg",
+                                },
+                            },
+                            startDot: {
+                                x: 300,
+                                y: 150,
+                                z: -340
+                            },
+                            endDot: {
+                                x: 350,
+                                y: 150,
+                                z: -340
+                            },
+                        },
+                    ]
                 },
                 {//左面墙
                     uuid: "",
@@ -378,13 +398,10 @@ export const ThreeData={
                         y: 120,
                         z: 460
                     },
-                    rotation: [{ direction: 'x', degree: 0 }], 
                 },
                 {//右面墙
                     uuid: "",
                     name: 'wall4',
-                    thick: 20,
-                    height: 240,
                     skin: {
                         skin_left: {
                             skinColor: 0xb0cee0,
@@ -405,23 +422,34 @@ export const ThreeData={
                         y: 120,
                         z: 460
                     },
+                    childrens:[
+                        {
+                            show: true,
+                            uuid: "",
+                            name: 'windowTV',
+                            objType: 'cube',
+                            depth: 10,
+                            height: 120,
+                            skinColor: 0x111111,
+                            skin: {
+                                skin_left: {
+                                    imgurl: "/images/tv.jpg",
+                                },
+                            },
+                            startDot: {
+                                x: 495,
+                                y: 130,
+                                z: -190
+                            },
+                            endDot: {
+                                x: 495,
+                                y: 130,
+                                z: 290
+                            }
+                        },
+                    ]
                 },
             ],
-        },
-        //玻璃
-        {
-            show: true,
-            name: 'windowGlass',
-            uuid: "",
-            objType: 'glasses',
-            width: 500,
-            height: 160,
-            pic: "/images/glass.png",
-            transparent: true,
-            opacity: 0.1,
-            position: { x: 200, y: 130, z: -350 },
-            rotation: { x: 0, y: 0 * Math.PI, z: 0 },
-            blending: false,
         },
     ],
     events: {
