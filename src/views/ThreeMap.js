@@ -37,8 +37,8 @@ export default class ThreeMap {
         this.render();
         // this.setHelper();
         this.setControl();
-        // this.add();
-        this.InitData();  //添加3D对象、事件等
+        this.add();
+        // this.InitData();  //添加3D对象、事件等
     }
 
     //初始化渲染场景
@@ -106,19 +106,19 @@ export default class ThreeMap {
         if (obj.show == null || typeof (obj.show) == 'undefined' || obj.show) {
             let tempObj = null;
             switch (obj.objType) {
-                case 'floor':
-                    tempObj = this.CreateFloor(obj)
+                case 'cube':
+                    tempObj = this.createCube(obj)
                     this.addObject(tempObj);
                     break;
                 case 'wall':
                     this.CreateWall(obj);
                     break;
+                case 'cylinder':
+                    tempObj = this.createCylinder(obj)
+                    this.addObject(tempObj);
+                    break;
             }
         }
-    }
-    //创建地板
-    CreateFloor(obj){
-        return this.createCube(obj);
     }
     //创建墙
     CreateWall (obj) {
@@ -187,7 +187,7 @@ export default class ThreeMap {
             return fobj;
         }
         var cubeMaterialArray = [];
-        cubeMaterialArray.push(new THREE.MeshBasicMaterial({
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial({
             // map: this.createSkin(128, 128, { imgurl: '/images/wall.png' }),
             vertexColors: THREE.FaceColors
         }));
@@ -334,12 +334,12 @@ export default class ThreeMap {
         var cubeMaterialArray = [];//右，左，上，下，前，后
         //右：134、364；左：570、720；上：451、501；下：762、632；前：021、231；后：465、675；
         //正面：上左上右下左下右(0123)；后面正对看：上左上右下左下右(4567)
-        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_right_obj));
-        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_left_obj));
-        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_up_obj));
-        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_down_obj));
-        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_fore_obj));
-        cubeMaterialArray.push(new THREE.MeshBasicMaterial(skin_behind_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_right_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_left_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_up_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_down_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_fore_obj));
+        cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_behind_obj));
         
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterialArray);
         cube.castShadow = true;
@@ -367,6 +367,21 @@ export default class ThreeMap {
             });
         }
         return cube;
+    }
+    //创建圆柱体
+    createCylinder(obj){
+        //创建圆柱体
+        var cylinderGeo = new THREE.CylinderGeometry(30, 30 ,200 ,48,48);
+        console.log(cylinderGeo)
+        var cylinderMat = new THREE.MeshLambertMaterial({//创建材料
+            color:0xffffff,
+            wireframe:false,
+            map: this.createSkin(60,200,{imgurl:"/images/aircondition.png"})
+        });
+        //创建圆柱体网格模型
+        var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
+        cylinder.position.set(420, 100, -300);//设置圆柱坐标
+        return cylinder
     }
     //添加对象
     addObject (obj) {
@@ -437,23 +452,61 @@ export default class ThreeMap {
             }
         }
     }
-    //测试ThreeBSP用的
+    //测试
     add(){
-        //几何体对象
-        let cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
-        let box = new THREE.BoxGeometry(40,5,40);//立方体
-        //材质对象
-        let material=new THREE.MeshPhongMaterial({color:0x0000ff});
-        //网格模型对象
-        let cylinderMesh=new THREE.Mesh(cylinder,material);//圆柱
-        let boxMesh=new THREE.Mesh(box,material);//立方体
-        //包装成ThreeBSP对象
-        let cylinderBSP = new ThreeBSP(cylinderMesh);
-        let boxBSP = new ThreeBSP(boxMesh);
-        let result = cylinderBSP.subtract(boxBSP);
-        //ThreeBSP对象转化为网格模型对象
-        let mesh = result.toMesh();
-        this.scene.add(mesh);//网格模型添加到场景中
+        //1、测试ThreeBSP用的
+        // //几何体对象
+        // let cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
+        // let box = new THREE.BoxGeometry(40,5,40);//立方体
+        // //材质对象
+        // let material=new THREE.MeshPhongMaterial({color:0x0000ff});
+        // //网格模型对象
+        // let cylinderMesh=new THREE.Mesh(cylinder,material);//圆柱
+        // let boxMesh=new THREE.Mesh(box,material);//立方体
+        // //包装成ThreeBSP对象
+        // let cylinderBSP = new ThreeBSP(cylinderMesh);
+        // let boxBSP = new ThreeBSP(boxMesh);
+        // let result = cylinderBSP.subtract(boxBSP);
+        // //ThreeBSP对象转化为网格模型对象
+        // let mesh = result.toMesh();
+        // this.scene.add(mesh);//网格模型添加到场景中
+
+        //2、试圆柱体贴图
+        //创建圆柱体
+        var cylinderGeo = new THREE.CylinderGeometry(30, 30 ,200 ,48,48);
+        cylinderGeo.computeBoundingBox(); 
+        var max = cylinderGeo.boundingBox.max,
+                min = cylinderGeo.boundingBox.min;
+                console.log(cylinderGeo)
+                console.log(max)
+                console.log(min)
+        var offset = new THREE.Vector2(0 - min.x, 0 - min.y);
+        var range = new THREE.Vector2(max.x - min.x, max.y - min.y);
+        var faces = cylinderGeo.faces; 
+        cylinderGeo.faceVertexUvs[0] = []; 
+        for (var i = 0; i < faces.length ; i++) { 
+            var v1 = cylinderGeo.vertices[faces[i].a],
+                    v2 = cylinderGeo.vertices[faces[i].b],
+                    v3 = cylinderGeo.vertices[faces[i].c]; 
+            cylinderGeo.faceVertexUvs[0].push([
+                new THREE.Vector2((v1.x + offset.x) / range.x, (v1.y + offset.y) / range.y),
+                new THREE.Vector2((v2.x + offset.x) / range.x, (v2.y + offset.y) / range.y),
+                new THREE.Vector2((v3.x + offset.x) / range.x, (v3.y + offset.y) / range.y)
+            ]);
+        }
+        cylinderGeo.uvsNeedUpdate = true;
+        
+
+        console.log(cylinderGeo)
+        var cylinderMat = new THREE.MeshLambertMaterial({//创建材料
+            color:0xffffff,
+            wireframe:false,
+            map: this.createSkin(60,200,{imgurl:"/images/aircondition.png"})
+        });
+        //创建圆柱体网格模型
+        var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
+        this.scene.add(cylinder);//网格模型添加到场景中
+
     }
 
 }

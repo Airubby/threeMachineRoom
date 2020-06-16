@@ -10,13 +10,10 @@ export const ThreeData={
             show: true,
             uuid: "",
             name: 'floor',
-            objType: 'floor',
+            objType: 'cube',
             width: 2000,
             depth: 1600,
             height: 10,
-            x: 0,
-            y: 0,
-            z: 0,
             style: {
                 skinColor: 0x6EA1B5,
                 skin: {
@@ -451,6 +448,24 @@ export const ThreeData={
                 },
             ],
         },
+        //空调
+        {
+            show: true,
+            uuid: "",
+            name: 'aircondition',
+            objType: 'cylinder',
+            radiusTop: 20,
+            radiusBottom: 20,
+            height: 100,
+            style: {
+                skinColor: 0x6EA1B5,
+                skin: {
+                    skin_fore: {
+                        imgurl: "/images/aircondition.png",
+                    },
+                }
+            }
+        }
     ],
     events: {
         dbclick: [
