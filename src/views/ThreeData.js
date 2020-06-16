@@ -453,18 +453,23 @@ export const ThreeData={
             show: true,
             uuid: "",
             name: 'aircondition',
-            objType: 'cylinder',
-            radiusTop: 20,
-            radiusBottom: 20,
-            height: 100,
+            objType: 'cube',
+            width: 80,
+            depth: 60,
+            height: 220,
+            x: 440,
+            y: 110,
+            z: -280,
+            rotation: [{ direction: 'y', degree: -0.2*Math.PI}],
             style: {
-                skinColor: 0x6EA1B5,
+                skinColor: 0xfafafa,
                 skin: {
                     skin_fore: {
                         imgurl: "/images/aircondition.png",
                     },
                 }
-            }
+            },
+            
         }
     ],
     events: {

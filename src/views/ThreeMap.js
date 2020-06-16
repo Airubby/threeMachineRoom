@@ -37,8 +37,8 @@ export default class ThreeMap {
         this.render();
         // this.setHelper();
         this.setControl();
-        this.add();
-        // this.InitData();  //添加3D对象、事件等
+        // this.add();
+        this.InitData();  //添加3D对象、事件等
     }
 
     //初始化渲染场景
@@ -349,7 +349,7 @@ export default class ThreeMap {
         cube.position.set(x, y, z);
         if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
             obj.rotation.forEach(function(rotation_obj, index){
-                // rotation: [{ direction: 'x', degree: 0 }], 
+                // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 
                 switch (rotation_obj.direction) {
                     case 'x':
                         cube.rotateX(rotation_obj.degree);
@@ -473,7 +473,7 @@ export default class ThreeMap {
 
         //2、试圆柱体贴图
         //创建圆柱体
-        var cylinderGeo = new THREE.CylinderGeometry(30, 30 ,200 ,48,48);
+        var cylinderGeo = new THREE.CylinderGeometry(28, 30 ,200 ,48,48);
         cylinderGeo.computeBoundingBox(); 
         var max = cylinderGeo.boundingBox.max,
                 min = cylinderGeo.boundingBox.min;
@@ -501,6 +501,7 @@ export default class ThreeMap {
         var cylinderMat = new THREE.MeshLambertMaterial({//创建材料
             color:0xffffff,
             wireframe:false,
+            opacity: 0.1,
             map: this.createSkin(60,200,{imgurl:"/images/aircondition.png"})
         });
         //创建圆柱体网格模型
