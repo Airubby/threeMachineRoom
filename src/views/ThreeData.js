@@ -469,8 +469,43 @@ export const ThreeData={
                     },
                 }
             },
-            
-        }
+        },
+        //机柜
+        {
+            show:true,
+            name: 'cabinet',
+            uuid: '',
+            objType: 'emptyCabinet',
+            transparent:true,
+            size:{width:70,depth:70,height:200, thick:2},
+            position: { x:-300, y: 105, z: 180 },
+            style:{
+                skinColor: 0xff0000,
+                skin:{
+                    skinColor: 0xff0000,
+                    skin_up: { imgurl: "/images/rack_top.jpg" },
+                    skin_down: { imgurl: "/images/rack_top.jpg" },
+                    skin_fore: {imgurl: "/images/rack_back.jpg"},
+                    skin_behind: {imgurl: "/images/rack_back.jpg"},
+                    skin_left: { imgurl: "/images/rack_back.jpg" },
+                    skin_right: { imgurl: "/images/rack_back.jpg" },
+                }
+            },
+            doors: {
+                doorType:'lr',
+                doorSize: [1],
+                doorname: ['cabinet1_1_door_01'],
+                skins:[ {
+                    skinColor: 0x333333,
+                    skin_fore: {
+                        imgurl: "images/rack_door_back.jpg",
+                    },
+                    skin_behind: {
+                        imgurl: "images/rack_front_door.jpg",
+                    }
+                }]
+            },
+        },
     ],
     events: {
         dbclick: [
