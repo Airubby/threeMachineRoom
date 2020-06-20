@@ -117,10 +117,10 @@ export default class ThreeMap {
                     tempObj = this.createEmptyCabinet(obj);
                     this.addObject(tempObj);
 
-                case 'cylinder':
-                    tempObj = this.createCylinder(obj)
-                    this.addObject(tempObj);
-                    break;
+                // case 'cylinder':
+                //     tempObj = this.createCylinder(obj)
+                //     this.addObject(tempObj);
+                //     break;
             }
         }
     }
@@ -183,7 +183,7 @@ export default class ThreeMap {
             sobj.updateMatrix();
             fobj.geometry.merge(sobj.geometry, sobj.matrix);
             return fobj;
-           // resultBSP = fobjBSP.union(sobjBSP);
+        //    resultBSP = fobjBSP.union(sobjBSP);
         } else if (mergeOP == '&') {//交集
             resultBSP = fobjBSP.intersect(sobjBSP);
         } else {
@@ -374,37 +374,19 @@ export default class ThreeMap {
     }
     //创建空柜子
     createEmptyCabinet(obj){
-        //上
-        var upobj= {
-            show: true,
-            uuid: "",
-            name: '',
-            objType: 'cube',
-            width: obj.size.width ,
-            height: obj.size.thick,
-            depth: obj.size.depth,
-            x: obj.position.x,
-            y: obj.position.y+(obj.size.height/2-obj.size.thick/2),
-            z: obj.position.z,
-            style: {
-                skinColor: obj.style.skinColor,
-                skin: obj.style.skin
-            }
-        }
-        var upcube = this.createCube(upobj);
-        this.addObject(upcube);
-
+        //初始以下为基点
+        var Cabinet,floorHeight=10;   
         //下
         var downobj= {
             show: true,
             uuid: "",
-            name: '',
+            name: "cubedown",
             objType: 'cube',
-            width: obj.size.width ,
+            width: obj.size.width,
             height: obj.size.thick,
             depth: obj.size.depth,
             x: obj.position.x,
-            y: obj.position.y-(obj.size.height/2-obj.size.thick/2),
+            y: obj.position.y+floorHeight/2-(obj.size.height/2-obj.size.thick/2),
             z: obj.position.z,
             style: {
                 skinColor: obj.style.skinColor,
@@ -412,19 +394,41 @@ export default class ThreeMap {
             }
         }
         var downcube = this.createCube(downobj);
-        this.addObject(downcube);
+        // this.addObject(downcube,true);
 
+        //上
+        var upobj= {
+            show: true,
+            uuid: "",
+            name: "cubetop",
+            objType: 'cube',
+            width: obj.size.width,
+            height: obj.size.thick,
+            depth: obj.size.depth,
+            x: obj.position.x,
+            y: obj.size.height+obj.size.thick,
+            z: obj.position.z,
+            style: {
+                skinColor: obj.style.skinColor,
+                skin: obj.style.skin
+            }
+        }
+        var upcube = this.createCube(upobj);
+        // this.addObject(upcube);
+        
+        Cabinet = this.mergeModel('+',downcube,upcube);
+        
         //左
         var leftobj= {
             show: true,
             uuid: "",
-            name: '',
+            name: "cubeleft",
             objType: 'cube',
             width: obj.size.thick ,
             height: obj.size.height,
             depth: obj.size.depth,
             x: obj.position.x-(obj.size.width/2-obj.size.thick/2),
-            y: obj.position.y,
+            y: obj.size.height/2+obj.size.thick/2,
             z: obj.position.z,
             style: {
                 skinColor: obj.style.skinColor,
@@ -432,19 +436,20 @@ export default class ThreeMap {
             }
         }
         var leftcube = this.createCube(leftobj);
-        this.addObject(leftcube);
+        // this.addObject(leftcube,true);
+        Cabinet = this.mergeModel('+', Cabinet, leftcube);
 
         //右
         var rightobj= {
             show: true,
             uuid: "",
-            name: '',
+            name: "cuberight",
             objType: 'cube',
             width: obj.size.thick ,
             height: obj.size.height,
             depth: obj.size.depth,
             x: obj.position.x+(obj.size.width/2-obj.size.thick/2),
-            y: obj.position.y,
+            y: obj.size.height/2+obj.size.thick/2,
             z: obj.position.z,
             style: {
                 skinColor: obj.style.skinColor,
@@ -452,10 +457,11 @@ export default class ThreeMap {
             }
         }
         var rightcube = this.createCube(rightobj);
-        this.addObject(rightcube);
+        // this.addObject(rightcube,true);
+        Cabinet = this.mergeModel('+', Cabinet, rightcube);
 
         //后
-        var rightobj= {
+        var behindobj= {
             show: true,
             uuid: "",
             name: '',
@@ -464,16 +470,67 @@ export default class ThreeMap {
             height: obj.size.height,
             depth: obj.size.thick,
             x: obj.position.x,
-            y: obj.position.y,
+            y: obj.size.height/2+obj.size.thick/2,
             z: obj.position.z-(obj.size.depth/2-obj.size.thick/2),
             style: {
                 skinColor: obj.style.skinColor,
                 skin: obj.style.skin
             }
         }
-        var rightcube = this.createCube(rightobj);
-        this.addObject(rightcube);
+        var behindcube = this.createCube(behindobj);
+        // this.addObject(rightcube,true);
+        Cabinet = this.mergeModel('+', Cabinet, behindcube);
 
+        var tempobj = new THREE.Object3D();
+        tempobj.add(Cabinet);
+        tempobj.name = obj.name;
+        tempobj.uuid = obj.uuid;
+        this.addObject(Cabinet,true)
+
+        if(obj.doors!=null&&typeof (obj.doors) != 'undefined'){
+            if(obj.doors.skins.length==1&&obj.doors.doorname.length==1){
+                var doorobj = {
+                    show: true,
+                    uuid:"",
+                    name: obj.doors.doorname[0],
+                    objType: 'cube',
+                    depth: obj.size.thick,
+                    width: obj.size.width,
+                    height: obj.size.height,
+                    x: obj.position.x,
+                    y: obj.position.y,
+                    z: obj.position.z+(obj.size.depth/2-obj.size.thick/2),
+                    style: {
+                        skinColor: obj.doors.skins[0].skinColor,
+                        skin: obj.doors.skins[0]
+                    }
+                }
+                var doorcube = this.createCube(doorobj);
+                this.addObject(doorcube,true)
+            }else if(obj.doors.skins.length==2&&obj.doors.doorname.length==2){
+
+            }
+        }
+        if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
+            obj.rotation.forEach(function(rotation_obj, index){
+                // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 
+                switch (rotation_obj.direction) {
+                    case 'x':
+                        tempobj.rotateX(rotation_obj.degree);
+                        break;
+                    case 'y':
+                        tempobj.rotateY(rotation_obj.degree);
+                        break;
+                    case 'z':
+                        tempobj.rotateZ(rotation_obj.degree);
+                        break;
+                    case 'arb':  //{ direction: 'arb', degree: [x,y,z,angle] }
+                        tempobj.rotateOnAxis(new THREE.Vector3(rotation_obj.degree[0], rotation_obj.degree[1], rotation_obj.degree[2]), rotation_obj.degree[3]);
+                        break;
+                }
+            });
+        }
+        return tempobj;
 
     }
     //创建圆柱体
@@ -492,9 +549,11 @@ export default class ThreeMap {
         return cylinder
     }
     //添加对象
-    addObject (obj) {
+    addObject (obj,flag) {
         this.objects.push(obj);
-        this.scene.add(obj);
+        if(!flag){
+            this.scene.add(obj);
+        }
     }
     //创建皮肤材质操作
     createSkinOption (width,height, obj, cube, cubefacenub) {

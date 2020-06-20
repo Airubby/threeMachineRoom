@@ -478,7 +478,7 @@ export const ThreeData={
             objType: 'emptyCabinet',
             transparent:true,
             size:{width:70,depth:70,height:200, thick:2},
-            position: { x:-300, y: 105, z: 180 },
+            position: { x:0, y: 100, z: 0 },
             style:{
                 skinColor: 0xff0000,
                 skin:{
@@ -493,15 +493,14 @@ export const ThreeData={
             },
             doors: {
                 doorType:'lr',
-                doorSize: [1],
-                doorname: ['cabinet1_1_door_01'],
+                doorname: ['cabinet_door'],
                 skins:[ {
                     skinColor: 0x333333,
                     skin_fore: {
-                        imgurl: "images/rack_door_back.jpg",
+                        imgurl: "images/rack_left_door.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_front_door.jpg",
+                        imgurl: "images/rack_right_door.jpg",
                     }
                 }]
             },
