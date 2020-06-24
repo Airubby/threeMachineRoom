@@ -374,7 +374,7 @@ export default class ThreeMap {
     }
     //创建空柜子
     createEmptyCabinet(obj){
-        //初始以下为基点
+        //初始以下为基点(中心点以机柜的中心为中心点)
         var Cabinet,floorHeight=10;   
         //下
         var downobj= {
@@ -385,9 +385,9 @@ export default class ThreeMap {
             width: obj.size.width,
             height: obj.size.thick,
             depth: obj.size.depth,
-            x: obj.position.x,
-            y: obj.position.y+floorHeight/2-(obj.size.height/2-obj.size.thick/2),
-            z: obj.position.z,
+            x: 0,
+            y: -obj.size.height/2+obj.size.thick/2-1,
+            z: 0,
             style: {
                 skinColor: obj.style.skinColor,
                 skin: obj.style.skin
@@ -405,9 +405,9 @@ export default class ThreeMap {
             width: obj.size.width,
             height: obj.size.thick,
             depth: obj.size.depth,
-            x: obj.position.x,
-            y: obj.size.height+obj.size.thick,
-            z: obj.position.z,
+            x: 0,
+            y: obj.size.height-obj.size.thick+1,
+            z: 0,
             style: {
                 skinColor: obj.style.skinColor,
                 skin: obj.style.skin
@@ -427,9 +427,9 @@ export default class ThreeMap {
             width: obj.size.thick ,
             height: obj.size.height,
             depth: obj.size.depth,
-            x: obj.position.x-(obj.size.width/2-obj.size.thick/2),
-            y: obj.size.height/2+obj.size.thick/2,
-            z: obj.position.z,
+            x: -obj.size.width/2+obj.size.thick/2-1,
+            y: obj.size.height/2-obj.size.thick/2,
+            z: 0,
             style: {
                 skinColor: obj.style.skinColor,
                 skin: obj.style.skin
@@ -448,9 +448,9 @@ export default class ThreeMap {
             width: obj.size.thick ,
             height: obj.size.height,
             depth: obj.size.depth,
-            x: obj.position.x+(obj.size.width/2-obj.size.thick/2),
-            y: obj.size.height/2+obj.size.thick/2,
-            z: obj.position.z,
+            x: obj.size.width/2-obj.size.thick/2+1,
+            y: obj.size.height/2-obj.size.thick/2,
+            z: 0,
             style: {
                 skinColor: obj.style.skinColor,
                 skin: obj.style.skin
@@ -469,9 +469,9 @@ export default class ThreeMap {
             width: obj.size.width ,
             height: obj.size.height,
             depth: obj.size.thick,
-            x: obj.position.x,
-            y: obj.size.height/2+obj.size.thick/2,
-            z: obj.position.z-(obj.size.depth/2-obj.size.thick/2),
+            x: 0,
+            y: obj.size.height/2-obj.size.thick/2,
+            z: -obj.size.depth/2+obj.size.thick/2,
             style: {
                 skinColor: obj.style.skinColor,
                 skin: obj.style.skin
@@ -485,7 +485,8 @@ export default class ThreeMap {
         tempobj.add(Cabinet);
         tempobj.name = obj.name;
         tempobj.uuid = obj.uuid;
-        this.addObject(Cabinet,true)
+        this.addObject(Cabinet,true);
+        tempobj.position.set(obj.position.x,obj.position.y+floorHeight,obj.position.z);
 
         if(obj.doors!=null&&typeof (obj.doors) != 'undefined'){
             if(obj.doors.skins.length==1&&obj.doors.doorname.length==1){
@@ -497,20 +498,22 @@ export default class ThreeMap {
                     depth: obj.size.thick,
                     width: obj.size.width,
                     height: obj.size.height,
-                    x: obj.position.x,
-                    y: obj.position.y,
-                    z: obj.position.z+(obj.size.depth/2-obj.size.thick/2),
+                    x: 0,
+                    y: 0,
+                    z: obj.size.depth/2-obj.size.thick/2+1,
                     style: {
                         skinColor: obj.doors.skins[0].skinColor,
                         skin: obj.doors.skins[0]
                     }
                 }
                 var doorcube = this.createCube(doorobj);
+                tempobj.add(doorcube);
                 this.addObject(doorcube,true)
             }else if(obj.doors.skins.length==2&&obj.doors.doorname.length==2){
 
             }
         }
+        
         if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
             obj.rotation.forEach(function(rotation_obj, index){
                 // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 
