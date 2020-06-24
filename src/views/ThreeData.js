@@ -506,6 +506,49 @@ export const ThreeData={
                 }]
             },
         },
+        {
+            show:true,
+            name: 'cabinet-twodoor',
+            uuid: '',
+            objType: 'emptyCabinet',
+            transparent:true,
+            size:{width:140,depth:70,height:200, thick:2},
+            position: { x:-100, y: 100, z: -180 },
+            rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
+            style:{
+                skinColor: 0xff0000,
+                skin:{
+                    skinColor: 0xff0000,
+                    skin_up: { imgurl: "/images/rack_top.jpg" },
+                    skin_down: { imgurl: "/images/rack_top.jpg" },
+                    skin_fore: {imgurl: "/images/rack_back.jpg"},
+                    skin_behind: {imgurl: "/images/rack_back.jpg"},
+                    skin_left: { imgurl: "/images/rack_back.jpg" },
+                    skin_right: { imgurl: "/images/rack_back.jpg" },
+                }
+            },
+            doors: {
+                doorType:'lr',
+                doorname: ['cabinet_door_left','cabinet_door_right'],
+                skins:[ {
+                    skinColor: 0x333333,
+                    skin_fore: {
+                        imgurl: "images/rack_left_door.jpg",
+                    },
+                    skin_behind: {
+                        imgurl: "images/rack_right_door.jpg",
+                    }
+                },{
+                    skinColor: 0x333333,
+                    skin_fore: {
+                        imgurl: "images/rack_right_door.jpg",
+                    },
+                    skin_behind: {
+                        imgurl: "images/rack_left_door.jpg",
+                    }
+                }]
+            },
+        },
     ],
     events: {
         dbclick: [

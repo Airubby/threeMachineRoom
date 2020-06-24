@@ -510,7 +510,28 @@ export default class ThreeMap {
                 tempobj.add(doorcube);
                 this.addObject(doorcube,true)
             }else if(obj.doors.skins.length==2&&obj.doors.doorname.length==2){
-
+                for(let i=0;i<obj.doors.skins.length;i++){
+                    let x=i===0?-obj.size.width/4:obj.size.width/4;
+                    var doorobj = {
+                        show: true,
+                        uuid:"",
+                        name: obj.doors.doorname[i],
+                        objType: 'cube',
+                        depth: obj.size.thick,
+                        width: obj.size.width/2,
+                        height: obj.size.height,
+                        x: x,
+                        y: 0,
+                        z: obj.size.depth/2-obj.size.thick/2+1,
+                        style: {
+                            skinColor: obj.doors.skins[i].skinColor,
+                            skin: obj.doors.skins[i]
+                        }
+                    }
+                    var doorcube = this.createCube(doorobj);
+                    tempobj.add(doorcube);
+                    this.addObject(doorcube,true)
+                }
             }
         }
         
