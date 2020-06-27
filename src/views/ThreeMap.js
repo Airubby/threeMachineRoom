@@ -375,7 +375,7 @@ export default class ThreeMap {
     //创建空柜子
     createEmptyCabinet(obj){
         //初始以下为基点(中心点以机柜的中心为中心点)
-        var Cabinet,floorHeight=10;   
+        var Cabinet,floorHeight=10,_this=this;;   
         //下
         var downobj= {
             show: true,
@@ -406,7 +406,7 @@ export default class ThreeMap {
             height: obj.size.thick,
             depth: obj.size.depth,
             x: 0,
-            y: obj.size.height-obj.size.thick+1,
+            y: obj.size.height-obj.size.thick+2,
             z: 0,
             style: {
                 skinColor: obj.style.skinColor,
@@ -427,7 +427,7 @@ export default class ThreeMap {
             width: obj.size.thick ,
             height: obj.size.height,
             depth: obj.size.depth,
-            x: -obj.size.width/2+obj.size.thick/2-1,
+            x: -obj.size.width/2+obj.size.thick/2,
             y: obj.size.height/2-obj.size.thick/2,
             z: 0,
             style: {
@@ -448,7 +448,7 @@ export default class ThreeMap {
             width: obj.size.thick ,
             height: obj.size.height,
             depth: obj.size.depth,
-            x: obj.size.width/2-obj.size.thick/2+1,
+            x: obj.size.width/2-obj.size.thick/2,
             y: obj.size.height/2-obj.size.thick/2,
             z: 0,
             style: {
@@ -486,7 +486,7 @@ export default class ThreeMap {
         tempobj.name = obj.name;
         tempobj.uuid = obj.uuid;
         this.addObject(Cabinet,true);
-        tempobj.position.set(obj.position.x,obj.position.y+floorHeight,obj.position.z);
+        tempobj.position.set(obj.x||0,(obj.y||0)+floorHeight,obj.z||0);
 
         if(obj.doors!=null&&typeof (obj.doors) != 'undefined'){
             if(obj.doors.skins.length==1&&obj.doors.doorname.length==1){
@@ -534,7 +534,16 @@ export default class ThreeMap {
                 }
             }
         }
-        
+        if (this.commonFunc.hasObj(obj.childrens) && obj.childrens.length > 0) {
+            obj.childrens.forEach(function(service, index){
+                service.x=obj.x;
+                service.z=obj.z;
+                service.y=service.y+floorHeight;
+                service.rotation=obj.rotation||null;
+                var newobj = _this.createCube(service);
+                _this.addObject(newobj)
+            })
+        }
         if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
             obj.rotation.forEach(function(rotation_obj, index){
                 // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 

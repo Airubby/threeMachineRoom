@@ -478,7 +478,7 @@ export const ThreeData={
             objType: 'emptyCabinet',
             transparent:true,
             size:{width:70,depth:70,height:200, thick:2},
-            position: { x:-300, y: 100, z: -180 },
+            x:-300, y: 100, z: -180,
             rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
             style:{
                 skinColor: 0xff0000,
@@ -492,63 +492,200 @@ export const ThreeData={
                     skin_right: { imgurl: "/images/rack_back.jpg" },
                 }
             },
-            doors: {
-                doorType:'lr',
-                doorname: ['cabinet_door'],
-                skins:[ {
-                    skinColor: 0x333333,
-                    skin_fore: {
-                        imgurl: "images/rack_right_door.jpg",
-                    },
-                    skin_behind: {
-                        imgurl: "images/rack_left_door.jpg",
+            // doors: {
+            //     doorType:'lr',
+            //     doorname: ['cabinet_door'],
+            //     skins:[ {
+            //         skinColor: 0x333333,
+            //         skin_fore: {
+            //             imgurl: "images/rack_right_door.jpg",
+            //         },
+            //         skin_behind: {
+            //             imgurl: "images/rack_left_door.jpg",
+            //         }
+            //     }]
+            // },
+            childrens:[
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'equipment_server1',
+                    objType: 'cube',
+                    depth: 65,
+                    width: 65,
+                    height: 10,
+                    x: -300,y: 5,z: -180,
+                    style: {
+                        skinColor: 0xff0000,
+                        skin: {
+                            skin_up: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_down: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_fore: {
+                                imgurl: "images/server1.jpg",
+                            },
+                            skin_behind: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_left: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_right: {
+                                imgurl: "images/rack_inside.jpg",
+                            }
+                        }
                     }
-                }]
-            },
+                },
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'equipment_server2',
+                    objType: 'cube',
+                    depth: 65,
+                    width: 65,
+                    height: 20,
+                    x: -300,y: 20,z: -180,
+                    style: {
+                        skinColor: 0xff0000,
+                        skin: {
+                            skin_up: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_down: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_fore: {
+                                imgurl: "images/server2.jpg",
+                            },
+                            skin_behind: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_left: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_right: {
+                                imgurl: "images/rack_inside.jpg",
+                            }
+                        }
+                    }
+                },
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'equipment_server1',
+                    objType: 'cube',
+                    depth: 65,
+                    width: 65,
+                    height: 10,
+                    x: -300,y: 195,z: -180,
+                    style: {
+                        skinColor: 0xff0000,
+                        skin: {
+                            skin_up: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_down: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_fore: {
+                                imgurl: "images/server1.jpg",
+                            },
+                            skin_behind: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_left: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_right: {
+                                imgurl: "images/rack_inside.jpg",
+                            }
+                        }
+                    }
+                },
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'equipment_server2',
+                    objType: 'cube',
+                    depth: 65,
+                    width: 65,
+                    height: 20,
+                    x: -300,y: 80,z: -180,
+                    style: {
+                        skinColor: 0xff0000,
+                        skin: {
+                            skin_up: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_down: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_fore: {
+                                imgurl: "images/server2.jpg",
+                            },
+                            skin_behind: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_left: {
+                                imgurl: "images/rack_inside.jpg",
+                            },
+                            skin_right: {
+                                imgurl: "images/rack_inside.jpg",
+                            }
+                        }
+                    }
+                },
+            ]
         },
-        {
-            show:true,
-            name: 'cabinet-twodoor',
-            uuid: '',
-            objType: 'emptyCabinet',
-            transparent:true,
-            size:{width:140,depth:70,height:200, thick:2},
-            position: { x:-100, y: 100, z: -180 },
-            rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
-            style:{
-                skinColor: 0xff0000,
-                skin:{
-                    skinColor: 0xff0000,
-                    skin_up: { imgurl: "/images/rack_top.jpg" },
-                    skin_down: { imgurl: "/images/rack_top.jpg" },
-                    skin_fore: {imgurl: "/images/rack_back.jpg"},
-                    skin_behind: {imgurl: "/images/rack_back.jpg"},
-                    skin_left: { imgurl: "/images/rack_back.jpg" },
-                    skin_right: { imgurl: "/images/rack_back.jpg" },
-                }
-            },
-            doors: {
-                doorType:'lr',
-                doorname: ['cabinet_door_left','cabinet_door_right'],
-                skins:[ {
-                    skinColor: 0x333333,
-                    skin_fore: {
-                        imgurl: "images/rack_left_door.jpg",
-                    },
-                    skin_behind: {
-                        imgurl: "images/rack_right_door.jpg",
-                    }
-                },{
-                    skinColor: 0x333333,
-                    skin_fore: {
-                        imgurl: "images/rack_right_door.jpg",
-                    },
-                    skin_behind: {
-                        imgurl: "images/rack_left_door.jpg",
-                    }
-                }]
-            },
-        },
+        // {
+        //     show:true,
+        //     name: 'cabinet-twodoor',
+        //     uuid: '',
+        //     objType: 'emptyCabinet',
+        //     transparent:true,
+        //     size:{width:140,depth:70,height:200, thick:2},
+        //     x:-100, y: 100, z: -180 ,
+        //     rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
+        //     style:{
+        //         skinColor: 0xff0000,
+        //         skin:{
+        //             skinColor: 0xff0000,
+        //             skin_up: { imgurl: "/images/rack_top.jpg" },
+        //             skin_down: { imgurl: "/images/rack_top.jpg" },
+        //             skin_fore: {imgurl: "/images/rack_back.jpg"},
+        //             skin_behind: {imgurl: "/images/rack_back.jpg"},
+        //             skin_left: { imgurl: "/images/rack_back.jpg" },
+        //             skin_right: { imgurl: "/images/rack_back.jpg" },
+        //         }
+        //     },
+        //     doors: {
+        //         doorType:'lr',
+        //         doorname: ['cabinet_door_left','cabinet_door_right'],
+        //         skins:[ {
+        //             skinColor: 0x333333,
+        //             skin_fore: {
+        //                 imgurl: "images/rack_left_door.jpg",
+        //             },
+        //             skin_behind: {
+        //                 imgurl: "images/rack_right_door.jpg",
+        //             }
+        //         },{
+        //             skinColor: 0x333333,
+        //             skin_fore: {
+        //                 imgurl: "images/rack_right_door.jpg",
+        //             },
+        //             skin_behind: {
+        //                 imgurl: "images/rack_left_door.jpg",
+        //             }
+        //         }]
+        //     },
+        //     childrens:[
+
+        //     ]
+        // },
     ],
     events: {
         dbclick: [
