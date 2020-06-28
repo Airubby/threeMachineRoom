@@ -580,7 +580,7 @@ export const ThreeData={
                     depth: 65,
                     width: 65,
                     height: 10,
-                    x: -300,y: 195,z: -180,
+                    x: -300,y: 191,z: -180,
                     style: {
                         skinColor: 0xff0000,
                         skin: {
