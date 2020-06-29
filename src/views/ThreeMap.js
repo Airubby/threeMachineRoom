@@ -538,7 +538,7 @@ export default class ThreeMap {
             obj.childrens.forEach(function(service, index){
                 service.x=obj.x;
                 service.z=obj.z;
-                service.y=service.y+floorHeight;
+                service.y=service.y+floorHeight+(obj.y-(obj.size.height-2*obj.size.thick)/2);
                 service.rotation=obj.rotation||null;
                 var newobj = _this.createCube(service);
                 _this.addObject(newobj)

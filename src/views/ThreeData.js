@@ -3,6 +3,7 @@
 创建时间:2020年05月29日
 功能描述:3D机房封装
 */
+
 export const ThreeData={
     objects: [
         //地板
@@ -471,175 +472,175 @@ export const ThreeData={
             },
         },
         //机柜
-        {
-            show:true,
-            name: 'cabinet',
-            uuid: '',
-            objType: 'emptyCabinet',
-            transparent:true,
-            size:{width:70,depth:70,height:200, thick:2},
-            x:-300, y: 100, z: -180,
-            rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
-            style:{
-                skinColor: 0xff0000,
-                skin:{
-                    skinColor: 0xff0000,
-                    skin_up: { imgurl: "/images/rack_top.jpg" },
-                    skin_down: { imgurl: "/images/rack_top.jpg" },
-                    skin_fore: {imgurl: "/images/rack_back.jpg"},
-                    skin_behind: {imgurl: "/images/rack_back.jpg"},
-                    skin_left: { imgurl: "/images/rack_back.jpg" },
-                    skin_right: { imgurl: "/images/rack_back.jpg" },
-                }
-            },
-            // doors: {
-            //     doorType:'lr',
-            //     doorname: ['cabinet_door'],
-            //     skins:[ {
-            //         skinColor: 0x333333,
-            //         skin_fore: {
-            //             imgurl: "images/rack_right_door.jpg",
-            //         },
-            //         skin_behind: {
-            //             imgurl: "images/rack_left_door.jpg",
-            //         }
-            //     }]
-            // },
-            childrens:[
-                {
-                    show: true,
-                    uuid: "",
-                    name: 'equipment_server1',
-                    objType: 'cube',
-                    depth: 65,
-                    width: 65,
-                    height: 10,
-                    x: -300,y: 5,z: -180,
-                    style: {
-                        skinColor: 0xff0000,
-                        skin: {
-                            skin_up: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_down: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_fore: {
-                                imgurl: "images/server1.jpg",
-                            },
-                            skin_behind: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_left: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_right: {
-                                imgurl: "images/rack_inside.jpg",
-                            }
-                        }
-                    }
-                },
-                {
-                    show: true,
-                    uuid: "",
-                    name: 'equipment_server2',
-                    objType: 'cube',
-                    depth: 65,
-                    width: 65,
-                    height: 20,
-                    x: -300,y: 20,z: -180,
-                    style: {
-                        skinColor: 0xff0000,
-                        skin: {
-                            skin_up: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_down: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_fore: {
-                                imgurl: "images/server2.jpg",
-                            },
-                            skin_behind: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_left: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_right: {
-                                imgurl: "images/rack_inside.jpg",
-                            }
-                        }
-                    }
-                },
-                {
-                    show: true,
-                    uuid: "",
-                    name: 'equipment_server1',
-                    objType: 'cube',
-                    depth: 65,
-                    width: 65,
-                    height: 10,
-                    x: -300,y: 191,z: -180,
-                    style: {
-                        skinColor: 0xff0000,
-                        skin: {
-                            skin_up: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_down: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_fore: {
-                                imgurl: "images/server1.jpg",
-                            },
-                            skin_behind: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_left: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_right: {
-                                imgurl: "images/rack_inside.jpg",
-                            }
-                        }
-                    }
-                },
-                {
-                    show: true,
-                    uuid: "",
-                    name: 'equipment_server2',
-                    objType: 'cube',
-                    depth: 65,
-                    width: 65,
-                    height: 20,
-                    x: -300,y: 80,z: -180,
-                    style: {
-                        skinColor: 0xff0000,
-                        skin: {
-                            skin_up: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_down: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_fore: {
-                                imgurl: "images/server2.jpg",
-                            },
-                            skin_behind: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_left: {
-                                imgurl: "images/rack_inside.jpg",
-                            },
-                            skin_right: {
-                                imgurl: "images/rack_inside.jpg",
-                            }
-                        }
-                    }
-                },
-            ]
-        },
+        // {
+        //     show:true,
+        //     name: 'cabinet',
+        //     uuid: '',
+        //     objType: 'emptyCabinet',
+        //     transparent:true,
+        //     size:{width:70,depth:70,height:200, thick:2},
+        //     x:-350, y: 100, z: -180,
+        //     rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
+        //     style:{
+        //         skinColor: 0xff0000,
+        //         skin:{
+        //             skinColor: 0xff0000,
+        //             skin_up: { imgurl: "/images/rack_top.jpg" },
+        //             skin_down: { imgurl: "/images/rack_top.jpg" },
+        //             skin_fore: {imgurl: "/images/rack_back.jpg"},
+        //             skin_behind: {imgurl: "/images/rack_back.jpg"},
+        //             skin_left: { imgurl: "/images/rack_back.jpg" },
+        //             skin_right: { imgurl: "/images/rack_back.jpg" },
+        //         }
+        //     },
+        //     doors: {
+        //         doorType:'lr',
+        //         doorname: ['cabinet_door'],
+        //         skins:[ {
+        //             skinColor: 0x333333,
+        //             skin_fore: {
+        //                 imgurl: "images/rack_right_door.jpg",
+        //             },
+        //             skin_behind: {
+        //                 imgurl: "images/rack_left_door.jpg",
+        //             }
+        //         }]
+        //     },
+        //     childrens:[
+        //         {
+        //             show: true,
+        //             uuid: "",
+        //             name: 'equipment_server1',
+        //             objType: 'cube',
+        //             depth: 65,
+        //             width: 65,
+        //             height: 10,
+        //             x: -300,y: 5,z: -180,
+        //             style: {
+        //                 skinColor: 0xff0000,
+        //                 skin: {
+        //                     skin_up: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_down: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_fore: {
+        //                         imgurl: "images/server1.jpg",
+        //                     },
+        //                     skin_behind: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_left: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_right: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             show: true,
+        //             uuid: "",
+        //             name: 'equipment_server2',
+        //             objType: 'cube',
+        //             depth: 65,
+        //             width: 65,
+        //             height: 20,
+        //             x: -300,y: 20,z: -180,
+        //             style: {
+        //                 skinColor: 0xff0000,
+        //                 skin: {
+        //                     skin_up: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_down: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_fore: {
+        //                         imgurl: "images/server2.jpg",
+        //                     },
+        //                     skin_behind: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_left: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_right: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             show: true,
+        //             uuid: "",
+        //             name: 'equipment_server1',
+        //             objType: 'cube',
+        //             depth: 65,
+        //             width: 65,
+        //             height: 10,
+        //             x: -300,y: 191,z: -180,
+        //             style: {
+        //                 skinColor: 0xff0000,
+        //                 skin: {
+        //                     skin_up: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_down: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_fore: {
+        //                         imgurl: "images/server1.jpg",
+        //                     },
+        //                     skin_behind: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_left: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_right: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             show: true,
+        //             uuid: "",
+        //             name: 'equipment_server2',
+        //             objType: 'cube',
+        //             depth: 65,
+        //             width: 65,
+        //             height: 20,
+        //             x: -300,y: 80,z: -180,
+        //             style: {
+        //                 skinColor: 0xff0000,
+        //                 skin: {
+        //                     skin_up: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_down: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_fore: {
+        //                         imgurl: "images/server2.jpg",
+        //                     },
+        //                     skin_behind: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_left: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     },
+        //                     skin_right: {
+        //                         imgurl: "images/rack_inside.jpg",
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //     ]
+        // },
         // {
         //     show:true,
         //     name: 'cabinet-twodoor',
@@ -699,4 +700,187 @@ export const ThreeData={
     },
     btns: [
     ]
+}
+
+let cabinet={
+    show:true,
+    name: 'cabinet',
+    uuid: '',
+    objType: 'emptyCabinet',
+    transparent:true,
+    size:{width:70,depth:70,height:200, thick:2},
+    x:-350, y: 100, z: -220,
+    rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
+    style:{
+        skinColor: 0xff0000,
+        skin:{
+            skinColor: 0xff0000,
+            skin_up: { imgurl: "/images/rack_top.jpg" },
+            skin_down: { imgurl: "/images/rack_top.jpg" },
+            skin_fore: {imgurl: "/images/rack_back.jpg"},
+            skin_behind: {imgurl: "/images/rack_back.jpg"},
+            skin_left: { imgurl: "/images/rack_back.jpg" },
+            skin_right: { imgurl: "/images/rack_back.jpg" },
+        }
+    },
+    doors: {
+        doorType:'lr',
+        doorname: ['cabinet_door'],
+        skins:[ {
+            skinColor: 0x333333,
+            skin_fore: {
+                imgurl: "images/rack_right_door.jpg",
+            },
+            skin_behind: {
+                imgurl: "images/rack_left_door.jpg",
+            }
+        }]
+    },
+    childrens:[
+        {
+            show: true,
+            uuid: "",
+            name: 'equipment_server1',
+            objType: 'cube',
+            depth: 65,
+            width: 65,
+            height: 10,
+            y: 5,
+            style: {
+                skinColor: 0xff0000,
+                skin: {
+                    skin_up: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_down: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_fore: {
+                        imgurl: "images/server1.jpg",
+                    },
+                    skin_behind: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_left: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_right: {
+                        imgurl: "images/rack_inside.jpg",
+                    }
+                }
+            }
+        },
+        {
+            show: true,
+            uuid: "",
+            name: 'equipment_server2',
+            objType: 'cube',
+            depth: 65,
+            width: 65,
+            height: 20,
+            y: 20,
+            style: {
+                skinColor: 0xff0000,
+                skin: {
+                    skin_up: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_down: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_fore: {
+                        imgurl: "images/server2.jpg",
+                    },
+                    skin_behind: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_left: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_right: {
+                        imgurl: "images/rack_inside.jpg",
+                    }
+                }
+            }
+        },
+        {
+            show: true,
+            uuid: "",
+            name: 'equipment_server1',
+            objType: 'cube',
+            depth: 65,
+            width: 65,
+            height: 10,
+            y: 191,
+            style: {
+                skinColor: 0xff0000,
+                skin: {
+                    skin_up: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_down: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_fore: {
+                        imgurl: "images/server1.jpg",
+                    },
+                    skin_behind: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_left: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_right: {
+                        imgurl: "images/rack_inside.jpg",
+                    }
+                }
+            }
+        },
+        {
+            show: true,
+            uuid: "",
+            name: 'equipment_server2',
+            objType: 'cube',
+            depth: 65,
+            width: 65,
+            height: 20,
+            y: 80,
+            style: {
+                skinColor: 0xff0000,
+                skin: {
+                    skin_up: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_down: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_fore: {
+                        imgurl: "images/server2.jpg",
+                    },
+                    skin_behind: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_left: {
+                        imgurl: "images/rack_inside.jpg",
+                    },
+                    skin_right: {
+                        imgurl: "images/rack_inside.jpg",
+                    }
+                }
+            }
+        },
+    ]
+}
+//复制机柜
+for (var i = 0; i <3;i++){ 
+    for (var j = 0; j <6; j++) {
+        let obj=JSON.parse(JSON.stringify(cabinet));
+        obj.name="cabinet"+i+"_"+j;
+        obj.y=obj.y;
+        obj.x=obj.x+220*i;
+        obj.z=obj.z+100*j;
+        ThreeData.objects.push(obj);
+        console.log(obj.childrens)
+        // console.log(ThreeData.objects)
+    }
 }
