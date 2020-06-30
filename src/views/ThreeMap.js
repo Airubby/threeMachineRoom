@@ -372,7 +372,7 @@ export default class ThreeMap {
         }
         return cube;
     }
-    //创建空柜子
+    //创建柜子
     createEmptyCabinet(obj){
         //初始以下为基点(中心点以机柜的中心为中心点)
         var Cabinet,floorHeight=10,_this=this;;   
@@ -501,12 +501,17 @@ export default class ThreeMap {
                     x: 0,
                     y: 0,
                     z: obj.size.depth/2-obj.size.thick/2+1,
+                    rotation:obj.doors.rotation||null,
                     style: {
                         skinColor: obj.doors.skins[0].skinColor,
                         skin: obj.doors.skins[0]
                     }
                 }
                 var doorcube = this.createCube(doorobj);
+                console.log(doorcube)
+                if(obj.doors.rotation){
+                    doorcube.position.set(obj.size.width/2,0,obj.size.depth/2-obj.size.thick/2+1+obj.size.width/2);
+                }
                 tempobj.add(doorcube);
                 this.addObject(doorcube,true)
             }else if(obj.doors.skins.length==2&&obj.doors.doorname.length==2){
@@ -581,6 +586,14 @@ export default class ThreeMap {
         cylinder.position.set(420, 100, -300);//设置圆柱坐标
         return cylinder
     }
+    //设置旋转中心
+    changePivot(x,y,z,obj){
+        let wrapper = new THREE.Object3D();
+        wrapper.position.set(x,y,z);
+        // wrapper.add(obj);
+        // obj.position.set(-x,-y,-z);
+        return wrapper;
+     }
     //添加对象
     addObject (obj,flag) {
         this.objects.push(obj);

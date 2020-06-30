@@ -496,6 +496,7 @@ export const ThreeData={
         //     doors: {
         //         doorType:'lr',
         //         doorname: ['cabinet_door'],
+        //         rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
         //         skins:[ {
         //             skinColor: 0x333333,
         //             skin_fore: {
@@ -879,6 +880,9 @@ for (var i = 0; i <3;i++){
         obj.y=obj.y;
         obj.x=obj.x+220*i;
         obj.z=obj.z+100*j;
+        if(i==2&&j==5){
+            obj.doors.rotation=[{ direction: 'y', degree: 0.5*Math.PI}];
+        }
         ThreeData.objects.push(obj);
         console.log(obj.childrens)
         // console.log(ThreeData.objects)
