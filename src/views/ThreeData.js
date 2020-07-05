@@ -471,6 +471,103 @@ export const ThreeData={
                 }
             },
         },
+        //花
+        {
+            show: true,
+            uuid: "",
+            name: 'plant',
+            objType: 'cylinder',
+            radiusTop:20,
+            radiusBottom:15,
+            height:40,
+            radiusSegments:40,
+            x: 420,
+            y: 20,
+            z: 510,
+            style: {
+                skinColor: 0xA76C32,
+                skin: {
+                    skin_fore: {
+                        imgurl: "/images/plant.png",
+                    },
+                }
+            },
+            childrens:[
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'plantImg',
+                    objType: 'plane',
+                    width: 64,
+                    height: 100,
+                    x: 420,
+                    y: 90,
+                    z: 510,
+                    imgurl: "images/plant.png",
+                },
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'plantImg',
+                    objType: 'plane',
+                    width: 64,
+                    height: 100,
+                    x: 420,
+                    y: 90,
+                    z: 510,
+                    imgurl: "images/plant.png",
+                    rotation: [{ direction: 'y', degree: 0.3*Math.PI}],
+                },
+            ]
+        },
+        {
+            show: true,
+            uuid: "",
+            name: 'plant',
+            objType: 'cylinder',
+            radiusTop:20,
+            radiusBottom:15,
+            height:40,
+            radiusSegments:40,
+            x: 160,
+            y: 20,
+            z: 510,
+            style: {
+                skinColor: 0xA76C32,
+                skin: {
+                    skin_fore: {
+                        imgurl: "/images/plant.png",
+                    },
+                }
+            },
+            childrens:[
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'plantImg',
+                    objType: 'plane',
+                    width: 64,
+                    height: 100,
+                    x: 160,
+                    y: 90,
+                    z: 510,
+                    imgurl: "images/plant.png",
+                },
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'plantImg',
+                    objType: 'plane',
+                    width: 64,
+                    height: 100,
+                    x: 160,
+                    y: 90,
+                    z: 510,
+                    imgurl: "images/plant.png",
+                    rotation: [{ direction: 'y', degree: 0.3*Math.PI}],
+                },
+            ]
+        },
         //机柜
         // {
         //     show:true,
@@ -884,7 +981,6 @@ for (var i = 0; i <3;i++){
             obj.doors.rotation=[{ direction: 'y', degree: 0.5*Math.PI}];
         }
         ThreeData.objects.push(obj);
-        console.log(obj.childrens)
         // console.log(ThreeData.objects)
     }
 }

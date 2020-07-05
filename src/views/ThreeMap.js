@@ -116,11 +116,11 @@ export default class ThreeMap {
                 case 'emptyCabinet':
                     tempObj = this.createEmptyCabinet(obj);
                     this.addObject(tempObj);
-
-                // case 'cylinder':
-                //     tempObj = this.createCylinder(obj)
-                //     this.addObject(tempObj);
-                //     break;
+                    break;
+                case 'cylinder':
+                    tempObj = this.createCylinder(obj)
+                    this.addObject(tempObj);
+                    break;
             }
         }
     }
@@ -573,18 +573,85 @@ export default class ThreeMap {
     }
     //创建圆柱体
     createCylinder(obj){
+        var _this=this;
+        var radiusTop = obj.radiusTop || 20;  //顶面的半径
+        var radiusBottom = obj.radiusBottom || 20;  //底面的半径
+        var height=obj.height || 100;  //高度
+        var radiusSegments=obj.radiusSegments||8;
+        var heightSegments=obj.heightSegments||1;
+        var openEnded= obj.openEnded || false;
+        var x = obj.x || 0, y = obj.y || 0, z = obj.z || 0;
+        var skinColor = obj.style.skinColor || 0x98750f;
         //创建圆柱体
-        var cylinderGeo = new THREE.CylinderGeometry(30, 30 ,200 ,48,48);
+        var cylinderGeo = new THREE.CylinderGeometry(radiusTop, radiusBottom ,height ,radiusSegments,heightSegments,openEnded);
         console.log(cylinderGeo)
         var cylinderMat = new THREE.MeshLambertMaterial({//创建材料
-            color:0xffffff,
+            color:skinColor,
             wireframe:false,
-            map: this.createSkin(60,200,{imgurl:"/images/aircondition.png"})
+            // map: this.createSkin(60,200,{imgurl:"/images/aircondition.png"})
         });
         //创建圆柱体网格模型
         var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
-        cylinder.position.set(420, 100, -300);//设置圆柱坐标
+        cylinder.position.set(x, y, z);//设置圆柱坐标
+        if (this.commonFunc.hasObj(obj.childrens) && obj.childrens.length > 0) {
+            obj.childrens.forEach(function(childobj, index){
+                var newobj = _this.createPlaneGeometry(childobj);
+                _this.addObject(newobj)
+                // cylinder = _this.mergeModel('+', cylinder, newobj,skinColor);
+            })
+        }
         return cylinder
+    }
+    //创建平面
+    createPlaneGeometry (obj) {
+        var texture;
+        var transparent=obj.transparent;
+        if(obj.transparent!==false){
+            transparent=true;
+        }
+        if (typeof obj.imgurl == "string") {//传入的材质是图片路径，使用 textureloader加载图片作为材质
+            var loader = new THREE.TextureLoader();
+            // loader.setCrossOrigin(this.crossOrigin);
+            texture = loader.load(obj.imgurl, function () { }, undefined, function () { });
+        } else {
+            texture = new THREE.CanvasTexture(obj.imgurl)
+        }
+        var MaterParam = {//材质的参数
+            map: texture,
+            side: THREE.DoubleSide,
+            transparent: transparent,
+            opacity: obj.opacity||1
+        }
+        if (obj.blending) {
+            MaterParam.blending = THREE.AdditiveBlending//使用饱和度叠加渲染
+        }
+        var plane = new THREE.Mesh(
+            new THREE.PlaneGeometry(obj.width, obj.height, 1, 1),
+            new THREE.MeshBasicMaterial(MaterParam)
+        );
+        plane.position.x = obj.x;
+        plane.position.y = obj.y;
+        plane.position.z = obj.z;
+        if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
+            obj.rotation.forEach(function(rotation_obj, index){
+                // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 
+                switch (rotation_obj.direction) {
+                    case 'x':
+                        plane.rotateX(rotation_obj.degree);
+                        break;
+                    case 'y':
+                        plane.rotateY(rotation_obj.degree);
+                        break;
+                    case 'z':
+                        plane.rotateZ(rotation_obj.degree);
+                        break;
+                    case 'arb':  //{ direction: 'arb', degree: [x,y,z,angle] }
+                        plane.rotateOnAxis(new THREE.Vector3(rotation_obj.degree[0], rotation_obj.degree[1], rotation_obj.degree[2]), rotation_obj.degree[3]);
+                        break;
+                }
+            });
+        }
+        return plane;
     }
     //设置旋转中心
     changePivot(x,y,z,obj){
