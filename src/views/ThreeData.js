@@ -476,21 +476,16 @@ export const ThreeData={
             show: true,
             uuid: "",
             name: 'plant',
-            objType: 'cylinder',
+            objType: 'cylinderPlant',
             radiusTop:20,
             radiusBottom:15,
             height:40,
-            radiusSegments:40,
+            radiusSegments:20,
             x: 420,
             y: 20,
             z: 510,
             style: {
                 skinColor: 0xA76C32,
-                skin: {
-                    skin_fore: {
-                        imgurl: "/images/plant.png",
-                    },
-                }
             },
             childrens:[
                 {
@@ -516,29 +511,40 @@ export const ThreeData={
                     y: 90,
                     z: 510,
                     imgurl: "images/plant.png",
-                    rotation: [{ direction: 'y', degree: 0.3*Math.PI}],
+                    rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
                 },
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'plant',
+                    objType: 'cylinderPlant',
+                    radiusTop:16,
+                    radiusBottom:14,
+                    height:2,
+                    radiusSegments:20,
+                    x: 420,
+                    y: 40,
+                    z: 510,
+                    style: {
+                        skinColor: 0x323232,
+                    },
+                }
             ]
         },
         {
             show: true,
             uuid: "",
             name: 'plant',
-            objType: 'cylinder',
+            objType: 'cylinderPlant',
             radiusTop:20,
             radiusBottom:15,
             height:40,
-            radiusSegments:40,
+            radiusSegments:10,
             x: 160,
             y: 20,
             z: 510,
             style: {
                 skinColor: 0xA76C32,
-                skin: {
-                    skin_fore: {
-                        imgurl: "/images/plant.png",
-                    },
-                }
             },
             childrens:[
                 {
@@ -564,8 +570,24 @@ export const ThreeData={
                     y: 90,
                     z: 510,
                     imgurl: "images/plant.png",
-                    rotation: [{ direction: 'y', degree: 0.3*Math.PI}],
+                    rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
                 },
+                {
+                    show: true,
+                    uuid: "",
+                    name: 'plant',
+                    objType: 'cylinderPlant',
+                    radiusTop:16,
+                    radiusBottom:14,
+                    height:2,
+                    radiusSegments:20,
+                    x: 160,
+                    y: 40,
+                    z: 510,
+                    style: {
+                        skinColor: 0x323232,
+                    },
+                }
             ]
         },
         //机柜
@@ -618,22 +640,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_fore: {
         //                         imgurl: "images/server1.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -651,22 +673,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_fore: {
         //                         imgurl: "images/server2.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -684,22 +706,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_fore: {
         //                         imgurl: "images/server1.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -717,22 +739,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_fore: {
         //                         imgurl: "images/server2.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.jpg",
+        //                         imgurl: "images/rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -848,22 +870,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_fore: {
                         imgurl: "images/server1.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     }
                 }
             }
@@ -881,22 +903,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_fore: {
                         imgurl: "images/server2.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     }
                 }
             }
@@ -914,22 +936,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_fore: {
                         imgurl: "images/server1.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     }
                 }
             }
@@ -947,22 +969,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_fore: {
                         imgurl: "images/server2.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.jpg",
+                        imgurl: "images/rack_inside.png",
                     }
                 }
             }

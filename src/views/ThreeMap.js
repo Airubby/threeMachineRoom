@@ -117,8 +117,8 @@ export default class ThreeMap {
                     tempObj = this.createEmptyCabinet(obj);
                     this.addObject(tempObj);
                     break;
-                case 'cylinder':
-                    tempObj = this.createCylinder(obj)
+                case 'cylinderPlant':
+                    tempObj = this.createCylinderPlant(obj)
                     this.addObject(tempObj);
                     break;
             }
@@ -572,7 +572,7 @@ export default class ThreeMap {
 
     }
     //创建圆柱体
-    createCylinder(obj){
+    createCylinderPlant(obj){
         var _this=this;
         var radiusTop = obj.radiusTop || 20;  //顶面的半径
         var radiusBottom = obj.radiusBottom || 20;  //底面的半径
@@ -595,7 +595,12 @@ export default class ThreeMap {
         cylinder.position.set(x, y, z);//设置圆柱坐标
         if (this.commonFunc.hasObj(obj.childrens) && obj.childrens.length > 0) {
             obj.childrens.forEach(function(childobj, index){
-                var newobj = _this.createPlaneGeometry(childobj);
+                var newobj;
+                if(childobj.objType=="plane"){
+                    newobj = _this.createPlaneGeometry(childobj);
+                }else{
+                    newobj = _this.createCylinderPlant(childobj);
+                }
                 _this.addObject(newobj)
                 // cylinder = _this.mergeModel('+', cylinder, newobj,skinColor);
             })
@@ -619,6 +624,7 @@ export default class ThreeMap {
         var MaterParam = {//材质的参数
             map: texture,
             side: THREE.DoubleSide,
+            // side:THREE.FrontSide,
             transparent: transparent,
             opacity: obj.opacity||1
         }
