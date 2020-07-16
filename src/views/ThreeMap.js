@@ -10,6 +10,9 @@ this.map.init();
 */
 import * as THREE from 'three';
 import 'imports-loader?THREE=three!threebsp'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   //r100及以上
 // var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
 export default class ThreeMap {
@@ -18,9 +21,9 @@ export default class ThreeMap {
         this.props=props;
         this.data=new Array();
         this.dataJson=dataJson;
-        this.objList = dataJson.objects;//对象列表
-        this.eventList = dataJson.events;//事件对象列表
-        this.btns = dataJson.btns;//按钮列表
+        this.objList = dataJson.objects||[];//对象列表
+        this.eventList = dataJson.events||{};//事件对象列表
+        this.btns = dataJson.btns||[];//按钮列表
         
         this.renderer=null;
         this.scene = null;//场景
@@ -37,8 +40,8 @@ export default class ThreeMap {
         this.render();
         // this.setHelper();
         this.setControl();
-        // this.add();
-        this.InitData();  //添加3D对象、事件等
+        this.add();
+        // this.InitData();  //添加3D对象、事件等
     }
 
     //初始化渲染场景
@@ -740,22 +743,81 @@ export default class ThreeMap {
     }
     //测试
     add(){
+        
+        //3,测点管道
+        // var points = [];
+        // points.push(new THREE.Vector3(0, 0, -10));
+        // points.push(new THREE.Vector3(0, 0, 10));
+        // var curvePath = new THREE.CatmullRomCurve3(points);
+        // var geometry = new THREE.TubeGeometry( curvePath, 20, 2, 8, false );
+        // var material = new THREE.MeshBasicMaterial( { color: 0xff0000 ,side:THREE.DoubleSide } );
+        // var mesh = new THREE.Mesh( geometry, material );
+        // this.scene.add( mesh );
+        ////自定义管道
+        // var cylinderGeo = new THREE.CylinderGeometry(4, 4 ,20 ,48,48);
+        // var cylinderMat = new THREE.MeshLambertMaterial({
+        //     color:0xffffff,
+        //     side:THREE.DoubleSide,
+        //     // map: this.createSkin(64,64,{imgurl:"/images/rack_inside.png"})
+        // });
+        // var cylinderMat2 = new THREE.MeshLambertMaterial({
+        //     color:0xffffff,
+        //     side:THREE.DoubleSide,
+        //     // map: this.createSkin(64,64,{imgurl:"/images/camera.png"})
+        // });
+        // var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
+        // var cubeGeometry = new THREE.CubeGeometry(6.5, 20, 6.5, 0, 0, 1);
+        // var cube = new THREE.Mesh(cubeGeometry, cylinderMat);
+        // var pipe = this.mergeModel('+',cylinder,cube);
+        // var cylinderGeo1 = new THREE.CylinderGeometry(3.5, 3.5 ,20 ,48,48);
+        // var cylinder1 = new THREE.Mesh(cylinderGeo1, cylinderMat);
+        // pipe=this.mergeModel("-",pipe,cylinder1);
+        // var cylinderGeo2 = new THREE.CylinderGeometry(2.5, 2.5 ,20 ,48,48);
+        // var cylinder2 = new THREE.Mesh(cylinderGeo2, cylinderMat2);
+        // pipe=this.mergeModel("+",pipe,cylinder2);
+        // pipe.rotateX(0.5*Math.PI);
+        // this.scene.add(pipe);//网格模型添加到场景中
+
+        //4.测试加载模型
+        var _this=this;
+        var texture = new THREE.TextureLoader().load( '/images/metal.png' );
+        var texture1 = new THREE.TextureLoader().load( '/images/camera_light.png' );
+        var texture2 = new THREE.TextureLoader().load( '/images/camera_dot.png' );
+        var loader =new OBJLoader();
+        loader.load( '/images/camera.obj', function ( group ) {
+            console.log(group)
+            group.traverse( function ( child ) {
+                console.log(child)
+                if ( child instanceof THREE.Mesh) {
+                    if(child.name=="archmodels95_044_001"){
+                        child.material.map = texture;
+                    }else if(child.name=="archmodels95_044_003"){
+                        child.material.map = texture1;
+                    }else{
+                        child.material.map = texture2;
+                    }
+                  
+                }
+            });
+            _this.scene.add( group );
+        })
+
         //1、测试ThreeBSP用的
         //几何体对象
-        let cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
-        let box = new THREE.BoxGeometry(40,5,40);//立方体
-        //材质对象
-        let material=new THREE.MeshPhongMaterial({color:0x0000ff});
-        //网格模型对象
-        let cylinderMesh=new THREE.Mesh(cylinder,material);//圆柱
-        let boxMesh=new THREE.Mesh(box,material);//立方体
-        //包装成ThreeBSP对象
-        let cylinderBSP = new ThreeBSP(cylinderMesh);
-        let boxBSP = new ThreeBSP(boxMesh);
-        let result = cylinderBSP.subtract(boxBSP);
-        //ThreeBSP对象转化为网格模型对象
-        let mesh = result.toMesh();
-        this.scene.add(mesh);//网格模型添加到场景中
+        // let cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
+        // let box = new THREE.BoxGeometry(40,5,40);//立方体
+        // //材质对象
+        // let material=new THREE.MeshPhongMaterial({color:0x0000ff});
+        // //网格模型对象
+        // let cylinderMesh=new THREE.Mesh(cylinder,material);//圆柱
+        // let boxMesh=new THREE.Mesh(box,material);//立方体
+        // //包装成ThreeBSP对象
+        // let cylinderBSP = new ThreeBSP(cylinderMesh);
+        // let boxBSP = new ThreeBSP(boxMesh);
+        // let result = cylinderBSP.subtract(boxBSP);
+        // //ThreeBSP对象转化为网格模型对象
+        // let mesh = result.toMesh();
+        // this.scene.add(mesh);//网格模型添加到场景中
 
         // //2、试圆柱体贴图
         // //创建圆柱体
@@ -795,5 +857,31 @@ export default class ThreeMap {
         // this.scene.add(cylinder);//网格模型添加到场景中
 
     }
-
+    //测试GLTF文件
+    exportGLTF(){
+        let box = new THREE.BoxGeometry(40,5,40);
+        let material=new THREE.MeshPhongMaterial({color:0x0000ff});
+        let obj=new THREE.Mesh(box,material);//立方体
+        // 单个模型数据 obj导出
+        let gltfExporter = new GLTFExporter();
+        gltfExporter.parse(obj, function (result) {
+            console.log(result);
+            var output = JSON.stringify( result, null, 2 );
+            var link = document.createElement( 'a' ); 
+            link.style.display = 'none'; 
+            document.body.appendChild( link );
+            link.href = URL.createObjectURL( new Blob( [ output ], { type: 'application/json' } ) ); 
+            link.download = "object.gltf" ; 
+            link.click();
+        });
+        //加载GLTF
+        var _this=this;
+        var loader = new GLTFLoader();
+        loader.load( '/images/object.gltf', function ( gltf ) {
+            console.log('控制台查看加载gltf文件返回的对象结构',gltf)
+            console.log('gltf对象场景属性',gltf.scene)
+            console.log('gltf对象相机属性',gltf.cameras)
+            _this.scene.add( gltf.scene );
+        })
+    }
 }
