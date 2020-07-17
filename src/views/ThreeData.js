@@ -471,7 +471,7 @@ export const ThreeData={
                 }
             },
         },
-        //花
+        //自定义植物花
         {
             show: true,
             uuid: "",
@@ -531,6 +531,7 @@ export const ThreeData={
                 }
             ]
         },
+        //自定义植物花
         {
             show: true,
             uuid: "",
@@ -587,6 +588,30 @@ export const ThreeData={
                     style: {
                         skinColor: 0x323232,
                     },
+                }
+            ]
+        },
+        //模型植物
+        {
+            show:true,
+            uuid: "",
+            name: 'plant',
+            objType: 'objplant',
+            scale:[{ direction: 'arb', ratio: [0.1,0.09,0.1]}],
+            childrens:[
+                {
+                    name:"plant",
+                    uuid:"",
+                    x: 420,
+                    y: 0,
+                    z: 510,
+                },
+                {
+                    name:"plant",
+                    uuid:"",
+                    x: 160,
+                    y: 0,
+                    z: 510,
                 }
             ]
         },
