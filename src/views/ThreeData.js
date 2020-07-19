@@ -596,23 +596,54 @@ export const ThreeData={
             show:true,
             uuid: "",
             name: 'plant',
-            objType: 'objplant',
+            objType: 'objPlant',
             scale:[{ direction: 'arb', ratio: [0.1,0.09,0.1]}],
             childrens:[
                 {
-                    name:"plant",
+                    name:"plant-right",
                     uuid:"",
                     x: 420,
                     y: 0,
                     z: 510,
                 },
                 {
-                    name:"plant",
+                    name:"plant-left",
                     uuid:"",
                     x: 160,
                     y: 0,
                     z: 510,
                 }
+            ]
+        },
+        //模型灭火器
+        {
+            show:true,
+            uuid: "",
+            name: 'annihilator',
+            objType: 'objAnnihilator',
+            objHandle:[{ direction: 'arb', handleScale: [0.01,0.01,0.01], handleRotale: [0,1,0,-0.5*Math.PI]}],
+            childrens:[
+                {
+                    name:"annihilator-one",
+                    uuid:"",
+                    x: 340,
+                    y: 0,
+                    z: -300,
+                },
+                {
+                    name:"annihilator-two",
+                    uuid:"",
+                    x: 300,
+                    y: 0,
+                    z: -300,
+                },
+                {
+                    name:"annihilator-three",
+                    uuid:"",
+                    x: 260,
+                    y: 0,
+                    z: -300,
+                },
             ]
         },
         //机柜

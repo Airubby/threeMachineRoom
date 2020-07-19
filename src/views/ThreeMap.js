@@ -125,8 +125,11 @@ export default class ThreeMap {
                 //     tempObj = this.createCylinderPlant(obj)
                 //     this.addObject(tempObj);
                 //     break;
-                case 'objplant':  //模型花
+                case 'objPlant':  //模型花
                     this.createObjPlant(obj)
+                    break;
+                case 'objAnnihilator':  //模型灭火器
+                    this.createObjAnnihilator(obj)
                     break;
             }
         }
@@ -712,18 +715,82 @@ export default class ThreeMap {
                 newobj.position.set(plantobj.x||0, plantobj.y||0, plantobj.z||0);
                 _this.scene.add( newobj );
             });
-        }, onProgress, onError)
-        //进度通知
-        var onProgress = function ( xhr ) {
-            if ( xhr.lengthComputable ) {
-                var percentComplete = xhr.loaded / xhr.total * 100;
-                console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
-            }
-        };
-        //报错通知
-        var onError = function ( xhr ) { };
+        }, this.onProgress, this.onError)
         
     }
+    //模型灭火器
+    createObjAnnihilator(obj){
+        let _this=this;
+        var mtlLoader = new MTLLoader();
+        mtlLoader.load('/images/annihilator/annihilator.mtl', function(materials) {
+            materials.preload();
+            console.log(materials)
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load('/images/annihilator/annihilator.obj', function(object) {
+                obj.childrens.forEach(function(plantobj){
+                    var newobj = object.clone();
+                    if(!newobj.objHandle&&obj.objHandle){
+                        newobj.objHandle=obj.objHandle;
+                    }
+                    newobj=_this.handleObj(newobj);
+                    newobj.position.set(plantobj.x||0, plantobj.y||0, plantobj.z||0);
+                    _this.scene.add( newobj );
+                });
+            }, _this.onProgress, _this.onError);
+        });
+    }
+    handleObj(obj){
+        if (obj.objHandle != null && typeof (obj.objHandle) != 'undefined' && obj.objHandle.length > 0) {
+            obj.objHandle.forEach(function(childobj){
+                // objHandle: [{ direction: 'x', ratio: 0.5 ,degree:0.5*Math.PI}], 
+                switch (childobj.direction) {
+                    case 'x':
+                        if(childobj.ratio){
+                            obj.scale.x=childobj.ratio;
+                        }
+                        if(childobj.degree){
+                            obj.rotateX(childobj.degree);
+                        }
+                        break;
+                    case 'y':
+                        if(childobj.ratio){
+                            obj.scale.y=childobj.ratio;
+                        }
+                        if(childobj.degree){
+                            obj.rotateY(childobj.degree);
+                        }
+                        break;
+                    case 'z':
+                        if(childobj.ratio){
+                            obj.scale.z=childobj.ratio;
+                        }
+                        if(childobj.degree){
+                            obj.rotateZ(childobj.degree);
+                        }
+                        break;
+                    case 'arb':  //{ direction: 'arb', handleScale: [0.01,0.01,0.01], handleRotale: [0,1,0,0.5*Math.PI]}
+                        if(childobj.handleScale&&childobj.handleScale.length==3){
+                            obj.scale.set(childobj.handleScale[0],childobj.handleScale[1],childobj.handleScale[2]);
+                        }
+                        if(childobj.handleRotale&&childobj.handleRotale.length==4){
+                            obj.rotateOnAxis(new THREE.Vector3(childobj.handleRotale[0],childobj.handleRotale[1],childobj.handleRotale[2]), childobj.handleRotale[3]);
+                        }
+                        break;
+                }
+            });
+        }
+        return obj;
+    }
+    //进度通知
+    onProgress = function ( xhr ) {
+        if ( xhr.lengthComputable ) {
+            var percentComplete = xhr.loaded / xhr.total * 100;
+            // console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+        }
+    };
+    //报错通知
+    onError = function ( xhr ) { };
     //设置旋转中心
     changePivot(x,y,z,obj){
         let wrapper = new THREE.Object3D();
@@ -825,7 +892,7 @@ export default class ThreeMap {
         // var cylinderMat2 = new THREE.MeshLambertMaterial({
         //     color:0xffffff,
         //     side:THREE.DoubleSide,
-        //     // map: this.createSkin(64,64,{imgurl:"/images/camera.png"})
+        //     // map: this.createSkin(64,64,{imgurl:"/images/test/camera.png"})
         // });
         // var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
         // var cubeGeometry = new THREE.CubeGeometry(6.5, 20, 6.5, 0, 0, 1);
@@ -841,11 +908,11 @@ export default class ThreeMap {
         // this.scene.add(pipe);//网格模型添加到场景中
 
         //4.测试加载模型
-        // var texture = new THREE.TextureLoader().load( '/images/metal.png' );
-        // var texture1 = new THREE.TextureLoader().load( '/images/camera_light.png' );
-        // var texture2 = new THREE.TextureLoader().load( '/images/camera_dot.png' );
+        // var texture = new THREE.TextureLoader().load( '/images/test/metal.png' );
+        // var texture1 = new THREE.TextureLoader().load( '/images/test/camera_light.png' );
+        // var texture2 = new THREE.TextureLoader().load( '/images/test/camera_dot.png' );
         // var loader =new OBJLoader();
-        // loader.load( '/images/camera.obj', function ( group ) {
+        // loader.load( '/images/test/camera.obj', function ( group ) {
         //     console.log(group)
         //     group.traverse( function ( child ) {
         //         console.log(child)
@@ -865,12 +932,12 @@ export default class ThreeMap {
 
         //测试加载材质模型
         var mtlLoader = new MTLLoader();
-        mtlLoader.load('/images/plant.mtl', function(materials) {
+        mtlLoader.load('/images/test/plant.mtl', function(materials) {
             materials.preload();
             console.log(materials)
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('/images/plant.obj', function(object) {
+            objLoader.load('/images/test/plant.obj', function(object) {
                 _this.scene.add(object);
             }, onProgress, onError);
         });
@@ -957,7 +1024,7 @@ export default class ThreeMap {
         //加载GLTF
         var _this=this;
         var loader = new GLTFLoader();
-        loader.load( '/images/object.gltf', function ( gltf ) {
+        loader.load( '/images/test/object.gltf', function ( gltf ) {
             console.log('控制台查看加载gltf文件返回的对象结构',gltf)
             console.log('gltf对象场景属性',gltf.scene)
             console.log('gltf对象相机属性',gltf.cameras)
