@@ -621,7 +621,7 @@ export const ThreeData={
             uuid: "",
             name: 'annihilator',
             objType: 'objAnnihilator',
-            objHandle:[{ direction: 'arb', handleScale: [0.01,0.01,0.01], handleRotale: [0,1,0,-0.5*Math.PI]}],
+            objHandle:[{ direction: 'arb', handleScale: [0.008,0.008,0.008], handleRotale: [0,1,0,-0.5*Math.PI]}],
             childrens:[
                 {
                     name:"annihilator-one",
@@ -644,6 +644,32 @@ export const ThreeData={
                     y: 0,
                     z: -300,
                 },
+            ]
+        },
+        //摄像头
+        {
+            show:true,
+            uuid: "",
+            name: 'camera',
+            objType: 'objCamera',
+            // objHandle:[{ direction: 'arb', handleScale: [0.01,0.01,0.01], handleRotale: [0,1,0,-0.5*Math.PI]}],
+            childrens:[
+                {
+                    name:"camera-one",
+                    uuid:"",
+                    x: -485,
+                    y: 225,
+                    z: -325,
+                    objHandle:[{ direction: 'arb', handleScale: [0.2,0.2,0.2], handleRotale: [0,1,0,0.25*Math.PI]}],
+                },
+                {
+                    name:"camera-two",
+                    uuid:"",
+                    x: -485,
+                    y: 225,
+                    z: 425,
+                    objHandle:[{ direction: 'arb', handleScale: [0.2,0.2,0.2], handleRotale: [0,1,0,0.75*Math.PI]}],
+                }
             ]
         },
         //机柜

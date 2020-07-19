@@ -131,6 +131,9 @@ export default class ThreeMap {
                 case 'objAnnihilator':  //模型灭火器
                     this.createObjAnnihilator(obj)
                     break;
+                case 'objCamera':  //模型摄像头
+                    this.createObjCamera(obj)
+                    break;
             }
         }
     }
@@ -728,17 +731,64 @@ export default class ThreeMap {
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
             objLoader.load('/images/annihilator/annihilator.obj', function(object) {
-                obj.childrens.forEach(function(plantobj){
+                console.log(object)
+                obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
-                    if(!newobj.objHandle&&obj.objHandle){
-                        newobj.objHandle=obj.objHandle;
+                    if(!newobj.objHandle){
+                        if(childobj.objHandle){
+                            newobj.objHandle=childobj.objHandle;
+                        }else if(obj.objHandle){
+                            newobj.objHandle=obj.objHandle;
+                        }
                     }
                     newobj=_this.handleObj(newobj);
-                    newobj.position.set(plantobj.x||0, plantobj.y||0, plantobj.z||0);
+                    newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
                     _this.scene.add( newobj );
                 });
             }, _this.onProgress, _this.onError);
         });
+    }
+    //摄像头
+    createObjCamera(obj){
+        var _this=this;
+        var mtlLoader = new MTLLoader();
+        mtlLoader.load('/images/camera/camera.mtl', function(materials) {
+            materials.preload();
+            console.log(materials)
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load('/images/camera/camera.obj', function(object) {
+                console.log(object)
+                obj.childrens.forEach(function(childobj){
+                    var newobj = object.clone();
+                    if(!newobj.objHandle){
+                        if(childobj.objHandle){
+                            newobj.objHandle=childobj.objHandle;
+                        }else if(obj.objHandle){
+                            newobj.objHandle=obj.objHandle;
+                        }
+                    }
+                    newobj=_this.handleObj(newobj);
+                    newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
+                    _this.scene.add( newobj );
+                });
+            }, _this.onProgress, _this.onError);
+        });
+
+        // var objLoader = new OBJLoader();
+        // // objLoader.setMaterials(materials);
+        // objLoader.load('/images/camera/camera.obj', function(object) {
+        //     console.log(object)
+        //     obj.childrens.forEach(function(plantobj){
+        //         var newobj = object.clone();
+        //         if(!newobj.objHandle&&obj.objHandle){
+        //             newobj.objHandle=obj.objHandle;
+        //         }
+        //         newobj=_this.handleObj(newobj);
+        //         newobj.position.set(plantobj.x||0, plantobj.y||0, plantobj.z||0);
+        //         _this.scene.add( newobj );
+        //     });
+        // }, _this.onProgress, _this.onError);
     }
     handleObj(obj){
         if (obj.objHandle != null && typeof (obj.objHandle) != 'undefined' && obj.objHandle.length > 0) {
