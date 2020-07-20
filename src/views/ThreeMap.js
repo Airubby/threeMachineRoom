@@ -33,6 +33,9 @@ export default class ThreeMap {
         this.camera=null;
         this.objects = [];
         this.dom=document.getElementById(this.props.domID);
+        this.dbclick = 0;
+        this.mouseClick = new THREE.Vector2();
+        this.raycaster = new THREE.Raycaster();
     }
 
     init() {
@@ -45,6 +48,7 @@ export default class ThreeMap {
         this.setControl();
         // this.add();
         this.InitData();  //添加3D对象、事件等
+        this.renderer.domElement.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
     }
 
     //初始化渲染场景
@@ -880,6 +884,21 @@ export default class ThreeMap {
             }else{
                 return false;
             }
+        }
+    }
+    /*
+    *事件部分
+    */
+    
+    //鼠标按下事件
+    onDocumentMouseDown (event) {
+        this.dbclick++;
+        var _this = this;
+        setTimeout(function () { _this.dbclick =0}, 500);
+        event.preventDefault();
+        if (this.dbclick >= 2) {
+            _this.raycaster.setFromCamera(_this.mouseClick, _this.camera);
+            var intersects = _this.raycaster.intersectObjects(_this.objects);
         }
     }
     //测试
