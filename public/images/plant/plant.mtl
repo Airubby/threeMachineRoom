@@ -1,0 +1,56 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# 创建的文件:12.05.2016 19:31:09
+
+newmtl wire_153228214
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0.06666666666666667 0.06666666666666667 0.06666666666666667
+	map_Kd ./Archmodels66_leaf_33.jpg
+	map_ks ./Archmodels66_leaf_33.jpg
+	norm ./Archmodels66_leaf_33.jpg
+
+newmtl wire_108008136
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0.06666666666666667 0.06666666666666667 0.06666666666666667
+	map_Kd ./Archmodels66_bark_1.jpg
+	map_ks ./Archmodels66_bark_1.jpg
+	norm ./Archmodels66_bark_1.jpg
+
+newmtl wire_177148027
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0.06666666666666667 0.06666666666666667 0.06666666666666667
+	map_Kd ./Archmodels66_dirt_1.jpg
+	map_ks ./Archmodels66_dirt_1.jpg
+	norm ./Archmodels66_dirt_1.jpg
+
+newmtl wire_198225087
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0.06666666666666667 0.06666666666666667 0.06666666666666667
+	map_Kd ./Archmodels66_jardiniere.jpg
+	map_ks ./Archmodels66_jardiniere.jpg
+	norm ./Archmodels66_jardiniere.jpg
+
+

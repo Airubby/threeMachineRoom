@@ -13,6 +13,8 @@ import 'imports-loader?THREE=three!threebsp'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import {OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2'
+import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   //r100及以上
 // var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
@@ -674,52 +676,27 @@ export default class ThreeMap {
     //模型植物加载
     createObjPlant(obj){
         let _this=this;
-        var leaftexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_leaf_33.jpg' );
-        var soiltexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_dirt_1.jpg' );
-        var barktexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_bark_1.jpg' );
-        var jardinieretexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_jardiniere.jpg' );
-        var objLoader=new OBJLoader();
-        objLoader.load("/images/plant/plant.obj",function(object ){
-            object.traverse( function ( child ) {
-                if ( child instanceof THREE.Mesh) {
-                    child.material=new THREE.MeshBasicMaterial({color: 0xcccccc});
-                    if(child.name=="3DXY_geometry_769"||child.name=="3DXY_geometry_773"){
-                        child.material.map = leaftexture;
-                    }else if(child.name=="3DXY_geometry_772"||child.name=="3DXY_geometry_776"||child.name=="3DXY_geometry_777"||child.name=="3DXY_geometry_778"){
-                        child.material.map = barktexture;
-                    }else if(child.name=="3DXY_geometry_774"||child.name=="3DXY_geometry_775"){
-                        child.material.map = soiltexture;
-                    }else if(child.name=="3DXY_geometry_770"){
-                        child.material.map = jardinieretexture;
+        var mtlLoader = new MTLLoader();
+        mtlLoader.load('/images/plant/plant.mtl', function(materials) {
+            materials.preload();
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load('/images/plant/plant.obj', function(object) {
+                obj.childrens.forEach(function(childobj){
+                    var newobj = object.clone();
+                    if(!newobj.objHandle){
+                        if(childobj.objHandle){
+                            newobj.objHandle=childobj.objHandle;
+                        }else if(obj.objHandle){
+                            newobj.objHandle=obj.objHandle;
+                        }
                     }
-                }
-            });
-            if (obj.scale != null && typeof (obj.scale) != 'undefined' && obj.scale.length > 0) {
-                obj.scale.forEach(function(scale_obj, index){
-                    // rotation: [{ direction: 'x', ratio: 0.5 }], 
-                    switch (scale_obj.direction) {
-                        case 'x':
-                            object.scale.x=scale_obj.ratio;
-                            break;
-                        case 'y':
-                            object.scale.y=scale_obj.ratio;
-                            break;
-                        case 'z':
-                            object.scale.z=scale_obj.ratio;
-                            break;
-                        case 'arb':  //{ direction: 'arb', ratio: [x,y,z] }
-                            object.scale.set(scale_obj.ratio[0],scale_obj.ratio[1],scale_obj.ratio[2]);
-                            break;
-                    }
+                    newobj=_this.handleObj(newobj);
+                    newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
+                    _this.scene.add( newobj );
                 });
-            }
-            obj.childrens.forEach(function(plantobj, index){
-                var newobj = object.clone();
-                newobj.position.set(plantobj.x||0, plantobj.y||0, plantobj.z||0);
-                _this.scene.add( newobj );
-            });
-        }, this.onProgress, this.onError)
-        
+            }, _this.onProgress, _this.onError);
+        });
     }
     //模型灭火器
     createObjAnnihilator(obj){
@@ -774,21 +751,6 @@ export default class ThreeMap {
                 });
             }, _this.onProgress, _this.onError);
         });
-
-        // var objLoader = new OBJLoader();
-        // // objLoader.setMaterials(materials);
-        // objLoader.load('/images/camera/camera.obj', function(object) {
-        //     console.log(object)
-        //     obj.childrens.forEach(function(plantobj){
-        //         var newobj = object.clone();
-        //         if(!newobj.objHandle&&obj.objHandle){
-        //             newobj.objHandle=obj.objHandle;
-        //         }
-        //         newobj=_this.handleObj(newobj);
-        //         newobj.position.set(plantobj.x||0, plantobj.y||0, plantobj.z||0);
-        //         _this.scene.add( newobj );
-        //     });
-        // }, _this.onProgress, _this.onError);
     }
     handleObj(obj){
         if (obj.objHandle != null && typeof (obj.objHandle) != 'undefined' && obj.objHandle.length > 0) {
@@ -923,6 +885,9 @@ export default class ThreeMap {
     //测试
     add(){
         var _this=this;
+        //测试生成obj带材质
+        // this.createObjContainMtl()
+
         //3,测点管道
         // var points = [];
         // points.push(new THREE.Vector3(0, 0, -10));
@@ -981,23 +946,24 @@ export default class ThreeMap {
         // })
 
         //测试加载材质模型
-        var mtlLoader = new MTLLoader();
-        mtlLoader.load('/images/test/plant.mtl', function(materials) {
-            materials.preload();
-            console.log(materials)
-            var objLoader = new OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.load('/images/test/plant.obj', function(object) {
-                _this.scene.add(object);
-            }, onProgress, onError);
-        });
-        var onProgress = function(xhr) {
-            if (xhr.lengthComputable) {
-                var percentComplete = xhr.loaded / xhr.total * 100;
-                console.log(Math.round(percentComplete, 2) + '% 已经加载')
-            }
-        }
-        var onError =function(){}
+        // var mtlLoader = new MTLLoader();
+        // mtlLoader.load('/images/test/plant.mtl', function(materials) {
+        //     materials.preload();
+        //     console.log(materials)
+        //     var objLoader = new OBJLoader();
+        //     objLoader.setMaterials(materials);
+        //     objLoader.load('/images/test/plant.obj', function(object) {
+        //         console.log(object)
+        //         _this.scene.add(object);
+        //     }, onProgress, onError);
+        // });
+        // var onProgress = function(xhr) {
+        //     if (xhr.lengthComputable) {
+        //         var percentComplete = xhr.loaded / xhr.total * 100;
+        //         console.log(Math.round(percentComplete, 2) + '% 已经加载')
+        //     }
+        // }
+        // var onError =function(){}
 
         //1、测试ThreeBSP用的
         //几何体对象
@@ -1054,12 +1020,53 @@ export default class ThreeMap {
         // this.scene.add(cylinder);//网格模型添加到场景中
 
     }
+    //测试自己生成obj文件带mtl材质的
+    createObjContainMtl(){
+        //如果obj文件没有包含材质关联的时候，自己生成带材质的关联obj文件
+        let _this=this;
+        var leaftexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_leaf_33.jpg' );
+        var soiltexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_dirt_1.jpg' );
+        var barktexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_bark_1.jpg' );
+        var jardinieretexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_jardiniere.jpg' );
+        var objLoader=new OBJLoader();
+        objLoader.load("/images/plant/plant.obj",function(object ){
+            console.log(object)
+            object.traverse( function ( child ) {
+                if ( child instanceof THREE.Mesh) {
+                    child.material=new THREE.MeshBasicMaterial({color: 0xffffff});
+                    if(child.name=="3DXY_geometry_769"||child.name=="3DXY_geometry_773"){
+                        child.material.name="wire_153228214"
+                        child.material.map = leaftexture;
+                    }else if(child.name=="3DXY_geometry_772"||child.name=="3DXY_geometry_776"||child.name=="3DXY_geometry_777"||child.name=="3DXY_geometry_778"){
+                        child.material.name="wire_108008136"
+                        child.material.map = barktexture;
+                    }else if(child.name=="3DXY_geometry_774"||child.name=="3DXY_geometry_775"){
+                        child.material.name="wire_177148027"
+                        child.material.map = soiltexture;
+                    }else if(child.name=="3DXY_geometry_770"){
+                        child.material.name="wire_198225087"
+                        child.material.map = jardinieretexture;
+                    }
+                }
+            });
+            // _this.scene.add(object)
+            let objExporter = new OBJExporter();
+            var output = objExporter.parse(object);
+            var link = document.createElement( 'a' ); 
+            link.style.display = 'none'; 
+            document.body.appendChild( link );
+            link.href = URL.createObjectURL( new Blob( [ output ], { type: 'text/plain' } ) ); 
+            link.download = "object.obj" ; 
+            link.click();
+            //然后自己制作mtl文件就可以了
+        }, this.onProgress, this.onError)
+    }
     //测试GLTF文件
     exportGLTF(){
         let box = new THREE.BoxGeometry(40,5,40);
         let material=new THREE.MeshPhongMaterial({color:0x0000ff});
         let obj=new THREE.Mesh(box,material);//立方体
-        // 单个模型数据 obj导出
+        // 单个模型数据 GLTF导出
         let gltfExporter = new GLTFExporter();
         gltfExporter.parse(obj, function (result) {
             console.log(result);
@@ -1067,7 +1074,7 @@ export default class ThreeMap {
             var link = document.createElement( 'a' ); 
             link.style.display = 'none'; 
             document.body.appendChild( link );
-            link.href = URL.createObjectURL( new Blob( [ output ], { type: 'application/json' } ) ); 
+            link.href = URL.createObjectURL( new Blob( [ output ], { type: 'text/plain' } ) ); 
             link.download = "object.gltf" ; 
             link.click();
         });
@@ -1080,5 +1087,31 @@ export default class ThreeMap {
             console.log('gltf对象相机属性',gltf.cameras)
             _this.scene.add( gltf.scene );
         })
+    }
+    //测试OBJ文件
+    exportOBJ(){
+        let box = new THREE.BoxGeometry(40,5,40);
+        let material=new THREE.MeshPhongMaterial({color:0x0000ff});
+        let obj=new THREE.Mesh(box,material);//立方体
+        // 单个模型数据 OBJ导出
+        let objExporter = new OBJExporter();
+        var output = objExporter.parse(obj);
+        var link = document.createElement( 'a' ); 
+        link.style.display = 'none'; 
+        document.body.appendChild( link );
+        link.href = URL.createObjectURL( new Blob( [ output ], { type: 'text/plain' } ) ); 
+        link.download = "object.obj" ; 
+        link.click();
+        //加载OBJ
+        var _this=this;
+        var loader = new OBJLoader();
+        var loader2=new OBJLoader2();
+        loader.load( '/images/test/object.obj', function ( obj ) {
+            console.log(obj)
+            _this.scene.add( obj );
+        })
+        // loader2.load( '/images/test/object.obj', function ( obj ) {
+        //     _this.scene.add( obj );
+        // })
     }
 }

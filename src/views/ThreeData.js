@@ -597,7 +597,7 @@ export const ThreeData={
             uuid: "",
             name: 'plant',
             objType: 'objPlant',
-            scale:[{ direction: 'arb', ratio: [0.1,0.09,0.1]}],
+            objHandle:[{ direction: 'arb', handleScale: [0.1,0.09,0.1]}],
             childrens:[
                 {
                     name:"plant-right",
