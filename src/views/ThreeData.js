@@ -892,6 +892,13 @@ export const ThreeData={
     ],
     events: {
         dbclick: [
+            {
+                obj_name: "doorRight",
+                obj_uuid: "",
+                obj_event: function (_obj) {
+                    openRightDoor(_obj, function () { });
+                }
+            },
         ],
         mouseDown: {
         },

@@ -897,9 +897,49 @@ export default class ThreeMap {
         setTimeout(function () { _this.dbclick =0}, 500);
         event.preventDefault();
         if (this.dbclick >= 2) {
-            _this.raycaster.setFromCamera(_this.mouseClick, _this.camera);
-            var intersects = _this.raycaster.intersectObjects(_this.objects);
+            // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
+            this.mouseClick.x = (event.offsetX / this.dom.offsetWidth) * 2 - 1;
+            this.mouseClick.y = -(event.offsetY / this.dom.offsetHeight) * 2 + 1;
+            this.raycaster.setFromCamera(this.mouseClick, this.camera);
+            console.log(this.objects)
+            var intersects = this.raycaster.intersectObjects(this.objects);
+            console.log(intersects)
+            if (intersects.length > 0) {
+                this.controls.enabled=false;
+                let SELECTED = intersects[0].object;
+                console.log(SELECTED)
+                if(this.eventList != null && this.eventList.dbclick != null && this.eventList.dbclick.length > 0){
+                    this.eventList.dbclick.forEach(function(_obj, index){
+                        if ("string" == typeof (_obj.obj_name)) {
+                            if (_obj.obj_name == SELECTED.name) {
+                                _obj.obj_event(SELECTED);
+                            }
+                        }
+                    })
+                }
+            }
         }
+    }
+    openRightDoor(_obj,func) {
+        console.log("！#！#@")
+        var doorstate = "close";
+        var tempobj = null;
+        if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
+            doorstate = _obj.doorState;
+            tempobj = _obj.parent;
+        } else {
+            console.log("add parent");
+            var _objparent = _obj.parent;
+            tempobj = new THREE.Object3D();
+            tempobj.position.set(_obj.position.x - _obj.geometry.parameters.width / 2, _obj.position.y, _obj.position.z);
+            _obj.position.set(_obj.geometry.parameters.width / 2, 0, 0);
+            tempobj.add(_obj);
+            _objparent.add(tempobj);
+        }
+        _obj.doorState = (doorstate == "close" ? "open" : "close");
+        new createjs.Tween(tempobj.rotation).to({
+            y: (doorstate == "close" ? 0.25 * 2 * Math.PI : 0 * 2 * Math.PI)
+        }, 10000, createjs.Ease.elasticOut);
     }
     //测试
     add(){
