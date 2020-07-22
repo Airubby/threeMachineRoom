@@ -913,6 +913,11 @@ export default class ThreeMap {
                             if (_obj.obj_name == SELECTED.name) {
                                 _obj.obj_event(SELECTED,_this);
                             }
+                        }else if (_obj.findObject!=null||'function' == typeof (_obj.findObject)) {
+                            if (_obj.findObject(SELECTED.name)) {
+                                console.log("!@##$#%$^$^@#")
+                                _obj.obj_event(SELECTED,_this);
+                            }
                         }
                     })
                 }
@@ -920,6 +925,7 @@ export default class ThreeMap {
             }
         }
     }
+
     openLeftDoor(_obj,func) {
         var doorstate = "close";
         var tempobj = null;
@@ -965,8 +971,25 @@ export default class ThreeMap {
         }else{
             tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*Math.PI);
         }
-        
-       
+    }
+    openCabinetDoor(_obj,func) {
+        console.log("!!!!!!!!!!!!!!!!!")
+        var doorstate = "close";
+        var tempobj = null;
+        if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
+            doorstate = _obj.doorState;
+            tempobj = _obj.parent;
+        } else {
+            console.log("add parent");
+            var _objparent = _obj.parent;
+            tempobj = new THREE.Object3D();
+            tempobj.position.set(_obj.position.x, _obj.position.y, _obj.position.z + _obj.geometry.parameters.depth / 2);
+            _obj.position.set(0, 0, -_obj.geometry.parameters.depth / 2);
+            tempobj.add(_obj);
+            _objparent.add(tempobj);
+        }
+        _obj.doorState = (doorstate == "close" ? "open" : "close");
+        // tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*Math.PI);
     }
     //测试
     add(){
