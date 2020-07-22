@@ -920,6 +920,30 @@ export default class ThreeMap {
             }
         }
     }
+    openLeftDoor(_obj,func) {
+        var doorstate = "close";
+        var tempobj = null;
+        if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
+            doorstate = _obj.doorState;
+            tempobj = _obj.parent;
+        } else {
+            console.log("add parent");
+            var _objparent = _obj.parent;
+            tempobj = new THREE.Object3D();
+            tempobj.position.set(_obj.position.x - _obj.geometry.parameters.width/2 , _obj.position.y, _obj.position.z);
+            _obj.position.set(_obj.geometry.parameters.width / 2, 0, 0);
+            tempobj.add(_obj);
+            _objparent.add(tempobj);
+        }
+        _obj.doorState = (doorstate == "close" ? "open" : "close");
+        if(_obj.doorState=="close"){
+            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*Math.PI);
+        }else{
+            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*Math.PI);
+        }
+        
+       
+    }
     openRightDoor(_obj,func) {
         var doorstate = "close";
         var tempobj = null;
