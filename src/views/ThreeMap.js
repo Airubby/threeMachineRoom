@@ -16,6 +16,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import {OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2'
 import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
+import TWEEN from '@tweenjs/tween.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   //r100及以上
 // var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
 export default class ThreeMap {
@@ -901,9 +902,7 @@ export default class ThreeMap {
             this.mouseClick.x = (event.offsetX / this.dom.offsetWidth) * 2 - 1;
             this.mouseClick.y = -(event.offsetY / this.dom.offsetHeight) * 2 + 1;
             this.raycaster.setFromCamera(this.mouseClick, this.camera);
-            console.log(this.objects)
             var intersects = this.raycaster.intersectObjects(this.objects);
-            console.log(intersects)
             if (intersects.length > 0) {
                 this.controls.enabled=false;
                 let SELECTED = intersects[0].object;
@@ -912,16 +911,16 @@ export default class ThreeMap {
                     this.eventList.dbclick.forEach(function(_obj, index){
                         if ("string" == typeof (_obj.obj_name)) {
                             if (_obj.obj_name == SELECTED.name) {
-                                _obj.obj_event(SELECTED);
+                                _obj.obj_event(SELECTED,_this);
                             }
                         }
                     })
                 }
+                this.controls.enabled = true;
             }
         }
     }
     openRightDoor(_obj,func) {
-        console.log("！#！#@")
         var doorstate = "close";
         var tempobj = null;
         if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
@@ -931,15 +930,19 @@ export default class ThreeMap {
             console.log("add parent");
             var _objparent = _obj.parent;
             tempobj = new THREE.Object3D();
-            tempobj.position.set(_obj.position.x - _obj.geometry.parameters.width / 2, _obj.position.y, _obj.position.z);
-            _obj.position.set(_obj.geometry.parameters.width / 2, 0, 0);
+            tempobj.position.set(_obj.position.x + _obj.geometry.parameters.width/2 , _obj.position.y, _obj.position.z);
+            _obj.position.set(-_obj.geometry.parameters.width / 2, 0, 0);
             tempobj.add(_obj);
             _objparent.add(tempobj);
         }
         _obj.doorState = (doorstate == "close" ? "open" : "close");
-        new createjs.Tween(tempobj.rotation).to({
-            y: (doorstate == "close" ? 0.25 * 2 * Math.PI : 0 * 2 * Math.PI)
-        }, 10000, createjs.Ease.elasticOut);
+        if(_obj.doorState=="close"){
+            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*Math.PI);
+        }else{
+            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*Math.PI);
+        }
+        
+       
     }
     //测试
     add(){

@@ -597,19 +597,19 @@ export const ThreeData={
             uuid: "",
             name: 'plant',
             objType: 'objPlant',
-            objHandle:[{ direction: 'arb', handleScale: [0.1,0.09,0.1]}],
+            objHandle:[{ direction: 'arb', handleScale: [0.1,0.1,0.1]}],
             childrens:[
                 {
                     name:"plant-right",
                     uuid:"",
-                    x: 420,
+                    x: 460,
                     y: 0,
                     z: 510,
                 },
                 {
                     name:"plant-left",
                     uuid:"",
-                    x: 160,
+                    x: 120,
                     y: 0,
                     z: 510,
                 }
@@ -895,8 +895,8 @@ export const ThreeData={
             {
                 obj_name: "doorRight",
                 obj_uuid: "",
-                obj_event: function (_obj) {
-                    openRightDoor(_obj, function () { });
+                obj_event: function (_obj,_this) {
+                    _this.openRightDoor(_obj, function () { });
                 }
             },
         ],
