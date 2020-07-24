@@ -810,12 +810,22 @@ export default class ThreeMap {
     onError = function ( xhr ) { };
     //设置旋转中心
     changePivot(x,y,z,obj){
-        let wrapper = new THREE.Object3D();
-        wrapper.position.set(x,y,z);
-        // wrapper.add(obj);
-        // obj.position.set(-x,-y,-z);
-        return wrapper;
-     }
+        let tempobj = new THREE.Object3D();
+        tempobj.position.set(obj.position.x + x , obj.position.y+y, obj.position.z+z);
+        obj.position.set(-x, -y, -z);
+        tempobj.add(obj);
+        return tempobj;
+    }
+    //开关门
+    changeDoor(obj,tempobj,doorstate,leftflag){
+        let sign=leftflag?1:-1;
+        obj.doorState = (doorstate == "close" ? "open" : "close");
+        if(obj.doorState=="close"){
+            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*sign*Math.PI);
+        }else{
+            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*sign*Math.PI);
+        }
+    }
     //添加对象
     addObject (obj,flag) {
         this.objects.push(obj);
@@ -935,20 +945,10 @@ export default class ThreeMap {
         } else {
             console.log("add parent");
             var _objparent = _obj.parent;
-            tempobj = new THREE.Object3D();
-            tempobj.position.set(_obj.position.x - _obj.geometry.parameters.width/2 , _obj.position.y, _obj.position.z);
-            _obj.position.set(_obj.geometry.parameters.width / 2, 0, 0);
-            tempobj.add(_obj);
+            tempobj=this.changePivot(- _obj.geometry.parameters.width/2,0,0,_obj);
             _objparent.add(tempobj);
         }
-        _obj.doorState = (doorstate == "close" ? "open" : "close");
-        if(_obj.doorState=="close"){
-            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*Math.PI);
-        }else{
-            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*Math.PI);
-        }
-        
-       
+        this.changeDoor(_obj,tempobj,doorstate,true);
     }
     openRightDoor(_obj,func) {
         var doorstate = "close";
@@ -959,21 +959,12 @@ export default class ThreeMap {
         } else {
             console.log("add parent");
             var _objparent = _obj.parent;
-            tempobj = new THREE.Object3D();
-            tempobj.position.set(_obj.position.x + _obj.geometry.parameters.width/2 , _obj.position.y, _obj.position.z);
-            _obj.position.set(-_obj.geometry.parameters.width / 2, 0, 0);
-            tempobj.add(_obj);
+            tempobj=this.changePivot(_obj.geometry.parameters.width/2,0,0,_obj);
             _objparent.add(tempobj);
         }
-        _obj.doorState = (doorstate == "close" ? "open" : "close");
-        if(_obj.doorState=="close"){
-            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*Math.PI);
-        }else{
-            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*Math.PI);
-        }
+        this.changeDoor(_obj,tempobj,doorstate);
     }
     openCabinetDoor(_obj,func) {
-        console.log("!!!!!!!!!!!!!!!!!")
         var doorstate = "close";
         var tempobj = null;
         if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
@@ -982,14 +973,10 @@ export default class ThreeMap {
         } else {
             console.log("add parent");
             var _objparent = _obj.parent;
-            tempobj = new THREE.Object3D();
-            tempobj.position.set(_obj.position.x, _obj.position.y, _obj.position.z + _obj.geometry.parameters.depth / 2);
-            _obj.position.set(0, 0, -_obj.geometry.parameters.depth / 2);
-            tempobj.add(_obj);
+            tempobj=this.changePivot(_obj.geometry.parameters.width/2,0,_obj.geometry.parameters.depth/2,_obj);
             _objparent.add(tempobj);
         }
-        _obj.doorState = (doorstate == "close" ? "open" : "close");
-        // tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*Math.PI);
+        this.changeDoor(_obj,tempobj,doorstate);
     }
     //测试
     add(){
