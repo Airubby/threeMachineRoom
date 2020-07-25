@@ -809,22 +809,12 @@ export default class ThreeMap {
     //报错通知
     onError = function ( xhr ) { };
     //设置旋转中心
-    changePivot(x,y,z,obj){
+    changePivot(obj,x,y,z){
         let tempobj = new THREE.Object3D();
         tempobj.position.set(obj.position.x + x , obj.position.y+y, obj.position.z+z);
         obj.position.set(-x, -y, -z);
         tempobj.add(obj);
         return tempobj;
-    }
-    //开关门
-    changeDoor(obj,tempobj,doorstate,leftflag){
-        let sign=leftflag?1:-1;
-        obj.doorState = (doorstate == "close" ? "open" : "close");
-        if(obj.doorState=="close"){
-            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*sign*Math.PI);
-        }else{
-            tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*sign*Math.PI);
-        }
     }
     //添加对象
     addObject (obj,flag) {
@@ -897,6 +887,8 @@ export default class ThreeMap {
             }
         }
     }
+
+
     /*
     *事件部分
     */
@@ -925,7 +917,6 @@ export default class ThreeMap {
                             }
                         }else if (_obj.findObject!=null||'function' == typeof (_obj.findObject)) {
                             if (_obj.findObject(SELECTED.name)) {
-                                console.log("!@##$#%$^$^@#")
                                 _obj.obj_event(SELECTED,_this);
                             }
                         }
@@ -935,48 +926,54 @@ export default class ThreeMap {
             }
         }
     }
-
+    openCloseDoor(obj,x,y,z,info){
+        console.log(obj)
+        var doorstate = "close";
+        var tempobj = null;
+        if (obj.doorState != null && typeof (obj.doorState) != 'undefined') {
+            doorstate = obj.doorState;
+            tempobj = obj.parent;
+        } else {
+            console.log("add parent");
+            var objparent = obj.parent;
+            tempobj = new THREE.Object3D();
+            tempobj.position.set(obj.position.x + x , obj.position.y+y, obj.position.z+z);
+            obj.position.set(-x, -y, -z);
+            tempobj.add(obj);
+            objparent.add(tempobj);
+        }
+        obj.doorState = (doorstate == "close" ? "open" : "close");
+        if(info=="left"||info=="right"){
+            let sign=info=="left"?1:-1;
+            if(obj.doorState=="close"){
+                tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.5*sign*Math.PI);
+            }else{
+                tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*sign*Math.PI);
+            }
+        }else if(info=="outin"){
+            if(obj.doorState=="close"){
+                tempobj.translateOnAxis(new THREE.Vector3(0, 0, 1),-obj.geometry.parameters.depth);
+            }else{
+                tempobj.translateOnAxis(new THREE.Vector3(0, 0, 1),obj.geometry.parameters.depth);
+            }
+        }
+        
+    }
+    //开关左门
     openLeftDoor(_obj,func) {
-        var doorstate = "close";
-        var tempobj = null;
-        if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
-            doorstate = _obj.doorState;
-            tempobj = _obj.parent;
-        } else {
-            console.log("add parent");
-            var _objparent = _obj.parent;
-            tempobj=this.changePivot(- _obj.geometry.parameters.width/2,0,0,_obj);
-            _objparent.add(tempobj);
-        }
-        this.changeDoor(_obj,tempobj,doorstate,true);
+        this.openCloseDoor(_obj,-_obj.geometry.parameters.width/2,0,0,"left");
     }
+    //开关右门
     openRightDoor(_obj,func) {
-        var doorstate = "close";
-        var tempobj = null;
-        if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
-            doorstate = _obj.doorState;
-            tempobj = _obj.parent;
-        } else {
-            console.log("add parent");
-            var _objparent = _obj.parent;
-            tempobj=this.changePivot(_obj.geometry.parameters.width/2,0,0,_obj);
-            _objparent.add(tempobj);
-        }
-        this.changeDoor(_obj,tempobj,doorstate);
+        this.openCloseDoor(_obj,_obj.geometry.parameters.width/2,0,0,"right");
     }
+    //开关机柜门
     openCabinetDoor(_obj,func) {
-        var doorstate = "close";
-        var tempobj = null;
-        if (_obj.doorState != null && typeof (_obj.doorState) != 'undefined') {
-            doorstate = _obj.doorState;
-            tempobj = _obj.parent;
-        } else {
-            console.log("add parent");
-            var _objparent = _obj.parent;
-            tempobj=this.changePivot(_obj.geometry.parameters.width/2,0,_obj.geometry.parameters.depth/2,_obj);
-            _objparent.add(tempobj);
-        }
-        this.changeDoor(_obj,tempobj,doorstate);
+        this.openCloseDoor(_obj,_obj.geometry.parameters.width/2,0,_obj.geometry.parameters.depth/2,"right");
+    }
+    //拉出放回设备
+    openEquipmentDoor(_obj,func){
+        this.openCloseDoor(_obj,_obj.geometry.parameters.width/2,0,_obj.geometry.parameters.depth/2,"outin");
     }
     //测试
     add(){
