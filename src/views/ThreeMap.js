@@ -951,11 +951,48 @@ export default class ThreeMap {
                 tempobj.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.5*sign*Math.PI);
             }
         }else if(info=="outin"){
+            //沿点击的法向量移动
+            // var intersects = this.raycaster.intersectObjects([obj]);
+            // if (intersects.length > 0) {
+            //     // 射线位置赋值给移动网格模型
+            //     tempobj.position.copy(intersects[0].point);
+            //     // 沿着法线方向平移移动的网格模型
+            //     var normal = intersects[0].face.normal;// 当前位置曲面法线
+            //     tempobj.translateOnAxis(normal,50); //平移50
+            // }
+
+            var targetPos = new THREE.Vector3(1,0,0);
+            // var euler = new THREE.Euler( 1, 0,0);
+            // var matrix = new THREE.Matrix4();  //创建一个4维矩阵
+            // matrix.lookAt(obj.position.clone() , obj.position.clone() , targetPos) //设置朝向
+            // matrix.multiply(new THREE.Matrix4().makeRotationFromEuler(euler))
+            // var toRot = new THREE.Quaternion().setFromRotationMatrix(matrix) 
+            // tempobj.translateOnAxis(toRot,50);
             if(obj.doorState=="close"){
-                tempobj.translateOnAxis(new THREE.Vector3(0, 0, 1),-obj.geometry.parameters.depth);
+                tempobj.translateOnAxis(targetPos,-obj.geometry.parameters.depth+20);
             }else{
-                tempobj.translateOnAxis(new THREE.Vector3(0, 0, 1),obj.geometry.parameters.depth);
+                tempobj.translateOnAxis(targetPos,obj.geometry.parameters.depth-20);
             }
+
+            //使用四元素朝某个角度移动
+            // var targetPos = new THREE.Vector3(0,0,1)   //目标位置点
+            // var offsetAngle = Math.PI/2  //目标移动时的朝向偏移
+            // // var obj =  你的三维模型(或者其他物体对象，object3D ,group ,或者mesh对象)
+            // //以下代码在多段路径时可重复执行
+            // var matrix = new THREE.Matrix4()  //创建一个4维矩阵
+            // matrix.lookAt(obj.position.clone() , obj.position.clone() ,targetPos) //设置朝向
+            // matrix.multiply(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(0 , offsetAngle , 0 )))
+            // var toRot = new THREE.Quaternion().setFromRotationMatrix(matrix)  //计算出需要进行旋转的四元数值
+            // tempobj.translateOnAxis(toRot,50);
+
+            
+
+
+            // if(obj.doorState=="close"){
+            //     tempobj.translateOnAxis(new THREE.Vector3(0, 0, 1),-obj.geometry.parameters.depth);
+            // }else{
+            //     tempobj.translateOnAxis(new THREE.Vector3(0, 0, 1),obj.geometry.parameters.depth);
+            // }
         }
         
     }
@@ -973,7 +1010,7 @@ export default class ThreeMap {
     }
     //拉出放回设备
     openEquipmentDoor(_obj,func){
-        this.openCloseDoor(_obj,_obj.geometry.parameters.width/2,0,_obj.geometry.parameters.depth/2,"outin");
+        this.openCloseDoor(_obj,0,0,_obj.geometry.parameters.depth/2,"outin");
     }
     //测试
     add(){
