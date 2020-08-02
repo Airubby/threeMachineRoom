@@ -27,7 +27,7 @@ export default class ThreeMap {
         this.dataJson=dataJson;
         this.objList = dataJson.objects||[];//对象列表
         this.eventList = dataJson.events||{};//事件对象列表
-        this.btns = dataJson.btns||[];//按钮列表
+        this.btnList = dataJson.btns||[];//按钮列表
         
         this.renderer=null;
         this.scene = null;//场景
@@ -111,6 +111,47 @@ export default class ThreeMap {
                 this.InitAddObject(this.objList[i]);
             }
         }
+        if(this.btnList.length>0){
+            this.InitBtn();
+        }
+    }
+    resetView(){
+        this.init();
+    }
+    //添加按钮
+    InitBtn(){
+        var _this=this;
+        var count = this.btnList.length;
+		var step = 24;
+
+		var div = document.createElement('div');
+		div.setAttribute('id', 'toolbar');
+		div.style.display = 'block';
+		div.style.position = 'absolute';
+		div.style.left = '10px';
+		div.style.top = '75px';
+		div.style.width = '32px';
+		div.style.height = (count * step + step) + 'px';
+		div.style.background = 'rgba(255,255,255,0.75)';
+		div.style['border-radius'] = '5px';
+		this.dom.appendChild(div);
+
+		for (var i = 0; i < count; i++) {
+			var button = this.btnList[i];
+			var btnimg = button.btnimg;
+			var img = document.createElement('img');
+			img.style.position = 'absolute';
+			img.style.left = '4px';
+			img.style.top = (step / 2 + (i * step)) + 'px';
+			img.style['pointer-events'] = 'auto';
+			img.style['cursor'] = 'pointer';
+			img.setAttribute('src', btnimg);
+			img.style.width = '24px';
+			img.style.height = '24px';
+            img.setAttribute('title', button.btnTitle);
+            img.onclick=function(){ button.clickFunction(_this)};
+			div.appendChild(img);
+		}
     }
     //添加3D对象
     InitAddObject(obj){
@@ -885,7 +926,19 @@ export default class ThreeMap {
             }else{
                 return false;
             }
-        }
+        },
+        //查找对象
+        findObject: function (objname) {
+            var findedobj = null;
+            this.objects.forEach(function(obj, index){
+                if (obj.name != null && obj.name != '' && obj.name == objname) {
+                    findedobj = obj;
+                    return findedobj;
+                }
+            });
+            return findedobj;
+        },
+
     }
 
 

@@ -941,6 +941,14 @@ export const ThreeData={
         }
     },
     btns: [
+        {
+            btnid: "btn_reset",
+            btnTitle: "场景复位",
+            btnimg: "/images/reset.png",
+            clickFunction: function (_this) {
+                _this.resetView();
+            }
+        },
     ]
 }
 
