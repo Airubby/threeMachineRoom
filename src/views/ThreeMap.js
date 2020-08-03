@@ -21,8 +21,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   /
 // var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
 export default class ThreeMap {
     constructor(props,dataJson) {
-        
+
         this.props=props;
+        this.ThreeData=dataJson;
         this.data=new Array();
         this.dataJson=dataJson;
         this.objList = dataJson.objects||[];//对象列表
@@ -115,8 +116,11 @@ export default class ThreeMap {
             this.InitBtn();
         }
     }
+    //刷新视图
     resetView(){
-        this.init();
+        this.dom.removeChild(this.renderer.domElement);
+        var map = new ThreeMap(this.props,this.ThreeData);
+        map.init();
     }
     //添加按钮
     InitBtn(){
@@ -750,11 +754,9 @@ export default class ThreeMap {
         var mtlLoader = new MTLLoader();
         mtlLoader.load('/images/annihilator/annihilator.mtl', function(materials) {
             materials.preload();
-            console.log(materials)
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
             objLoader.load('/images/annihilator/annihilator.obj', function(object) {
-                console.log(object)
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -777,11 +779,9 @@ export default class ThreeMap {
         var mtlLoader = new MTLLoader();
         mtlLoader.load('/images/camera/camera.mtl', function(materials) {
             materials.preload();
-            console.log(materials)
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
             objLoader.load('/images/camera/camera.obj', function(object) {
-                console.log(object)
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -1132,7 +1132,7 @@ export default class ThreeMap {
         // var mtlLoader = new MTLLoader();
         // mtlLoader.load('/images/test/plant.mtl', function(materials) {
         //     materials.preload();
-        //     console.log(materials)
+        //     console.log(materials)-
         //     var objLoader = new OBJLoader();
         //     objLoader.setMaterials(materials);
         //     objLoader.load('/images/test/plant.obj', function(object) {
@@ -1213,7 +1213,6 @@ export default class ThreeMap {
         var jardinieretexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_jardiniere.jpg' );
         var objLoader=new OBJLoader();
         objLoader.load("/images/plant/plant.obj",function(object ){
-            console.log(object)
             object.traverse( function ( child ) {
                 if ( child instanceof THREE.Mesh) {
                     child.material=new THREE.MeshBasicMaterial({color: 0xffffff});
