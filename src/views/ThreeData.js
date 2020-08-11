@@ -680,7 +680,7 @@ export const ThreeData={
         //     objType: 'emptyCabinet',
         //     transparent:true,
         //     size:{width:70,depth:70,height:200, thick:2},
-        //     x:-350, y: 100, z: -180,
+        //     x:-350, y: 0, z: -180,
         //     rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
         //     style:{
         //         skinColor: 0xff0000,
@@ -1018,6 +1018,12 @@ let cabinet={
                         imgurl: "images/rack_inside.png",
                     }
                 }
+            },
+            data:{
+                devid:"01",
+                pointid:"0102",
+                isalarm:false,
+                tipInfo:"设备1信息***"
             }
         },
         {
@@ -1051,6 +1057,12 @@ let cabinet={
                         imgurl: "images/rack_inside.png",
                     }
                 }
+            },
+            data:{
+                devid:"01",
+                pointid:"0102",
+                isalarm:false,
+                tipInfo:"设备2信息^^^"
             }
         },
         {
@@ -1084,6 +1096,12 @@ let cabinet={
                         imgurl: "images/rack_inside.png",
                     }
                 }
+            },
+            data:{
+                devid:"01",
+                pointid:"0102",
+                isalarm:false,
+                tipInfo:"设备3信息!!!"
             }
         },
         {
@@ -1117,6 +1135,12 @@ let cabinet={
                         imgurl: "images/rack_inside.png",
                     }
                 }
+            },
+            data:{
+                devid:"01",
+                pointid:"0102",
+                isalarm:false,
+                tipInfo:"设备4信息~~~"
             }
         },
     ]

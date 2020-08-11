@@ -38,6 +38,10 @@ export default class ThreeMap {
         this.dbclick = 0;
         this.mouseClick = new THREE.Vector2();
         this.raycaster = new THREE.Raycaster();
+        this.lastElement=null;  //存放最后一个设备
+        this.timer=null; 
+        this.tooltip=null;
+        this.lastEvent=null;
     }
 
     init() {
@@ -51,6 +55,7 @@ export default class ThreeMap {
         // this.add();
         this.InitData();  //添加3D对象、事件等
         this.renderer.domElement.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
+        this.renderer.domElement.addEventListener('mousemove',this.onDocumentMouseMove.bind(this), false);
     }
 
     //初始化渲染场景
@@ -115,12 +120,42 @@ export default class ThreeMap {
         if(this.btnList.length>0){
             this.InitBtn();
         }
+        this.InitTooltip();
     }
     //刷新视图
     resetView(){
         this.dom.removeChild(this.renderer.domElement);
         var map = new ThreeMap(this.props,this.ThreeData);
         map.init();
+    }
+    //添加提示框
+    InitTooltip(){
+        this.tooltip = document.createElement('div');
+		this.tooltip.setAttribute('id', 'tooltip');
+		this.tooltip.style.display = 'none';
+        this.tooltip.style.position = 'absolute';
+        this.tooltip.style.color="#000";
+        this.tooltip.style.maxWidth="200px";
+		this.tooltip.style.width = '32px';
+        this.tooltip.style.height = 'auto';
+        this.tooltip.style.lineHeight="22px";
+        this.tooltip.style.textAlign="center";
+        this.tooltip.style.padding="10px";
+		this.tooltip.style.background = 'rgba(172,222,254,0.8)';
+        this.tooltip.style['border-radius'] = '5px';
+        let tipdiv=document.createElement('div');
+        tipdiv.setAttribute("id","tipdiv");
+        let tipspan=document.createElement('span');
+        tipspan.style.marginLeft="50%";
+        tipspan.style.bottom="-10px";
+        tipspan.style.left="-10px";
+        tipspan.style.position="absolute";
+        tipspan.style.borderTop="10px solid rgba(172,222,254,0.8)";
+        tipspan.style.borderLeft="10px solid transparent";
+        tipspan.style.borderRight="10px solid transparent";
+        this.tooltip.appendChild(tipspan);
+        this.tooltip.appendChild(tipdiv);
+        this.dom.appendChild(this.tooltip);
     }
     //添加按钮
     InitBtn(){
@@ -610,6 +645,7 @@ export default class ThreeMap {
                 service.y=service.y+floorHeight+(obj.y-(obj.size.height-2*obj.size.thick)/2);
                 service.rotation=obj.rotation||null;
                 var newobj = _this.createCube(service);
+                newobj.data=service.data;
                 _this.addObject(newobj)
             })
         }
@@ -1064,6 +1100,43 @@ export default class ThreeMap {
     //拉出放回设备
     openEquipmentDoor(_obj,func){
         this.openCloseDoor(_obj,0,0,_obj.geometry.parameters.depth/2,"outin");
+    }
+    //鼠标移动
+    onDocumentMouseMove(event){
+        let _this=this;
+        var currentElement = null;
+        this.mouseClick.x = (event.offsetX / this.dom.offsetWidth) * 2 - 1;
+        this.mouseClick.y = -(event.offsetY / this.dom.offsetHeight) * 2 + 1;
+        this.raycaster.setFromCamera(this.mouseClick, this.camera);
+        var intersects = this.raycaster.intersectObjects(this.objects);
+        if(intersects.length>0){
+            let SELECTED = intersects[0].object;
+            if(SELECTED.name.indexOf("equipment")!=-1){
+                currentElement = SELECTED;
+            }
+        }
+        if (this.lastElement != currentElement ) {
+            clearTimeout(this.timer);
+            if(currentElement){
+                this.timer = setTimeout(function(){
+                    
+                    let tiplen=currentElement.data.tipInfo.length;
+                    _this.tooltip.querySelector("#tipdiv").innerHTML=currentElement.data.tipInfo;
+                    _this.tooltip.style.width=tiplen*15+"px";
+                    _this.tooltip.style.display = 'block';
+                    _this.tooltip.style.left = (_this.lastEvent.pageX - _this.tooltip.clientWidth/2) + 'px';
+                    _this.tooltip.style.top = (_this.lastEvent.pageY - _this.tooltip.clientHeight - 15) + 'px';
+                },1000); 
+            }     
+        }
+        //设置上一次的网元为当前网元
+        this.lastElement = currentElement; 
+        //如果当前鼠标下没有网元，隐藏tooltip
+        if(currentElement == null){
+            _this.tooltip.style.display = 'none';
+        }
+        //设置每次移动时鼠标的事件对象
+        this.lastEvent = event;
     }
     //测试
     add(){
