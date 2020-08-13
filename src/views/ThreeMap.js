@@ -120,6 +120,7 @@ export default class ThreeMap {
         if(this.btnList.length>0){
             this.InitBtn();
         }
+        this.createText(this.objList[0].width,this.objList[0].depth);
         this.InitTooltip();
     }
     //刷新视图
@@ -723,7 +724,7 @@ export default class ThreeMap {
         }
         var MaterParam = {//材质的参数
             map: texture,
-            side: THREE.DoubleSide,
+            side: obj.side||THREE.DoubleSide,
             // side:THREE.FrontSide,
             transparent: transparent,
             opacity: obj.opacity||1
@@ -735,9 +736,9 @@ export default class ThreeMap {
             new THREE.PlaneGeometry(obj.width, obj.height, 1, 1),
             new THREE.MeshBasicMaterial(MaterParam)
         );
-        plane.position.x = obj.x;
-        plane.position.y = obj.y;
-        plane.position.z = obj.z;
+        plane.position.x = obj.x||0;
+        plane.position.y = obj.y||0;
+        plane.position.z = obj.z||0;
         if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
             obj.rotation.forEach(function(rotation_obj, index){
                 // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 
@@ -751,7 +752,7 @@ export default class ThreeMap {
                     case 'z':
                         plane.rotateZ(rotation_obj.degree);
                         break;
-                    case 'arb':  //{ direction: 'arb', degree: [x,y,z,angle] }
+                    case 'arb':  //{ direction: 'arb', degree: [x,y,z,angle] }  x,y,z是向量0,1,0 表示y轴旋转
                         plane.rotateOnAxis(new THREE.Vector3(rotation_obj.degree[0], rotation_obj.degree[1], rotation_obj.degree[2]), rotation_obj.degree[3]);
                         break;
                 }
@@ -953,6 +954,54 @@ export default class ThreeMap {
             texture.repeat.set(width / imgwidth, height / imgheight);
         }
         return texture;
+    }
+    //创建文字
+    createText(floorWidth,floorHeight){
+        var canvas = document.createElement('canvas');
+		canvas['width']=floorWidth;
+		canvas['height']=floorHeight;
+		var context = canvas.getContext('2d');
+		context.beginPath();
+		context.rect(0, 0, floorWidth, floorHeight);
+		context.fillStyle = 'white';
+		context.fill();
+
+		var marker=function(context, text, text2, x, y){
+			var color='#000000';//'#0B2F3A';//'#FE642E';
+			context.font = 40+'px "Microsoft Yahei" ';
+			context.fillStyle = color;
+			context.textAlign = 'center';
+			context.textBaseline = 'middle';		
+			//context.shadowBlur = 30;
+			context.fillText(text, x, y);
+			context.strokeStyle=color;
+			context.lineWidth=3;			
+			context.strokeText(text, x, y);
+
+			if(!text2) return;
+			y+=40;
+			color='#FE642E';
+			context.font = 26+'px "Microsoft Yahei" ';
+			context.fillStyle = color;
+			context.textAlign = 'center';
+			context.textBaseline = 'middle';		
+			context.fillText(text2, x, y);
+		}
+		marker(context, '阿里巴巴', 'ip待分配', 900, 590);
+		marker(context, '腾讯', '192.168.1.150', 900, 770);
+		marker(context, '依米康·龙控', '192.168.1.100', 900, 950);
+        
+        var obj={
+            width:floorHeight,
+            height:floorWidth,
+            imgurl:canvas,
+            y:6,
+            transparent:true,
+            opacity:0.2,
+            rotation: [{ direction: 'x', degree: -0.5*Math.PI },{ direction: 'z', degree: 0.5*Math.PI }], 
+        }
+        var text=this.createPlaneGeometry(obj);
+        this.scene.add(text);
     }
     commonFunc={
         //判断对象
