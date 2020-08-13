@@ -958,17 +958,17 @@ export default class ThreeMap {
     //创建文字
     createText(floorWidth,floorHeight){
         var canvas = document.createElement('canvas');
-		canvas['width']=floorWidth;
-		canvas['height']=floorHeight;
+		canvas['width']=1024;
+		canvas['height']=1024;
 		var context = canvas.getContext('2d');
 		context.beginPath();
-        context.rect(0, 0, floorWidth, floorHeight);
+        context.rect(0, 0, 1024, 1024);
         context.fillStyle = 'rgba(255, 255, 255, 0)';  //canvas设置为透明
 		context.fill();
 
 		var marker=function(context, text, text2, x, y){
 			var color='#0B2F3A';//'#0B2F3A';//'#FE642E';
-			context.font = 40+'px "Microsoft Yahei" ';
+			context.font = 30+'px "Microsoft Yahei" ';
 			context.fillStyle = color;
 			context.textAlign = 'center';
 			context.textBaseline = 'middle';		
@@ -978,17 +978,17 @@ export default class ThreeMap {
             context.strokeText(text, x, y);
 
 			if(!text2) return;
-			y+=40;
+			y+=30;
 			color='#FE642E';
-			context.font = 26+'px "Microsoft Yahei" ';
+			context.font = 16+'px "Microsoft Yahei" ';
 			context.fillStyle = color;
 			context.textAlign = 'center';
 			context.textBaseline = 'middle';		
 			context.fillText(text2, x, y);
 		}
-		marker(context, '阿里巴巴', 'ip待分配', 930, 590);
-		marker(context, '腾讯', '192.168.1.150', 930, 770);
-		marker(context, '依米康·龙控', '192.168.1.100', 930, 950);
+		marker(context, '阿里巴巴', 'ip待分配', 500, 380);
+		marker(context, '腾讯', '192.168.1.150', 500, 495);
+		marker(context, '依米康·龙控', '192.168.1.100', 500, 610);
         var obj={
             width:floorHeight,
             height:floorWidth,
@@ -1158,8 +1158,6 @@ export default class ThreeMap {
         var intersects = this.raycaster.intersectObjects(this.objects);
         if(intersects.length>0){
             let SELECTED = intersects[0].object;
-            console.log(SELECTED)
-            console.log(SELECTED.name)
             if(SELECTED.name.toString().indexOf("equipment")!=-1){
                 currentElement = SELECTED;
             }
