@@ -962,21 +962,20 @@ export default class ThreeMap {
 		canvas['height']=floorHeight;
 		var context = canvas.getContext('2d');
 		context.beginPath();
-		context.rect(0, 0, floorWidth, floorHeight);
-		context.fillStyle = 'white';
+        context.rect(0, 0, floorWidth, floorHeight);
+        context.fillStyle = 'rgba(255, 255, 255, 0)';  //canvas设置为透明
 		context.fill();
 
 		var marker=function(context, text, text2, x, y){
-			var color='#000000';//'#0B2F3A';//'#FE642E';
+			var color='#0B2F3A';//'#0B2F3A';//'#FE642E';
 			context.font = 40+'px "Microsoft Yahei" ';
 			context.fillStyle = color;
 			context.textAlign = 'center';
 			context.textBaseline = 'middle';		
 			//context.shadowBlur = 30;
-			context.fillText(text, x, y);
 			context.strokeStyle=color;
 			context.lineWidth=3;			
-			context.strokeText(text, x, y);
+            context.strokeText(text, x, y);
 
 			if(!text2) return;
 			y+=40;
@@ -987,17 +986,16 @@ export default class ThreeMap {
 			context.textBaseline = 'middle';		
 			context.fillText(text2, x, y);
 		}
-		marker(context, '阿里巴巴', 'ip待分配', 900, 590);
-		marker(context, '腾讯', '192.168.1.150', 900, 770);
-		marker(context, '依米康·龙控', '192.168.1.100', 900, 950);
-        
+		marker(context, '阿里巴巴', 'ip待分配', 930, 590);
+		marker(context, '腾讯', '192.168.1.150', 930, 770);
+		marker(context, '依米康·龙控', '192.168.1.100', 930, 950);
         var obj={
             width:floorHeight,
             height:floorWidth,
             imgurl:canvas,
             y:6,
             transparent:true,
-            opacity:0.2,
+            opacity:0.8,
             rotation: [{ direction: 'x', degree: -0.5*Math.PI },{ direction: 'z', degree: 0.5*Math.PI }], 
         }
         var text=this.createPlaneGeometry(obj);
@@ -1160,7 +1158,9 @@ export default class ThreeMap {
         var intersects = this.raycaster.intersectObjects(this.objects);
         if(intersects.length>0){
             let SELECTED = intersects[0].object;
-            if(SELECTED.name.indexOf("equipment")!=-1){
+            console.log(SELECTED)
+            console.log(SELECTED.name)
+            if(SELECTED.name.toString().indexOf("equipment")!=-1){
                 currentElement = SELECTED;
             }
         }

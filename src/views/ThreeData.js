@@ -669,6 +669,22 @@ export const ThreeData={
                     y: 225,
                     z: 425,
                     objHandle:[{ direction: 'arb', handleScale: [0.2,0.2,0.2], handleRotale: [0,1,0,0.75*Math.PI]}],
+                },
+                {
+                    name:"camera-three",
+                    uuid:"",
+                    x: 485,
+                    y: 225,
+                    z: 425,
+                    objHandle:[{ direction: 'arb', handleScale: [0.2,0.2,0.2], handleRotale: [0,1,0,1.25*Math.PI]}],
+                },
+                {
+                    name:"camera-four",
+                    uuid:"",
+                    x: 485,
+                    y: 225,
+                    z: -325,
+                    objHandle:[{ direction: 'arb', handleScale: [0.2,0.2,0.2], handleRotale: [0,1,0,1.75*Math.PI]}],
                 }
             ]
         },
