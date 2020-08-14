@@ -3,7 +3,7 @@ module.exports = {
     publicPath: './',
     //baseUrl: process.env.NODE_ENV === "production" ? "./" : "/"
     // 输出文件目录
-    outputDir: 'dist',
+    outputDir: 'show',
     // eslint-loader 是否在保存的时候检查
     lintOnSave: false,
     // use the full build with in-browser compiler?

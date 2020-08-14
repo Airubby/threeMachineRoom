@@ -1,0 +1,85 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# 创建的文件:12.05.2016 19:31:09
+
+newmtl wire_224086086
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.8784 0.3373 0.3373
+	Kd 0.8784 0.3373 0.3373
+	Ks 0.3500 0.3500 0.3500
+	map_Kd ./fire_extinguisher_side.jpg
+	map_ks ./fire_extinguisher_side.jpg
+	norm ./fire_extinguisher_side.jpg
+
+newmtl wire_255255255
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.3500 0.3500 0.3500
+
+newmtl wire_242241207
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.9490 0.9451 0.8118
+	Kd 0.9490 0.9451 0.8118
+	Ks 0.3500 0.3500 0.3500
+
+newmtl wire_000000000
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.3500 0.3500 0.3500
+
+newmtl wire_184184184
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.7216 0.7216 0.7216
+	Kd 0.7216 0.7216 0.7216
+	Ks 0.3500 0.3500 0.3500
+
+newmtl wire_212204198
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.8314 0.8000 0.7765
+	Kd 0.8314 0.8000 0.7765
+	Ks 0.3500 0.3500 0.3500
+
+newmtl wire_216112043
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.8471 0.4392 0.1686
+	Kd 0.8471 0.4392 0.1686
+	Ks 0.3500 0.3500 0.3500
+
+newmtl wire_223235028
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.8745 0.9216 0.1098
+	Kd 0.8745 0.9216 0.1098
+	Ks 0.3500 0.3500 0.3500
