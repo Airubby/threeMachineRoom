@@ -293,7 +293,7 @@ export default class ThreeMap {
         }
         var cubeMaterialArray = [];
         cubeMaterialArray.push(new THREE.MeshLambertMaterial({
-            // map: this.createSkin(128, 128, { imgurl: '/images/wall.png' }),
+            // map: this.createSkin(128, 128, { imgurl: './images/wall.png' }),
             vertexColors: THREE.FaceColors
         }));
         var result = resultBSP.toMesh(cubeMaterialArray);
@@ -689,7 +689,7 @@ export default class ThreeMap {
         var cylinderMat = new THREE.MeshLambertMaterial({//创建材料
             color:skinColor,
             wireframe:false,
-            // map: this.createSkin(60,200,{imgurl:"/images/aircondition.png"})
+            // map: this.createSkin(60,200,{imgurl:"./images/aircondition.png"})
         });
         //创建圆柱体网格模型
         var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
@@ -764,11 +764,11 @@ export default class ThreeMap {
     createObjPlant(obj){
         let _this=this;
         var mtlLoader = new MTLLoader();
-        mtlLoader.load('/images/plant/plant.mtl', function(materials) {
+        mtlLoader.load('./images/plant/plant.mtl', function(materials) {
             materials.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('/images/plant/plant.obj', function(object) {
+            objLoader.load('./images/plant/plant.obj', function(object) {
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -789,11 +789,11 @@ export default class ThreeMap {
     createObjAnnihilator(obj){
         let _this=this;
         var mtlLoader = new MTLLoader();
-        mtlLoader.load('/images/annihilator/annihilator.mtl', function(materials) {
+        mtlLoader.load('./images/annihilator/annihilator.mtl', function(materials) {
             materials.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('/images/annihilator/annihilator.obj', function(object) {
+            objLoader.load('./images/annihilator/annihilator.obj', function(object) {
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -814,11 +814,11 @@ export default class ThreeMap {
     createObjCamera(obj){
         var _this=this;
         var mtlLoader = new MTLLoader();
-        mtlLoader.load('/images/camera/camera.mtl', function(materials) {
+        mtlLoader.load('./images/camera/camera.mtl', function(materials) {
             materials.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('/images/camera/camera.obj', function(object) {
+            objLoader.load('./images/camera/camera.obj', function(object) {
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -1205,12 +1205,12 @@ export default class ThreeMap {
         // var cylinderMat = new THREE.MeshLambertMaterial({
         //     color:0xffffff,
         //     side:THREE.DoubleSide,
-        //     // map: this.createSkin(64,64,{imgurl:"/images/rack_inside.png"})
+        //     // map: this.createSkin(64,64,{imgurl:"./images/rack_inside.png"})
         // });
         // var cylinderMat2 = new THREE.MeshLambertMaterial({
         //     color:0xffffff,
         //     side:THREE.DoubleSide,
-        //     // map: this.createSkin(64,64,{imgurl:"/images/test/camera.png"})
+        //     // map: this.createSkin(64,64,{imgurl:"./images/test/camera.png"})
         // });
         // var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
         // var cubeGeometry = new THREE.CubeGeometry(6.5, 20, 6.5, 0, 0, 1);
@@ -1226,11 +1226,11 @@ export default class ThreeMap {
         // this.scene.add(pipe);//网格模型添加到场景中
 
         //4.测试加载模型
-        // var texture = new THREE.TextureLoader().load( '/images/test/metal.png' );
-        // var texture1 = new THREE.TextureLoader().load( '/images/test/camera_light.png' );
-        // var texture2 = new THREE.TextureLoader().load( '/images/test/camera_dot.png' );
+        // var texture = new THREE.TextureLoader().load( './images/test/metal.png' );
+        // var texture1 = new THREE.TextureLoader().load( './images/test/camera_light.png' );
+        // var texture2 = new THREE.TextureLoader().load( './images/test/camera_dot.png' );
         // var loader =new OBJLoader();
-        // loader.load( '/images/test/camera.obj', function ( group ) {
+        // loader.load( './images/test/camera.obj', function ( group ) {
         //     console.log(group)
         //     group.traverse( function ( child ) {
         //         console.log(child)
@@ -1250,12 +1250,12 @@ export default class ThreeMap {
 
         //测试加载材质模型
         // var mtlLoader = new MTLLoader();
-        // mtlLoader.load('/images/test/plant.mtl', function(materials) {
+        // mtlLoader.load('./images/test/plant.mtl', function(materials) {
         //     materials.preload();
         //     console.log(materials)-
         //     var objLoader = new OBJLoader();
         //     objLoader.setMaterials(materials);
-        //     objLoader.load('/images/test/plant.obj', function(object) {
+        //     objLoader.load('./images/test/plant.obj', function(object) {
         //         console.log(object)
         //         _this.scene.add(object);
         //     }, onProgress, onError);
@@ -1316,7 +1316,7 @@ export default class ThreeMap {
         //     color:0xffffff,
         //     wireframe:false,
         //     opacity: 0.1,
-        //     map: this.createSkin(60,200,{imgurl:"/images/aircondition.png"})
+        //     map: this.createSkin(60,200,{imgurl:"./images/aircondition.png"})
         // });
         // //创建圆柱体网格模型
         // var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
@@ -1327,12 +1327,12 @@ export default class ThreeMap {
     createObjContainMtl(){
         //如果obj文件没有包含材质关联的时候，自己生成带材质的关联obj文件
         let _this=this;
-        var leaftexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_leaf_33.jpg' );
-        var soiltexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_dirt_1.jpg' );
-        var barktexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_bark_1.jpg' );
-        var jardinieretexture = new THREE.TextureLoader().load( '/images/plant/Archmodels66_jardiniere.jpg' );
+        var leaftexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_leaf_33.jpg' );
+        var soiltexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_dirt_1.jpg' );
+        var barktexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_bark_1.jpg' );
+        var jardinieretexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_jardiniere.jpg' );
         var objLoader=new OBJLoader();
-        objLoader.load("/images/plant/plant.obj",function(object ){
+        objLoader.load("./images/plant/plant.obj",function(object ){
             object.traverse( function ( child ) {
                 if ( child instanceof THREE.Mesh) {
                     child.material=new THREE.MeshBasicMaterial({color: 0xffffff});
@@ -1383,7 +1383,7 @@ export default class ThreeMap {
         //加载GLTF
         var _this=this;
         var loader = new GLTFLoader();
-        loader.load( '/images/test/object.gltf', function ( gltf ) {
+        loader.load( './images/test/object.gltf', function ( gltf ) {
             console.log('控制台查看加载gltf文件返回的对象结构',gltf)
             console.log('gltf对象场景属性',gltf.scene)
             console.log('gltf对象相机属性',gltf.cameras)
@@ -1408,11 +1408,11 @@ export default class ThreeMap {
         var _this=this;
         var loader = new OBJLoader();
         var loader2=new OBJLoader2();
-        loader.load( '/images/test/object.obj', function ( obj ) {
+        loader.load( './images/test/object.obj', function ( obj ) {
             console.log(obj)
             _this.scene.add( obj );
         })
-        // loader2.load( '/images/test/object.obj', function ( obj ) {
+        // loader2.load( './images/test/object.obj', function ( obj ) {
         //     _this.scene.add( obj );
         // })
     }
