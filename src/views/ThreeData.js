@@ -20,7 +20,7 @@ export const ThreeData={
                 skin: {
                     skin_up: {
                         skinColor: 0x98750f,
-                        imgurl: "./images/floor.jpg",
+                        imgurl: "floor.jpg",
                         repeatx: true,
                         repeaty: true,
                         width: 128,
@@ -48,7 +48,7 @@ export const ThreeData={
                     skin: {
                         skin_behind: {
                             skinColor: 0xb0cee0,
-                            imgurl: "./images/wall.png",
+                            imgurl: "wall.png",
                             repeatx: true,
                             repeaty: true,
                             width: 128,
@@ -222,7 +222,7 @@ export const ThreeData={
                                     skinColor: 0x333333,
                                     width: 20,
                                     height:40,
-                                    imgurl: "./images/doorControl.jpg",
+                                    imgurl: "doorControl.jpg",
                                 },
                             },
                         },
@@ -236,11 +236,11 @@ export const ThreeData={
                             skinColor: 0x51443e,
                             skin: {
                                 skin_fore: {
-                                    imgurl: "./images/door_left.png",
+                                    imgurl: "door_left.png",
                                     transparent: true,
                                 },
                                 skin_behind: {
-                                    imgurl: "./images/door_right.png",
+                                    imgurl: "door_right.png",
                                     transparent: true,
                                 },
                             },
@@ -265,12 +265,12 @@ export const ThreeData={
                             skinColor: 0x51443e,
                             skin: {
                                 skin_fore: {
-                                    imgurl: "./images/door_right.png",
+                                    imgurl: "door_right.png",
                                     opacity: 1,
                                     transparent: true,
                                 },
                                 skin_behind: {
-                                    imgurl: "./images/door_left.png",
+                                    imgurl: "door_left.png",
                                     opacity: 1,
                                     transparent: true,
                                 },
@@ -295,14 +295,14 @@ export const ThreeData={
                             height: 160,
                             skin: {
                                 skin_fore: {
-                                    imgurl: "./images/glass.png",
+                                    imgurl: "glass.png",
                                     transparent: true,
                                     opacity: 0.25,
                                     repeatx: true,
                                     repeaty: true,
                                 },
                                 skin_behind: {
-                                    imgurl: "./images/glass.png",
+                                    imgurl: "glass.png",
                                     transparent: true,
                                     opacity: 0.25,
                                     repeatx: true,
@@ -328,7 +328,7 @@ export const ThreeData={
                     skin: {
                         skin_fore: {
                             skinColor: 0xb0cee0,
-                            imgurl: "./images/wall.png",
+                            imgurl: "wall.png",
                             repeatx: true,
                             repeaty: true,
                             width: 128,
@@ -357,7 +357,7 @@ export const ThreeData={
                             skinColor: 0xffffff,
                             skin: {
                                 skin_fore: {
-                                    imgurl: "./images/message.jpg",
+                                    imgurl: "message.jpg",
                                 },
                             },
                             startDot: {
@@ -379,7 +379,7 @@ export const ThreeData={
                     skin: {
                         skin_right: {
                             skinColor: 0xb0cee0,
-                            imgurl: "./images/wall.png",
+                            imgurl: "wall.png",
                             repeatx: true,
                             repeaty: true,
                             width: 128,
@@ -403,7 +403,7 @@ export const ThreeData={
                     skin: {
                         skin_left: {
                             skinColor: 0xb0cee0,
-                            imgurl: "./images/wall.png",
+                            imgurl: "wall.png",
                             repeatx: true,
                             repeaty: true,
                             width: 128,
@@ -431,7 +431,7 @@ export const ThreeData={
                             skinColor: 0x111111,
                             skin: {
                                 skin_left: {
-                                    imgurl: "./images/tv.jpg",
+                                    imgurl: "tv.jpg",
                                 },
                             },
                             startDot: {
@@ -466,7 +466,7 @@ export const ThreeData={
                 skinColor: 0xfafafa,
                 skin: {
                     skin_fore: {
-                        imgurl: "./images/aircondition.png",
+                        imgurl: "aircondition.png",
                     },
                 }
             },
@@ -702,12 +702,12 @@ export const ThreeData={
         //         skinColor: 0xff0000,
         //         skin:{
         //             skinColor: 0xff0000,
-        //             skin_up: { imgurl: "./images/rack_top.jpg" },
-        //             skin_down: { imgurl: "./images/rack_top.jpg" },
-        //             skin_fore: {imgurl: "./images/rack_back.jpg"},
-        //             skin_behind: {imgurl: "./images/rack_back.jpg"},
-        //             skin_left: { imgurl: "./images/rack_back.jpg" },
-        //             skin_right: { imgurl: "./images/rack_back.jpg" },
+        //             skin_up: { imgurl: "rack_top.jpg" },
+        //             skin_down: { imgurl: "rack_top.jpg" },
+        //             skin_fore: {imgurl: "rack_back.jpg"},
+        //             skin_behind: {imgurl: "rack_back.jpg"},
+        //             skin_left: { imgurl: "rack_back.jpg" },
+        //             skin_right: { imgurl: "rack_back.jpg" },
         //         }
         //     },
         //     doors: {
@@ -872,12 +872,12 @@ export const ThreeData={
         //         skinColor: 0xff0000,
         //         skin:{
         //             skinColor: 0xff0000,
-        //             skin_up: { imgurl: "./images/rack_top.jpg" },
-        //             skin_down: { imgurl: "./images/rack_top.jpg" },
-        //             skin_fore: {imgurl: "./images/rack_back.jpg"},
-        //             skin_behind: {imgurl: "./images/rack_back.jpg"},
-        //             skin_left: { imgurl: "./images/rack_back.jpg" },
-        //             skin_right: { imgurl: "./images/rack_back.jpg" },
+        //             skin_up: { imgurl: "rack_top.jpg" },
+        //             skin_down: { imgurl: "rack_top.jpg" },
+        //             skin_fore: {imgurl: "rack_back.jpg"},
+        //             skin_behind: {imgurl: "rack_back.jpg"},
+        //             skin_left: { imgurl: "rack_back.jpg" },
+        //             skin_right: { imgurl: "rack_back.jpg" },
         //         }
         //     },
         //     doors: {
@@ -960,7 +960,7 @@ export const ThreeData={
         {
             btnid: "btn_reset",
             btnTitle: "场景复位",
-            btnimg: "./images/reset.png",
+            btnimg: "reset.png",
             clickFunction: function (_this) {
                 _this.resetView();
             }
@@ -981,12 +981,12 @@ let cabinet={
         skinColor: 0xff0000,
         skin:{
             skinColor: 0xff0000,
-            skin_up: { imgurl: "./images/rack_top.jpg" },
-            skin_down: { imgurl: "./images/rack_top.jpg" },
-            skin_fore: {imgurl: "./images/rack_back.jpg"},
-            skin_behind: {imgurl: "./images/rack_back.jpg"},
-            skin_left: { imgurl: "./images/rack_back.jpg" },
-            skin_right: { imgurl: "./images/rack_back.jpg" },
+            skin_up: { imgurl: "rack_top.jpg" },
+            skin_down: { imgurl: "rack_top.jpg" },
+            skin_fore: {imgurl: "rack_back.jpg"},
+            skin_behind: {imgurl: "rack_back.jpg"},
+            skin_left: { imgurl: "rack_back.jpg" },
+            skin_right: { imgurl: "rack_back.jpg" },
         }
     },
     doors: {

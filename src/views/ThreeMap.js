@@ -42,6 +42,9 @@ export default class ThreeMap {
         this.timer=null; 
         this.tooltip=null;
         this.lastEvent=null;
+
+        // this.BASE_PATH="/threeMachineRoom/show/images/"  //github的静态展示路径
+        this.BASE_PATH="/images/"
     }
 
     init() {
@@ -293,7 +296,6 @@ export default class ThreeMap {
         }
         var cubeMaterialArray = [];
         cubeMaterialArray.push(new THREE.MeshLambertMaterial({
-            // map: this.createSkin(128, 128, { imgurl: './images/wall.png' }),
             vertexColors: THREE.FaceColors
         }));
         var result = resultBSP.toMesh(cubeMaterialArray);
@@ -689,7 +691,6 @@ export default class ThreeMap {
         var cylinderMat = new THREE.MeshLambertMaterial({//创建材料
             color:skinColor,
             wireframe:false,
-            // map: this.createSkin(60,200,{imgurl:"./images/aircondition.png"})
         });
         //创建圆柱体网格模型
         var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
@@ -718,7 +719,7 @@ export default class ThreeMap {
         if (typeof obj.imgurl == "string") {//传入的材质是图片路径，使用 textureloader加载图片作为材质
             var loader = new THREE.TextureLoader();
             // loader.setCrossOrigin(this.crossOrigin);
-            texture = loader.load(obj.imgurl, function () { }, undefined, function () { });
+            texture = loader.load(this.commonFunc.getPath(obj.imgurl), function () { }, undefined, function () { });
         } else {
             texture = new THREE.CanvasTexture(obj.imgurl)
         }
@@ -940,7 +941,8 @@ export default class ThreeMap {
         if (obj.height != null && typeof (obj.height) != 'undefined') {
             imgheight = obj.height;
         }
-        var texture = new THREE.TextureLoader().load(obj.imgurl);
+        console.log(this.commonFunc.getPath(obj.imgurl))
+        var texture = new THREE.TextureLoader().load(this.commonFunc.getPath(obj.imgurl));
         var repeat = false;
         if (obj.repeatx != null && typeof (obj.repeatx) != 'undefined' && obj.repeatx==true) {
             texture.wrapS = THREE.RepeatWrapping;
@@ -1002,6 +1004,7 @@ export default class ThreeMap {
         this.scene.add(text);
     }
     commonFunc={
+        _this:this,
         //判断对象
         hasObj: function (obj) {
             if (obj != null && typeof (obj) != 'undefined') {
@@ -1021,7 +1024,10 @@ export default class ThreeMap {
             });
             return findedobj;
         },
-
+        //获取路径
+        getPath: function(file){
+            return this._this.BASE_PATH+file;
+        },
     }
 
 
