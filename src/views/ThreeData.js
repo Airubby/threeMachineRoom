@@ -498,7 +498,7 @@ export const ThreeData={
                     x: 420,
                     y: 90,
                     z: 510,
-                    imgurl: "images/plant.png",
+                    imgurl: "plant.png",
                 },
                 {
                     show: true,
@@ -510,7 +510,7 @@ export const ThreeData={
                     x: 420,
                     y: 90,
                     z: 510,
-                    imgurl: "images/plant.png",
+                    imgurl: "plant.png",
                     rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
                 },
                 {
@@ -558,7 +558,7 @@ export const ThreeData={
                     x: 160,
                     y: 90,
                     z: 510,
-                    imgurl: "images/plant.png",
+                    imgurl: "plant.png",
                 },
                 {
                     show: true,
@@ -570,7 +570,7 @@ export const ThreeData={
                     x: 160,
                     y: 90,
                     z: 510,
-                    imgurl: "images/plant.png",
+                    imgurl: "plant.png",
                     rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
                 },
                 {
@@ -717,10 +717,10 @@ export const ThreeData={
         //         skins:[ {
         //             skinColor: 0x333333,
         //             skin_fore: {
-        //                 imgurl: "images/rack_right_door.jpg",
+        //                 imgurl: "rack_right_door.jpg",
         //             },
         //             skin_behind: {
-        //                 imgurl: "images/rack_left_door.jpg",
+        //                 imgurl: "rack_left_door.jpg",
         //             }
         //         }]
         //     },
@@ -738,22 +738,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_fore: {
-        //                         imgurl: "images/server1.jpg",
+        //                         imgurl: "server1.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -771,22 +771,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_fore: {
-        //                         imgurl: "images/server2.jpg",
+        //                         imgurl: "server2.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -804,22 +804,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_fore: {
-        //                         imgurl: "images/server1.jpg",
+        //                         imgurl: "server1.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -837,22 +837,22 @@ export const ThreeData={
         //                 skinColor: 0xff0000,
         //                 skin: {
         //                     skin_up: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_down: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_fore: {
-        //                         imgurl: "images/server2.jpg",
+        //                         imgurl: "server2.jpg",
         //                     },
         //                     skin_behind: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_left: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     },
         //                     skin_right: {
-        //                         imgurl: "images/rack_inside.png",
+        //                         imgurl: "rack_inside.png",
         //                     }
         //                 }
         //             }
@@ -886,18 +886,18 @@ export const ThreeData={
         //         skins:[ {
         //             skinColor: 0x333333,
         //             skin_fore: {
-        //                 imgurl: "images/rack_left_door.jpg",
+        //                 imgurl: "rack_left_door.jpg",
         //             },
         //             skin_behind: {
-        //                 imgurl: "images/rack_right_door.jpg",
+        //                 imgurl: "rack_right_door.jpg",
         //             }
         //         },{
         //             skinColor: 0x333333,
         //             skin_fore: {
-        //                 imgurl: "images/rack_right_door.jpg",
+        //                 imgurl: "rack_right_door.jpg",
         //             },
         //             skin_behind: {
-        //                 imgurl: "images/rack_left_door.jpg",
+        //                 imgurl: "rack_left_door.jpg",
         //             }
         //         }]
         //     },
@@ -995,12 +995,17 @@ let cabinet={
         skins:[ {
             skinColor: 0x333333,
             skin_fore: {
-                imgurl: "images/rack_right_door.jpg",
+                imgurl: "rack_right_door.jpg",
             },
             skin_behind: {
-                imgurl: "images/rack_left_door.jpg",
+                imgurl: "rack_left_door.jpg",
             }
         }]
+    },
+    data:{
+        isalarm:false,
+        name:"",
+        alarmLevel:"",
     },
     childrens:[
         {
@@ -1016,22 +1021,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_fore: {
-                        imgurl: "images/server1.jpg",
+                        imgurl: "server1.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     }
                 }
             },
@@ -1039,7 +1044,8 @@ let cabinet={
                 devid:"01",
                 pointid:"0102",
                 isalarm:false,
-                tipInfo:"设备1信息***"
+                tipInfo:"设备1信息***",
+                alarmInfo:"",
             }
         },
         {
@@ -1055,22 +1061,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_fore: {
-                        imgurl: "images/server2.jpg",
+                        imgurl: "server2.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     }
                 }
             },
@@ -1078,7 +1084,8 @@ let cabinet={
                 devid:"01",
                 pointid:"0102",
                 isalarm:false,
-                tipInfo:"设备2信息^^^"
+                tipInfo:"设备2信息^^^",
+                alarmInfo:"",
             }
         },
         {
@@ -1094,22 +1101,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_fore: {
-                        imgurl: "images/server1.jpg",
+                        imgurl: "server1.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     }
                 }
             },
@@ -1117,7 +1124,8 @@ let cabinet={
                 devid:"01",
                 pointid:"0102",
                 isalarm:false,
-                tipInfo:"设备3信息!!!"
+                tipInfo:"设备3信息!!!",
+                alarmInfo:"",
             }
         },
         {
@@ -1133,22 +1141,22 @@ let cabinet={
                 skinColor: 0xff0000,
                 skin: {
                     skin_up: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_down: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_fore: {
-                        imgurl: "images/server2.jpg",
+                        imgurl: "server2.jpg",
                     },
                     skin_behind: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_left: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     },
                     skin_right: {
-                        imgurl: "images/rack_inside.png",
+                        imgurl: "rack_inside.png",
                     }
                 }
             },
@@ -1156,7 +1164,8 @@ let cabinet={
                 devid:"01",
                 pointid:"0102",
                 isalarm:false,
-                tipInfo:"设备4信息~~~"
+                tipInfo:"设备4信息~~~",
+                alarmInfo:"",
             }
         },
     ]
@@ -1166,6 +1175,7 @@ for (var i = 0; i <3;i++){
     for (var j = 0; j <6; j++) {
         let obj=JSON.parse(JSON.stringify(cabinet));
         obj.name="cabinet"+i+"_"+j;
+        obj.data.name="A-"+i+"-"+j;
         obj.y=obj.y;
         obj.x=obj.x+220*i;
         obj.z=obj.z+100*j;

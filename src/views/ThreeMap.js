@@ -39,12 +39,14 @@ export default class ThreeMap {
         this.mouseClick = new THREE.Vector2();
         this.raycaster = new THREE.Raycaster();
         this.lastElement=null;  //存放最后一个设备
-        this.timer=null; 
+        this.tipTimer=null; //显示提示用的timer
         this.tooltip=null;
         this.lastEvent=null;
 
+        this.progressSuccess=0;
+        this.loadtimer=null;
         // this.BASE_PATH="/threeMachineRoom/show/images/"  //github的静态展示路径
-        this.BASE_PATH="/images/"
+        this.BASE_PATH="./images/"
     }
 
     init() {
@@ -115,6 +117,7 @@ export default class ThreeMap {
         this.controls.update();
     }
     InitData(){
+        this.Loading();
         if(this.objList.length>0){
             for(let i=0;i<this.objList.length;i++){
                 this.InitAddObject(this.objList[i]);
@@ -125,12 +128,45 @@ export default class ThreeMap {
         }
         this.createText(this.objList[0].width,this.objList[0].depth);
         this.InitTooltip();
+        this.LoadSuccess();
     }
     //刷新视图
     resetView(){
         this.dom.removeChild(this.renderer.domElement);
         var map = new ThreeMap(this.props,this.ThreeData);
         map.init();
+    }
+    Loading(){
+        var div = document.createElement('div');
+		div.setAttribute('id', 'loading');
+		div.style.display = 'block';
+		div.style.position = 'absolute';
+		div.style.left = '0';
+		div.style.top = '0';
+		div.style.width = '100%';
+        div.style.height = '100%';
+        div.style.fontSize="30px";
+        div.style.background = 'rgba(0,0,0,0.65)';
+        let loading=document.createElement('div');
+        loading.innerHTML="模型加载中...";
+        loading.style.top="40%";
+        loading.style.position="absolute";
+        loading.style.width="100%";
+        loading.style.textAlign="center";
+        div.appendChild(loading);
+		this.dom.appendChild(div);
+    }
+    LoadSuccess(){
+        let _this=this;
+        if(this.progressSuccess==3){
+            let load=this.dom.querySelector("#loading");
+            load.style.display="none";
+            clearTimeout(this.loadtimer);
+        }else{
+            this.loadtimer = setTimeout(function(){
+                _this.LoadSuccess();
+            },1000); 
+        }
     }
     //添加提示框
     InitTooltip(){
@@ -188,7 +224,7 @@ export default class ThreeMap {
 			img.style.top = (step / 2 + (i * step)) + 'px';
 			img.style['pointer-events'] = 'auto';
 			img.style['cursor'] = 'pointer';
-			img.setAttribute('src', btnimg);
+			img.setAttribute('src', this.commonFunc.getPath(btnimg));
 			img.style.width = '24px';
 			img.style.height = '24px';
             img.setAttribute('title', button.btnTitle);
@@ -765,11 +801,11 @@ export default class ThreeMap {
     createObjPlant(obj){
         let _this=this;
         var mtlLoader = new MTLLoader();
-        mtlLoader.load('./images/plant/plant.mtl', function(materials) {
+        mtlLoader.load(_this.commonFunc.getPath('plant/plant.mtl'), function(materials) {
             materials.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('./images/plant/plant.obj', function(object) {
+            objLoader.load(_this.commonFunc.getPath('plant/plant.obj'), function(object) {
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -783,6 +819,7 @@ export default class ThreeMap {
                     newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
                     _this.scene.add( newobj );
                 });
+                _this.progressSuccess+=1;
             }, _this.onProgress, _this.onError);
         });
     }
@@ -790,11 +827,11 @@ export default class ThreeMap {
     createObjAnnihilator(obj){
         let _this=this;
         var mtlLoader = new MTLLoader();
-        mtlLoader.load('./images/annihilator/annihilator.mtl', function(materials) {
+        mtlLoader.load(_this.commonFunc.getPath('annihilator/annihilator.mtl'), function(materials) {
             materials.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('./images/annihilator/annihilator.obj', function(object) {
+            objLoader.load(_this.commonFunc.getPath('annihilator/annihilator.obj'), function(object) {
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -808,6 +845,7 @@ export default class ThreeMap {
                     newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
                     _this.scene.add( newobj );
                 });
+                _this.progressSuccess+=1;
             }, _this.onProgress, _this.onError);
         });
     }
@@ -815,11 +853,11 @@ export default class ThreeMap {
     createObjCamera(obj){
         var _this=this;
         var mtlLoader = new MTLLoader();
-        mtlLoader.load('./images/camera/camera.mtl', function(materials) {
+        mtlLoader.load(_this.commonFunc.getPath('camera/camera.mtl'), function(materials) {
             materials.preload();
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
-            objLoader.load('./images/camera/camera.obj', function(object) {
+            objLoader.load(_this.commonFunc.getPath('camera/camera.obj'), function(object) {
                 obj.childrens.forEach(function(childobj){
                     var newobj = object.clone();
                     if(!newobj.objHandle){
@@ -833,6 +871,7 @@ export default class ThreeMap {
                     newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
                     _this.scene.add( newobj );
                 });
+                _this.progressSuccess+=1;
             }, _this.onProgress, _this.onError);
         });
     }
@@ -879,7 +918,7 @@ export default class ThreeMap {
         return obj;
     }
     //进度通知
-    onProgress = function ( xhr ) {
+    onProgress = function ( xhr) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
             // console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
@@ -941,7 +980,6 @@ export default class ThreeMap {
         if (obj.height != null && typeof (obj.height) != 'undefined') {
             imgheight = obj.height;
         }
-        console.log(this.commonFunc.getPath(obj.imgurl))
         var texture = new THREE.TextureLoader().load(this.commonFunc.getPath(obj.imgurl));
         var repeat = false;
         if (obj.repeatx != null && typeof (obj.repeatx) != 'undefined' && obj.repeatx==true) {
@@ -1169,9 +1207,9 @@ export default class ThreeMap {
             }
         }
         if (this.lastElement != currentElement ) {
-            clearTimeout(this.timer);
+            clearTimeout(this.tipTimer);
             if(currentElement){
-                this.timer = setTimeout(function(){
+                this.tipTimer = setTimeout(function(){
                     
                     let tiplen=currentElement.data.tipInfo.length;
                     _this.tooltip.querySelector("#tipdiv").innerHTML=currentElement.data.tipInfo;
