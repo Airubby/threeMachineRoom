@@ -696,7 +696,7 @@ export const ThreeData={
         //     objType: 'emptyCabinet',
         //     transparent:true,
         //     size:{width:70,depth:70,height:200, thick:2},
-        //     x:-350, y: 0, z: -180,
+        //     x:-350, y: 100, z: -180,
         //     rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
         //     style:{
         //         skinColor: 0xff0000,
@@ -723,6 +723,11 @@ export const ThreeData={
         //                 imgurl: "rack_left_door.jpg",
         //             }
         //         }]
+        //     },
+        //     data:{
+        //         isalarm:false,
+        //         name:"机柜AAA",
+        //         alarmLevel:"1",
         //     },
         //     childrens:[
         //         {
@@ -756,6 +761,13 @@ export const ThreeData={
         //                         imgurl: "rack_inside.png",
         //                     }
         //                 }
+        //             },
+        //             data:{
+        //                 devid:"01",
+        //                 pointid:"0102",
+        //                 isalarm:false,
+        //                 tipInfo:"设备1信息***",
+        //                 alarmInfo:"",
         //             }
         //         },
         //         {
@@ -1183,6 +1195,5 @@ for (var i = 0; i <3;i++){
         //     obj.doors.rotation=[{ direction: 'y', degree: 0.5*Math.PI}];
         // }
         ThreeData.objects.push(obj);
-        // console.log(ThreeData.objects)
     }
 }

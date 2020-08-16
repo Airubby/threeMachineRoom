@@ -117,7 +117,7 @@ export default class ThreeMap {
         this.controls.update();
     }
     InitData(){
-        this.Loading();
+        // this.Loading();
         if(this.objList.length>0){
             for(let i=0;i<this.objList.length;i++){
                 this.InitAddObject(this.objList[i]);
@@ -128,7 +128,7 @@ export default class ThreeMap {
         }
         this.createText(this.objList[0].width,this.objList[0].depth);
         this.InitTooltip();
-        this.LoadSuccess();
+        // this.LoadSuccess();
     }
     //刷新视图
     resetView(){
@@ -146,6 +146,7 @@ export default class ThreeMap {
 		div.style.width = '100%';
         div.style.height = '100%';
         div.style.fontSize="30px";
+        div.style.zIndex="999";
         div.style.background = 'rgba(0,0,0,0.65)';
         let loading=document.createElement('div');
         loading.innerHTML="模型加载中...";
@@ -253,13 +254,13 @@ export default class ThreeMap {
                 //     this.addObject(tempObj);
                 //     break;
                 case 'objPlant':  //模型花
-                    this.createObjPlant(obj)
+                    this.createObjPlant(obj);
                     break;
                 case 'objAnnihilator':  //模型灭火器
-                    this.createObjAnnihilator(obj)
+                    this.createObjAnnihilator(obj);
                     break;
                 case 'objCamera':  //模型摄像头
-                    this.createObjCamera(obj)
+                    this.createObjCamera(obj);
                     break;
             }
         }
@@ -626,7 +627,7 @@ export default class ThreeMap {
         tempobj.uuid = obj.uuid;
         this.addObject(Cabinet,true);
         tempobj.position.set(obj.x||0,(obj.y||0)+floorHeight,obj.z||0);
-
+        //门
         if(obj.doors!=null&&typeof (obj.doors) != 'undefined'){
             if(obj.doors.skins.length==1&&obj.doors.doorname.length==1){
                 var doorobj = {
@@ -676,6 +677,41 @@ export default class ThreeMap {
                     this.addObject(doorcube,true)
                 }
             }
+        }
+        //机柜告警信息
+        if(this.commonFunc.hasObj(obj.data)){
+            var width=obj.size.width||70;
+            var height=obj.size.height||70;
+            var canvas = document.createElement('canvas');
+            canvas['width']=width;
+            canvas['height']=height;
+            var context = canvas.getContext('2d');
+            context.beginPath();
+            context.rect(0, 0, width, height);
+            context.fillStyle = 'rgba(255, 255, 255, 0)';  //canvas设置为透明
+            context.fill();
+
+            var marker=function(context, x, y,text){
+                var color='#ffffff';
+                context.font = 12+'px "Microsoft Yahei" ';
+                context.fillStyle = color;
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';	
+                context.strokeStyle=color;
+                context.fillText(text, x, y);
+            }
+            marker(context, width/2, height/2, obj.data.name);
+            var alarmobj={
+                width:width,
+                height:height,
+                imgurl:canvas,
+                y:obj.size.height/2+1,
+                transparent:true,
+                opacity:0.8,
+                rotation: [{ direction: 'x', degree: -0.5*Math.PI }], 
+            }
+            var text=this.createPlaneGeometry(alarmobj);
+            tempobj.add(text);
         }
         if (this.commonFunc.hasObj(obj.childrens) && obj.childrens.length > 0) {
             obj.childrens.forEach(function(service, index){
