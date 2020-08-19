@@ -1018,6 +1018,7 @@ let cabinet={
         isalarm:false,
         name:"",
         alarmLevel:"",
+        alarmInfo:""
     },
     childrens:[
         {
