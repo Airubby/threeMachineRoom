@@ -1103,7 +1103,7 @@ let cabinet={
         {
             show: true,
             uuid: "",
-            name: 'equipment_server1',
+            name: 'equipment_server3',
             objType: 'cube',
             depth: 65,
             width: 65,
@@ -1143,7 +1143,7 @@ let cabinet={
         {
             show: true,
             uuid: "",
-            name: 'equipment_server2',
+            name: 'equipment_server4',
             objType: 'cube',
             depth: 65,
             width: 65,
