@@ -40,6 +40,9 @@ export default class ThreeMap {
         this.scene = null;//场景
         this.camera=null;
         this.objects = [];  //存放对象
+        this.equipment=[];  //存放设备
+        this.sprite=[];  //存放告警精灵图标
+        this.cabinet=[];  //存放柜子
         this.dom=document.getElementById(this.props.domID);
         this.dbclick = 0;
         this.mouseClick = new THREE.Vector2();
@@ -167,13 +170,11 @@ export default class ThreeMap {
         if(this.progressSuccess==3){
             let load=this.dom.querySelector("#loading");
             load.style.display="none";
-            for(let i=0;i<this.objects.length;i++){
-                if(this.objects[i].type=="Sprite"){
-                    this.objects[i].visible=true;
-                }
-            }
-            console.log(this.objects)
-            console.log(this.alarmColor)
+            let arr=[{devid:"0100",pointid:"010100",isalarm:true},{devid:"0112",pointid:"010412",isalarm:true}];
+            this.updateAlarmStatus(arr);
+            console.log(this.equipment)
+            console.log(this.sprite)
+            console.log(this.cabinet)
             clearTimeout(this.loadtimer);
         }else{
             this.loadtimer = setTimeout(function(){
@@ -531,8 +532,8 @@ export default class ThreeMap {
         //下
         var downobj= {
             show: true,
-            uuid: uuid,
             name: "cubedown",
+            uuid:"",
             objType: 'cube',
             width: obj.size.width,
             height: obj.size.thick,
@@ -632,10 +633,11 @@ export default class ThreeMap {
         var tempobj = new THREE.Object3D();
         tempobj.add(Cabinet);
         tempobj.name = obj.name;
-        tempobj.uuid = obj.uuid;
+        tempobj.uuid = uuid;
         tempobj.data= obj.data||{};
         tempobj.position.set(obj.x||0,(obj.y||0)+floorHeight,obj.z||0);
         this.addObject(tempobj,"object");
+        this.cabinet.push(tempobj);
         //门
         if(obj.doors!=null&&typeof (obj.doors) != 'undefined'){
             if(obj.doors.skins.length==1&&obj.doors.doorname.length==1){
@@ -736,7 +738,7 @@ export default class ThreeMap {
             sprite.data={"cabinetUUID":uuid};
             sprite.visible=false;
             this.addObject(sprite);
-            
+            this.sprite.push(sprite);
         }
         if (this.commonFunc.hasObj(obj.childrens) && obj.childrens.length > 0) {
             let equipmentUUID=[];
@@ -752,6 +754,7 @@ export default class ThreeMap {
                 newobj.uuid=serviceuuid;
                 equipmentUUID.push(serviceuuid);
                 _this.addObject(newobj);
+                _this.equipment.push(newobj);
             })
             tempobj.data["equipmentUUID"]=equipmentUUID
         }
@@ -1120,8 +1123,18 @@ export default class ThreeMap {
         this.scene.add(text);
     }
     //更新告警状态
-    updateAlarmStatus(){
-
+    updateAlarmStatus(arr){
+        for(let i=0;i<this.equipment.length;i++){
+            for(let j=0;j<arr.length;j++){
+                if(arr[j].devid==this.equipment[i].data.devid&&arr[j].pointid==this.equipment[i].data.pointid){
+                    for(let m=0;m<this.sprite.length;m++){
+                        if(this.sprite[m].data.cabinetUUID==this.equipment[i].data.cabinetUUID){
+                            this.sprite[m].visible=arr[j].isalarm;  //告警就显示，不告警就不显示
+                        }
+                    }
+                }
+            }
+        }
     }
     commonFunc={
         _this:this,

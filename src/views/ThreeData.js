@@ -1055,7 +1055,7 @@ let cabinet={
             },
             data:{
                 devid:"01",
-                pointid:"0102",
+                pointid:"0101",
                 isalarm:false,
                 tipInfo:"设备1信息***",
                 alarmInfo:"",
@@ -1135,7 +1135,7 @@ let cabinet={
             },
             data:{
                 devid:"01",
-                pointid:"0102",
+                pointid:"0103",
                 isalarm:false,
                 tipInfo:"设备3信息!!!",
                 alarmInfo:"",
@@ -1175,7 +1175,7 @@ let cabinet={
             },
             data:{
                 devid:"01",
-                pointid:"0102",
+                pointid:"0104",
                 isalarm:false,
                 tipInfo:"设备4信息~~~",
                 alarmInfo:"",
@@ -1189,6 +1189,10 @@ for (var i = 0; i <3;i++){
         let obj=JSON.parse(JSON.stringify(cabinet));
         obj.name="cabinet"+(i+1)+"_"+(j+1);
         obj.data.name="JG-"+(i+1)+"-"+(j+1);
+        for(let k=0;k<obj.childrens.length;k++){
+            obj.childrens[k].data.devid=obj.childrens[k].data.devid+i+j;
+            obj.childrens[k].data.pointid=obj.childrens[k].data.pointid+i+j;
+        }
         obj.y=obj.y;
         obj.x=obj.x+220*i;
         obj.z=obj.z+100*j;
