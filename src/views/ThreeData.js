@@ -1015,10 +1015,8 @@ let cabinet={
         }]
     },
     data:{
-        isalarm:false,
         name:"",
-        alarmLevel:"",
-        alarmInfo:""
+        alarmInfo:[]
     },
     childrens:[
         {

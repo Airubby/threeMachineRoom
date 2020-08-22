@@ -2,9 +2,11 @@
     <div class="three-content" id="three-dom">
         <el-button type="primary" @click="set" style="position:absolute;top:20px;right:20px;">模拟告警设置</el-button>
         <el-dialog
+            top="0vh"
+            :center="true"
             title="告警设置"
             :visible.sync="dialogVisible"
-            width="1360px">
+            width="1450px">
             <div>
                 <h3>触发告警设置</h3>
                 <div>
@@ -12,7 +14,7 @@
                         <template v-for="(e,i) in equipment" style="margin-bottom:10px;">
                             <el-checkbox :label="e.id" :key="e.id">{{e.name}}</el-checkbox>
                             <el-select v-model="alarm[i]" placeholder="请选择"
-                                style="width:100px;margin-right:20px;margin-bottom:10px;"
+                                style="width:75px;margin-right:10px;margin-bottom:3px;"
                                  size="mini">
                                 <el-option
                                 v-for="item in alarmInfo"
@@ -28,7 +30,7 @@
                 <div>
                     <el-checkbox-group v-model="equipmentList1">
                         <template v-for="(e,i) in equipment">
-                            <el-checkbox :label="e.id" :key="e.id" style="margin-bottom:10px;">{{e.name}}</el-checkbox>
+                            <el-checkbox :label="e.id" :key="e.id" style="margin-bottom:5px;">{{e.name}}</el-checkbox>
                         </template>
                     </el-checkbox-group>
                 </div>
@@ -87,6 +89,8 @@ export default {
     },
     methods: {
         set:function(){
+            this.equipmentList=[],  //告警的
+            this.equipmentList1=[],  //解除告警的
             this.dialogVisible=true;
         },
         sure:function(){
