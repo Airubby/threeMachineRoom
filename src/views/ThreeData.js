@@ -19,7 +19,6 @@ export const ThreeData={
                 skinColor: 0x6EA1B5,
                 skin: {
                     skin_up: {
-                        skinColor: 0x98750f,
                         imgurl: "floor.jpg",
                         repeatx: true,
                         repeaty: true,
@@ -990,9 +989,7 @@ let cabinet={
     x:-350, y: 100, z: -220,
     rotation: [{ direction: 'y', degree: 0.5*Math.PI}],
     style:{
-        skinColor: 0xff0000,
         skin:{
-            skinColor: 0xff0000,
             skin_up: { imgurl: "rack_top.jpg" },
             skin_down: { imgurl: "rack_top.jpg" },
             skin_fore: {imgurl: "rack_back.jpg"},
@@ -1005,7 +1002,6 @@ let cabinet={
         doorType:'lr',
         doorname: ['cabinet_door'],
         skins:[ {
-            skinColor: 0x333333,
             skin_fore: {
                 imgurl: "rack_right_door.jpg",
             },
@@ -1029,7 +1025,6 @@ let cabinet={
             height: 10,
             y: 5,
             style: {
-                skinColor: 0xff0000,
                 skin: {
                     skin_up: {
                         imgurl: "rack_inside.png",
@@ -1069,7 +1064,6 @@ let cabinet={
             height: 20,
             y: 20,
             style: {
-                skinColor: 0xff0000,
                 skin: {
                     skin_up: {
                         imgurl: "rack_inside.png",
@@ -1109,7 +1103,6 @@ let cabinet={
             height: 10,
             y: 191,
             style: {
-                skinColor: 0xff0000,
                 skin: {
                     skin_up: {
                         imgurl: "rack_inside.png",
@@ -1149,7 +1142,6 @@ let cabinet={
             height: 20,
             y: 80,
             style: {
-                skinColor: 0xff0000,
                 skin: {
                     skin_up: {
                         imgurl: "rack_inside.png",

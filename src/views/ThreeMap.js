@@ -444,15 +444,14 @@ export default class ThreeMap {
         var height = obj.height || 10;  //y轴
         var depth=obj.depth || width;  //z轴
         var x = obj.x || 0, y = obj.y || 0, z = obj.z || 0;
-        var skinColor = obj.style.skinColor || 0x98750f;
+        var skinColor = obj.style.hasOwnProperty('skinColor')?obj.style.skinColor : "";
         //width：是x方向上的长度；height：是y方向上的长度；depth：是z方向上的长度；
         var cubeGeometry = new THREE.CubeGeometry(width, height, depth, 0, 0, 1);
 
         //六面颜色
         for (var i = 0; i < cubeGeometry.faces.length; i += 2) {
-            var hex = skinColor || Math.random() * 0x531844;
-            cubeGeometry.faces[i].color.setHex(hex);
-            cubeGeometry.faces[i + 1].color.setHex(hex);
+            cubeGeometry.faces[i].color.setHex(skinColor);
+            cubeGeometry.faces[i + 1].color.setHex(skinColor);
         }
         //六面纹理
         var skin_up_obj = {
@@ -470,18 +469,25 @@ export default class ThreeMap {
             if (obj.style.skin.opacity != null && typeof (obj.style.skin.opacity) != 'undefined') {
                 skin_opacity = obj.style.skin.opacity;
             }
+            let skin_right=obj.style.skin.hasOwnProperty("skin_right")&&obj.style.skin.skin_right.hasOwnProperty('skinColor')?obj.style.skin.skin_right.skinColor:obj.style.skin.hasOwnProperty("skinColor")?obj.style.skin.skinColor:"";
+            let skin_left=obj.style.skin.hasOwnProperty("skin_left")&&obj.style.skin.skin_left.hasOwnProperty('skinColor')?obj.style.skin.skin_left.skinColor:obj.style.skin.hasOwnProperty("skinColor")?obj.style.skin.skinColor:"";
+            let skin_up=obj.style.skin.hasOwnProperty("skin_up")&&obj.style.skin.skin_up.hasOwnProperty('skinColor')?obj.style.skin.skin_up.skinColor:obj.style.skin.hasOwnProperty("skinColor")?obj.style.skin.skinColor:"";
+            let skin_down=obj.style.skin.hasOwnProperty("skin_down")&&obj.style.skin.skin_down.hasOwnProperty('skinColor')?obj.style.skin.skin_down.skinColor:obj.style.skin.hasOwnProperty("skinColor")?obj.style.skin.skinColor:"";
+            let skin_fore=obj.style.skin.hasOwnProperty("skin_fore")&&obj.style.skin.skin_fore.hasOwnProperty('skinColor')?obj.style.skin.skin_fore.skinColor:obj.style.skin.hasOwnProperty("skinColor")?obj.style.skin.skinColor:"";
+            let skin_behind=obj.style.skin.hasOwnProperty("skin_behind")&&obj.style.skin.skin_behind.hasOwnProperty('skinColor')?obj.style.skin.skin_behind.skinColor:obj.style.skin.hasOwnProperty("skinColor")?obj.style.skin.skinColor:"";
+            
             //右
-            skin_right_obj = this.createSkinOption(depth, height, obj.style.skin.skin_right, cubeGeometry, 0);
+            skin_right_obj = this.createSkinOption(depth, height, obj.style.skin.skin_right, cubeGeometry,skin_right, 0);
             //左
-            skin_left_obj = this.createSkinOption(depth, height, obj.style.skin.skin_left, cubeGeometry, 2);
+            skin_left_obj = this.createSkinOption(depth, height, obj.style.skin.skin_left, cubeGeometry,skin_left, 2);
             //上
-            skin_up_obj = this.createSkinOption(width, depth, obj.style.skin.skin_up, cubeGeometry, 4);
+            skin_up_obj = this.createSkinOption(width, depth, obj.style.skin.skin_up, cubeGeometry,skin_up, 4);
             //下
-            skin_down_obj = this.createSkinOption(width, depth, obj.style.skin.skin_down, cubeGeometry, 6);
+            skin_down_obj = this.createSkinOption(width, depth, obj.style.skin.skin_down, cubeGeometry,skin_down, 6);
             //前
-            skin_fore_obj = this.createSkinOption(width, height, obj.style.skin.skin_fore, cubeGeometry, 8);
+            skin_fore_obj = this.createSkinOption(width, height, obj.style.skin.skin_fore, cubeGeometry,skin_fore, 8);
             //后
-            skin_behind_obj = this.createSkinOption(width, height, obj.style.skin.skin_behind, cubeGeometry, 10);
+            skin_behind_obj = this.createSkinOption(width, height, obj.style.skin.skin_behind, cubeGeometry,skin_behind, 10);
         }
         var cubeMaterialArray = [];//右，左，上，下，前，后
         //右：134、364；左：570、720；上：451、501；下：762、632；前：021、231；后：465、675；
@@ -728,7 +734,7 @@ export default class ThreeMap {
             });
             // 创建精灵模型对象，不需要几何体geometry参数
             var sprite = new THREE.Sprite(spriteMaterial);
-            sprite.position.set(obj.x,obj.y+obj.size.height/2+20,obj.z);
+            sprite.position.set(obj.x,obj.y+obj.size.height/2+22,obj.z);
             sprite.scale.set(25,25,1); // 控制精灵大小，比如可视化中精灵大小表征数据大小 只需要设置x、y两个分量就可以
             sprite.data={"cabinetUUID":uuid,"level":"1",alarmInfo:[]}; //告警等级默认给1，给最低告警
             sprite.visible=false;
@@ -1018,10 +1024,11 @@ export default class ThreeMap {
         }
     }
     //创建皮肤材质操作
-    createSkinOption (width,height, obj, cube, cubefacenub) {
+    createSkinOption (width,height, obj, cube,cubeColor, cubefacenub) {
         if (this.commonFunc.hasObj(obj)) {
             if (this.commonFunc.hasObj(obj.imgurl)) {
                 var MaterParam={
+                    color:cubeColor,
                     map: this.createSkin(width, height, obj),
                     opacity: obj.opacity||1,
                 }
@@ -1124,7 +1131,7 @@ export default class ThreeMap {
                 if(arr[j].devid==this.equipment[i].data.devid&&arr[j].pointid==this.equipment[i].data.pointid){
                     for(let m=0;m<this.sprite.length;m++){
                         if(this.sprite[m].data.cabinetUUID==this.equipment[i].data.cabinetUUID){
-                            this.changeCabinetAlarmObj(arr[j],m);
+                            this.changeCabinetAlarmObj(arr[j],m,i);
                         }
                     }
                 }
@@ -1132,8 +1139,10 @@ export default class ThreeMap {
         }
     }
     //更新机柜的告警对象
-    changeCabinetAlarmObj(obj,spriteIndex){
+    changeCabinetAlarmObj(obj,spriteIndex,equipmentIndex){
         let arr=this.sprite[spriteIndex].data.alarmInfo;
+        console.log(this.equipment[equipmentIndex])
+        console.log(this.sprite[spriteIndex])
         if(obj.isalarm){
             if(Number(this.sprite[spriteIndex].data.level)<Number(obj.level)){
                 this.sprite[spriteIndex].data.level=obj.level;
@@ -1149,6 +1158,12 @@ export default class ThreeMap {
             if(flag){
                 arr.push(obj);
             }
+            if(this.equipment[equipmentIndex].material.length>0){
+                for(let i=0;i<this.equipment[equipmentIndex].material.length;i++){
+                    this.equipment[equipmentIndex].material[i].color.set(this.alarmColor["level"+obj.level]);
+                }
+            }
+            this.equipment[equipmentIndex].data.isalarm=true;
             this.sprite[spriteIndex].visible=obj.isalarm;  
         }else{
             if(arr.length>0){
@@ -1168,6 +1183,11 @@ export default class ThreeMap {
                 }else{
                     this.sprite[spriteIndex].data.level="1";
                     this.sprite[spriteIndex].visible=false; 
+                }
+            }
+            if(this.equipment[equipmentIndex].material.length>0){
+                for(let i=0;i<this.equipment[equipmentIndex].material.length;i++){
+                    this.equipment[equipmentIndex].material[i].color.set("#ffffff");
                 }
             }
         }
