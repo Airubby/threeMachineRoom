@@ -73,10 +73,10 @@ export default {
             map:null,
             dialogVisible:false,
             baseInfo:[
-                {devid:"01",pointid:"0101",name:"",level:"1",id:"",isalarm:false},
-                {devid:"01",pointid:"0102",name:"",level:"1",id:"",isalarm:false},
-                {devid:"01",pointid:"0103",name:"",level:"1",id:"",isalarm:false},
-                {devid:"01",pointid:"0104",name:"",level:"1",id:"",isalarm:false}
+                {devid:"01",pointid:"0101",name:"",level:"1",id:"",alarmInfo:"",isalarm:false},
+                {devid:"01",pointid:"0102",name:"",level:"1",id:"",alarmInfo:"",isalarm:false},
+                {devid:"01",pointid:"0103",name:"",level:"1",id:"",alarmInfo:"",isalarm:false},
+                {devid:"01",pointid:"0104",name:"",level:"1",id:"",alarmInfo:"",isalarm:false}
             ],
             alarmInfo:[
                 {id:"1",name:"提示"},{id:"2",name:"次要"},{id:"3",name:"重要"},{id:"4",name:"严重"},{id:"5",name:"紧急"},
@@ -101,6 +101,7 @@ export default {
                         let obj=JSON.parse(JSON.stringify(this.equipment[i]));
                         obj.isalarm=true;
                         obj.level=this.alarm[i];
+                        obj.alarmInfo="温度过高告警";
                         back.push(obj);
                     }
                 }

@@ -737,6 +737,7 @@ export default class ThreeMap {
             sprite.position.set(obj.x,obj.y+obj.size.height/2+22,obj.z);
             sprite.scale.set(25,25,1); // 控制精灵大小，比如可视化中精灵大小表征数据大小 只需要设置x、y两个分量就可以
             sprite.data={"cabinetUUID":uuid,"level":"1",alarmInfo:[]}; //告警等级默认给1，给最低告警
+            sprite.name="spriteAlarm";
             sprite.visible=false;
             this.addObject(sprite);
             this.sprite.push(sprite);
@@ -1360,7 +1361,8 @@ export default class ThreeMap {
         var intersects = this.raycaster.intersectObjects(this.objects);
         if(intersects.length>0){
             let SELECTED = intersects[0].object;
-            if(SELECTED.name.toString().indexOf("equipment")!=-1){
+            console.log(SELECTED)
+            if(SELECTED.name.toString().indexOf("equipment")!=-1||SELECTED.name.toString().indexOf("spriteAlarm")!=-1){
                 currentElement = SELECTED;
             }
         }
@@ -1368,9 +1370,20 @@ export default class ThreeMap {
             clearTimeout(this.tipTimer);
             if(currentElement){
                 this.tipTimer = setTimeout(function(){
-                    
-                    let tiplen=currentElement.data.tipInfo.length;
-                    _this.tooltip.querySelector("#tipdiv").innerHTML=currentElement.data.tipInfo;
+                    console.log(currentElement)
+                    let tipInfo="";
+                    if(currentElement.name.toString().indexOf("equipment")!=-1){
+                        tipInfo=currentElement.data.tipInfo;
+                    }
+                    if(currentElement.name.toString().indexOf("spriteAlarm")!=-1){
+                        if(currentElement.data.alarmInfo.length>0){
+                            for(let i=0;i<currentElement.data.alarmInfo.length;i++){
+                                tipInfo+=currentElement.data.alarmInfo[i].name+currentElement.data.alarmInfo[i].alarmInfo+"；"
+                            }
+                        }
+                    }
+                    let tiplen=tipInfo.length;
+                    _this.tooltip.querySelector("#tipdiv").innerHTML=tipInfo
                     _this.tooltip.style.width=tiplen*15+"px";
                     _this.tooltip.style.display = 'block';
                     _this.tooltip.style.left = (_this.lastEvent.pageX - _this.tooltip.clientWidth/2) + 'px';
