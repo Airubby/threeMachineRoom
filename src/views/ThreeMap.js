@@ -1142,8 +1142,7 @@ export default class ThreeMap {
     //更新机柜的告警对象
     changeCabinetAlarmObj(obj,spriteIndex,equipmentIndex){
         let arr=this.sprite[spriteIndex].data.alarmInfo;
-        console.log(this.equipment[equipmentIndex])
-        console.log(this.sprite[spriteIndex])
+        console.log(obj)
         if(obj.isalarm){
             if(Number(this.sprite[spriteIndex].data.level)<Number(obj.level)){
                 this.sprite[spriteIndex].data.level=obj.level;
@@ -1166,6 +1165,8 @@ export default class ThreeMap {
             }
             this.equipment[equipmentIndex].data.isalarm=true;
             this.sprite[spriteIndex].visible=obj.isalarm;  
+            let info=obj.name+obj.alarmInfo;
+            this.alarmPlay(info);
         }else{
             if(arr.length>0){
                 for(let i=0;i<arr.length;i++){
@@ -1192,6 +1193,16 @@ export default class ThreeMap {
                 }
             }
         }
+    }
+    //告警播放
+    alarmPlay(info){
+        let utterThis = new window.SpeechSynthesisUtterance();
+        utterThis.text=info;
+        utterThis.lang="zh-CN";  //使用语言
+        utterThis.pitch=2; //表示说话的音高，数值，范围从0（最小）到2（最大）。默认值为1
+        utterThis.rate=1;  // 语速，数值，默认值是1，范围是0.1到10，表示语速的倍数，例如2表示正常语速的两倍
+        utterThis.volume=1;  //声音的音量，区间范围是0到1，默认是1
+        window.speechSynthesis.speak(utterThis);
     }
     commonFunc={
         _this:this,
