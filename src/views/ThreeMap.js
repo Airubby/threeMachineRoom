@@ -51,6 +51,7 @@ export default class ThreeMap {
         this.tipTimer=null; //显示提示用的timer
         this.tooltip=null;
         this.lastEvent=null;
+        this.tooltipBG='#ACDEFE';
 
         this.progressSuccess=0;
         this.loadtimer=null;
@@ -190,7 +191,8 @@ export default class ThreeMap {
         this.tooltip.style.lineHeight="22px";
         this.tooltip.style.textAlign="center";
         this.tooltip.style.padding="10px";
-		this.tooltip.style.background = 'rgba(172,222,254,0.8)';
+        this.tooltip.style.background = this.tooltipBG;
+        this.tooltip.style.opacity=0.8;
         this.tooltip.style['border-radius'] = '5px';
         let tipdiv=document.createElement('div');
         tipdiv.setAttribute("id","tipdiv");
@@ -199,7 +201,7 @@ export default class ThreeMap {
         tipspan.style.bottom="-10px";
         tipspan.style.left="-10px";
         tipspan.style.position="absolute";
-        tipspan.style.borderTop="10px solid rgba(172,222,254,0.8)";
+        tipspan.style.borderTop="10px solid "+this.tooltipBG;
         tipspan.style.borderLeft="10px solid transparent";
         tipspan.style.borderRight="10px solid transparent";
         this.tooltip.appendChild(tipspan);
@@ -1385,12 +1387,20 @@ export default class ThreeMap {
                     let tipInfo="";
                     if(currentElement.name.toString().indexOf("equipment")!=-1){
                         tipInfo=currentElement.data.tipInfo;
+                        _this.tooltip.style.background = _this.tooltipBG;
+                        _this.tooltip.querySelector("span").style.borderTop="10px solid "+_this.tooltipBG;
                     }
                     if(currentElement.name.toString().indexOf("spriteAlarm")!=-1){
+                        console.log(currentElement)
                         if(currentElement.data.alarmInfo.length>0){
+                            let levelArr=[];
                             for(let i=0;i<currentElement.data.alarmInfo.length;i++){
+                                levelArr.push(currentElement.data.alarmInfo[i].level);
                                 tipInfo+=currentElement.data.alarmInfo[i].name+currentElement.data.alarmInfo[i].alarmInfo+"；"
                             }
+                            let max=Math.max(...levelArr);
+                            _this.tooltip.style.background = _this.alarmColor["level"+max];
+                            _this.tooltip.querySelector("span").style.borderTop="10px solid "+_this.alarmColor["level"+max];
                         }
                     }
                     let tiplen=tipInfo.length;
