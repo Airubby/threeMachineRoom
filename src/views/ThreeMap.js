@@ -16,6 +16,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import {OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2'
 import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import TWEEN from '@tweenjs/tween.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   //r100及以上
 // var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
@@ -1651,5 +1652,14 @@ export default class ThreeMap {
         // loader2.load( './images/test/object.obj', function ( obj ) {
         //     _this.scene.add( obj );
         // })
+    }
+    //测试
+    createFBX(obj){
+        let _this=this;
+        var fbxLoader = new FBXLoader();
+        fbxLoader.load(_this.commonFunc.getPath('rack/2-5-E-max.fbx'), function(object) {
+            console.log(object)
+            _this.scene.add( object );
+        });
     }
 }
