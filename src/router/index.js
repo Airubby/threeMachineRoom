@@ -9,7 +9,12 @@ export const syncRouter=[
 		meta: { title: '主页'},
 		component: () => import('@/views/index.vue'),
 	},
-  
+    {
+		path:'/rack',
+		name: 'rack',
+		meta: { title: '机柜'},
+		component: () => import('@/views/rack/index.vue'),
+	},
 ];
 /**
  * 重写路由的push方法  解决 Navigating to current location ("url") is not allowed
