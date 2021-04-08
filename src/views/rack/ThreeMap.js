@@ -76,7 +76,7 @@ export default class ThreeMap {
     initCamera() {
         this.camera = new THREE.PerspectiveCamera(45, this.dom.offsetWidth / this.dom.offsetHeight, 1, 100000);
         this.camera.name = 'mainCamera';
-        this.camera.position.set(0,1000,1800)
+        this.camera.position.set(1000,1000,2800)
         //默认就是以Y轴为上方的
         // this.camera.up.x = 0;
         // this.camera.up.y =1;
@@ -198,19 +198,72 @@ export default class ThreeMap {
                     tempObj = this.createCube(obj)
                     this.addObject(tempObj,"scene");
                     break;
-                case 'wall':
-                    this.CreateWall(obj);
+                case 'ladder':
+                    this.CreateLadder(obj);
+                    break;
+                    case 'wall':
+                this.CreateWall(obj);
                     break;
             }
         }
     }
-    //创建墙
+    CreateLadder (obj) {
+        let _this=this;
+        var commonDepth = obj.depth || 400;
+        var commonHeight = obj.height || 33;
+        var commonWidth = obj.width || 40;
+        var commonSkin = obj.style.skinColor || 0x062062;
+        var commonEdgeColor = obj.style.edgeColor || "";
+        
+        obj.ladderData.forEach(function(ladderObj, index){
+            var ladderWidth = commonWidth;
+            var ladderDepth = ladderObj.depth||commonDepth;
+            var positionX = ((ladderObj.startDot.x||0) + (ladderObj.endDot.x||0)) / 2;
+            var positionY = ((ladderObj.startDot.y || 0) + (ladderObj.endDot.y || 0)) / 2;
+            var positionZ = ((ladderObj.startDot.z || 0) + (ladderObj.endDot.z || 0)) / 2;
+            //z相同 表示x方向为长度
+            if (ladderObj.startDot.z == ladderObj.endDot.z) {
+                ladderWidth = Math.abs(ladderObj.startDot.x - ladderObj.endDot.x);
+                ladderDepth = ladderObj.depth || commonDepth;
+            } else if (ladderObj.startDot.x == ladderObj.endDot.x) {
+                ladderWidth = ladderObj.depth || commonDepth;
+                ladderDepth = Math.abs(ladderObj.startDot.z - ladderObj.endDot.z);
+            }
+            var cubeobj = {
+                width: ladderWidth,
+                height: ladderObj.height || commonHeight,
+                depth: ladderDepth,
+                rotation: ladderObj.rotation,
+                x: positionX,
+                y: positionY,
+                z: positionZ,
+                uuid: ladderObj.uuid,
+                name:ladderObj.name,
+                style: {
+                    skinColor: commonSkin,
+                    edgeColor: commonEdgeColor||ladderObj.skin.edgeColor,
+                    skin:ladderObj.skin 
+                }
+            }
+            var cube = _this.createCube(cubeobj);
+            if (_this.commonFunc.hasObj(ladderObj.childrens) && ladderObj.childrens.length > 0) {
+                ladderObj.childrens.forEach(function(walchildobj, index){
+                    var newobj = _this.CreateHole(walchildobj);
+                    cube = _this.mergeModel(walchildobj.op, cube, newobj,commonSkin);
+                })
+            }
+            _this.addObject(cube,"scene");
+        });
+    }
     CreateWall (obj) {
         let _this=this;
         var commonDepth = obj.depth || 40;//墙体厚度
         var commonHeight = obj.height || 100;//墙体高度
         var commonWidth = obj.width || 300;//墙体宽度
         var commonSkin = obj.style.skinColor || 0x98750f;
+        var commonEdgeColor = obj.style.edgeColor || "";
+        var transparent= obj.style.transparent || false;
+        var opacity= obj.style.opacity||1;
         //建立墙面
         obj.wallData.forEach(function(wallobj, index){
             var wallWidth = commonWidth;
@@ -238,7 +291,10 @@ export default class ThreeMap {
                 name:wallobj.name,
                 style: {
                     skinColor: commonSkin,
-                    skin:wallobj.skin 
+                    edgeColor: commonEdgeColor||ladderObj.skin.edgeColor,
+                    skin:wallobj.skin,
+                    transparent:transparent, 
+                    opacity:opacity
                 }
             }
             var cube = _this.createCube(cubeobj);
@@ -334,7 +390,7 @@ export default class ThreeMap {
         var commonDepth =  40;//厚度
         var commonHeight =  100;//高度
         var commonWidth =  300;//强体高度
-        var commonSkin = 0x98750f;
+        var commonSkin = 0x062062;
         //建立墙面
         var wallWidth = commonWidth;
         var wallDepth = obj.depth || commonDepth;
@@ -382,7 +438,7 @@ export default class ThreeMap {
         var depth=obj.depth || width;  //z轴
         var x = obj.x || 0, y = obj.y || 0, z = obj.z || 0;
         var skinColor = obj.style.hasOwnProperty('skinColor')?obj.style.skinColor : "";
-        var border=obj.style.hasOwnProperty('border')?obj.style.border : "";
+        var edgeColor=obj.style.hasOwnProperty('edgeColor')?obj.style.edgeColor : "";
         //width：是x方向上的长度；height：是y方向上的长度；depth：是z方向上的长度；
         var cubeGeometry = new THREE.CubeGeometry(width, height, depth, 0, 0, 1);
 
@@ -462,7 +518,7 @@ export default class ThreeMap {
                 }
             });
         }
-        if(border){
+        if(edgeColor){
             cube=this.setEdgesGeometry(cube);
         }
         return cube;
@@ -598,7 +654,6 @@ export default class ThreeMap {
     }
     //创建皮肤材质操作
     createSkinOption (width,height, obj, cube,cubeColor, cubefacenub) {
-        debugger
         if (this.commonFunc.hasObj(obj)) {
             if (this.commonFunc.hasObj(obj.imgurl)) {
                 var MaterParam={
