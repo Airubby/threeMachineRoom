@@ -6,8 +6,21 @@ export const syncRouter=[
 	{
 		path:'/',
 		name: 'home',
+        redirect:'/rack',
 		meta: { title: '主页'},
 		component: () => import('@/views/index.vue'),
+	},
+    {
+		path:'/test',
+		name: 'tst',
+		meta: { title: 'test'},
+		component: () => import('@/views/test/index.vue'),
+	},
+    {
+		path:'/room',
+		name: 'room',
+		meta: { title: '机房'},
+		component: () => import('@/views/room/index.vue'),
 	},
     {
 		path:'/rack',

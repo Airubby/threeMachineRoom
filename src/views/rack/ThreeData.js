@@ -13,26 +13,24 @@ export const ThreeData={
             name: 'floor',
             objType: 'cube',
             width: 2000,
-            depth: 1600,
-            height: 10,
+            depth: 1200,
+            height: 100,
             style: {
-                skinColor: 0x6EA1B5,
-                
+                skinColor: 0x062062,
+                border:0x155CAC,
             }
         },
-        //墙体
+        // 梯子
         {
             show: true,
             uuid: "",
-            name: 'wall',
-            objType: 'wall',
-            depth: 20,
-            width: 100, //根据实际的宽度来的
-            height: 240,
+            name: 'ladder',
+            objType: 'ladder',
+            depth: 400,
+            width: 40, //根据实际的宽度来的
+            height: 33,
             style:{
-                skinColor: 0xb0cee0,
-                transparent: true,
-                opacity: 0.25,
+                skinColor: 0x062062,
             },
             wallData: [
                 {//前面墙

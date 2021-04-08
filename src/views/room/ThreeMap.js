@@ -104,7 +104,7 @@ export default class ThreeMap {
         var light2 = new THREE.PointLight(0x555555);
         light2.shadow.camera.near =1;
         light2.shadow.camera.far = 5000;
-        light2.position.set(0, 350, 0);
+        light2.position.set(0, 900, 1600);
         light2.castShadow = true;//表示这个光是可以产生阴影的
         this.scene.add(light2);
     }
@@ -498,6 +498,25 @@ export default class ThreeMap {
         var cubeMaterialArray = [];//右，左，上，下，前，后
         //右：134、364；左：570、720；上：451、501；下：762、632；前：021、231；后：465、675；
         //正面：上左上右下左下右(0123)；后面正对看：上左上右下左下右(4567)
+        /*
+		  5____4
+		0/___1/|
+		| 7__|_6
+		2/___3/
+        
+          5____4
+		1/___0/|
+		| 6__|_7
+		2/___3/
+		0: max.x, max.y, max.z
+		1: min.x, max.y, max.z
+		2: min.x, min.y, max.z
+		3: max.x, min.y, max.z
+		4: max.x, max.y, min.z
+		5: min.x, max.y, min.z
+		6: min.x, min.y, min.z
+		7: max.x, min.y, min.z
+		*/
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_right_obj));
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_left_obj));
         cubeMaterialArray.push(new THREE.MeshLambertMaterial(skin_up_obj));
@@ -1419,7 +1438,7 @@ export default class ThreeMap {
         //设置上一次的网元为当前网元
         this.lastElement = currentElement; 
         //如果当前鼠标下没有网元，隐藏tooltip
-        if(currentElement == null){
+        if(currentElement == null&&_this.tooltip){
             _this.tooltip.style.display = 'none';
         }
         //设置每次移动时鼠标的事件对象

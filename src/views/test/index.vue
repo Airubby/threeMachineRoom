@@ -1,7 +1,5 @@
 <template>
-    <div class="three-content" id="three-dom">
-        
-    </div>
+    <div class="three-content" id="three-dom"></div>
 </template>
 
 <script>
@@ -20,7 +18,6 @@ export default {
     data(){
         return{
             map:null,
-            
         }
     },
     methods: {
