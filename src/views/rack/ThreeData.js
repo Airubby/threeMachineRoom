@@ -3,12 +3,12 @@
 创建时间:2021年04月07日
 功能描述:3D机房封装
 */
-const width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,skinColor=0x062062,edgeColor=0x155CAC;
+const width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,doorWidth=20,
+skinColor=0x062062,edgeColor=0x155CAC;
 export const ThreeData={
     objects: [
         //地板
         {
-            show: true,
             uuid: "",
             name: 'floor',
             objType: 'cube',
@@ -22,10 +22,9 @@ export const ThreeData={
         },
         // 梯子
         {
-            show: true,
             uuid: "",
             name: 'ladder',
-            objType: 'ladder',
+            objType: 'wall',
             depth: ladderDepth,
             width: ladderWidth, 
             height: height/3,
@@ -33,7 +32,7 @@ export const ThreeData={
                 skinColor: skinColor,
                 edgeColor:edgeColor,
             },
-            ladderData: [
+            childrens: [
                 {
                     uuid: "",
                     name: 'ladder1',
@@ -122,7 +121,6 @@ export const ThreeData={
         },
         //wall
         {
-            show: true,
             uuid: "",
             name: 'wall',
             objType: 'wall',
@@ -133,7 +131,7 @@ export const ThreeData={
                 skinColor: skinColor,
                 edgeColor:edgeColor,
             },
-            wallData: [
+            childrens: [
                 {//左面墙
                     uuid: "",
                     name: 'wall1',
@@ -170,10 +168,10 @@ export const ThreeData={
                 },
             ],
         },
+        //顶
         {
-            show: true,
             uuid: "",
-            name: 'floor',
+            name: 'peak',
             objType: 'cube',
             width: width,
             depth: depth,
@@ -183,6 +181,103 @@ export const ThreeData={
                 skinColor: skinColor,
                 edgeColor:edgeColor,
             }
+        },
+        //门
+        {
+            uuid: "",
+            name: 'door',
+            objType: 'face',
+            width: doorWidth,
+            depth: ladderDepth,
+            height: wallHeight,
+            y:wallHeight/2+height/2,
+            x:width/2+doorWidth/2,
+            style: {
+                skinColor: skinColor,
+                edgeColor:edgeColor,
+            },
+            childrens:[
+                {
+                    name: '门把',
+                    uuid: "",
+                    objType: 'cube',
+                    startDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight/2,
+                        z: ladderDepth/2
+                    },
+                    endDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight/2,
+                        z: -ladderDepth/2
+                    },
+                    skinColor:skinColor,
+                },
+                {
+                    name: 'line1',
+                    uuid: "",
+                    objType: 'line',
+                    startDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight/2,
+                        z: ladderDepth/2
+                    },
+                    endDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight/2,
+                        z: -ladderDepth/2
+                    },
+                    skinColor:edgeColor,
+                },
+                {
+                    name: 'line2',
+                    uuid: "",
+                    objType: 'line',
+                    startDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight*9/10,
+                        z: ladderDepth/2
+                    },
+                    endDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight*9/10,
+                        z: -ladderDepth/2
+                    },
+                    skinColor:edgeColor,
+                },
+                {
+                    name: 'line3',
+                    uuid: "",
+                    objType: 'line',
+                    startDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight+height/2,
+                        z: ladderDepth/4
+                    },
+                    endDot: {
+                        x: width/2+doorWidth+1,
+                        y: height/2,
+                        z: ladderDepth/4
+                    },
+                    skinColor:edgeColor,
+                },
+                {
+                    name: 'line4',
+                    uuid: "",
+                    objType: 'line',
+                    startDot: {
+                        x: width/2+doorWidth+1,
+                        y: wallHeight+height/2,
+                        z: -ladderDepth/4
+                    },
+                    endDot: {
+                        x: width/2+doorWidth+1,
+                        y: height/2,
+                        z: -ladderDepth/4
+                    },
+                    skinColor:edgeColor,
+                },
+            ]
         },
     ],
     events: {

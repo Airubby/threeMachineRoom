@@ -53,8 +53,8 @@ export default class ThreeMap {
     }
 
     init() {
-        this.initRenderer();
         this.initScene();
+        this.initRenderer();
         this.initCamera();
         this.initLight();
         this.render();
@@ -68,7 +68,7 @@ export default class ThreeMap {
 
     //初始化渲染场景
     initRenderer() {
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: true ,alpha:true });
         this.renderer.setSize(this.dom.offsetWidth,this.dom.offsetHeight);
         this.dom.appendChild(this.renderer.domElement);
     }
@@ -87,7 +87,7 @@ export default class ThreeMap {
     //初始化场景
     initScene() {
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x225F93);
+        // this.scene.background = new THREE.Color(0x225F93);
     }
     //初始化灯光
     initLight(){
@@ -198,62 +198,45 @@ export default class ThreeMap {
                     tempObj = this.createCube(obj)
                     this.addObject(tempObj,"scene");
                     break;
-                case 'ladder':
-                    this.CreateLadder(obj);
+                case 'face':
+                    this.CreateFace(obj);
                     break;
-                    case 'wall':
-                this.CreateWall(obj);
+                case 'wall':
+                    this.CreateWall(obj);
                     break;
             }
         }
     }
-    CreateLadder (obj) {
+    CreateFace (obj) {
         let _this=this;
-        var commonDepth = obj.depth || 400;
-        var commonHeight = obj.height || 33;
-        var commonWidth = obj.width || 40;
-        var commonSkin = obj.style.skinColor || 0x062062;
-        var commonEdgeColor = obj.style.edgeColor || "";
-        
-        obj.ladderData.forEach(function(ladderObj, index){
-            var ladderWidth = commonWidth;
-            var ladderDepth = ladderObj.depth||commonDepth;
-            var positionX = ((ladderObj.startDot.x||0) + (ladderObj.endDot.x||0)) / 2;
-            var positionY = ((ladderObj.startDot.y || 0) + (ladderObj.endDot.y || 0)) / 2;
-            var positionZ = ((ladderObj.startDot.z || 0) + (ladderObj.endDot.z || 0)) / 2;
-            //z相同 表示x方向为长度
-            if (ladderObj.startDot.z == ladderObj.endDot.z) {
-                ladderWidth = Math.abs(ladderObj.startDot.x - ladderObj.endDot.x);
-                ladderDepth = ladderObj.depth || commonDepth;
-            } else if (ladderObj.startDot.x == ladderObj.endDot.x) {
-                ladderWidth = ladderObj.depth || commonDepth;
-                ladderDepth = Math.abs(ladderObj.startDot.z - ladderObj.endDot.z);
+        var cubeobj = {
+            width: obj.width || 40,
+            height: obj.height || 100,
+            depth: obj.depth || 400,
+            rotation: obj.rotation,
+            x: obj.x||0,
+            y: obj.y||0,
+            z: obj.z||0,
+            uuid: obj.uuid,
+            name:obj.name,
+            style: {
+                skinColor: obj.style.skinColor||0x062062,
+                edgeColor: obj.style.edgeColor||0x155CAC,
             }
-            var cubeobj = {
-                width: ladderWidth,
-                height: ladderObj.height || commonHeight,
-                depth: ladderDepth,
-                rotation: ladderObj.rotation,
-                x: positionX,
-                y: positionY,
-                z: positionZ,
-                uuid: ladderObj.uuid,
-                name:ladderObj.name,
-                style: {
-                    skinColor: commonSkin,
-                    edgeColor: commonEdgeColor||ladderObj.skin.edgeColor,
-                    skin:ladderObj.skin 
+        }
+        var cube = this.createCube(cubeobj);
+        if (_this.commonFunc.hasObj(obj.childrens) && obj.childrens.length > 0) {
+            obj.childrens.forEach(function(childobj, index){
+                var newobj ;
+                if(childobj.objType=="line"){
+                    newobj = _this.CreateLine(childobj);
+                }else{
+                    newobj = _this.CreateHole(childobj);
                 }
-            }
-            var cube = _this.createCube(cubeobj);
-            if (_this.commonFunc.hasObj(ladderObj.childrens) && ladderObj.childrens.length > 0) {
-                ladderObj.childrens.forEach(function(walchildobj, index){
-                    var newobj = _this.CreateHole(walchildobj);
-                    cube = _this.mergeModel(walchildobj.op, cube, newobj,commonSkin);
-                })
-            }
-            _this.addObject(cube,"scene");
-        });
+                cube = _this.mergeModel(childobj.op, cube, newobj,cubeobj.style.skinColor);
+            })
+        }
+        _this.addObject(cube,"scene");
     }
     CreateWall (obj) {
         let _this=this;
@@ -265,7 +248,7 @@ export default class ThreeMap {
         var transparent= obj.style.transparent || false;
         var opacity= obj.style.opacity||1;
         //建立墙面
-        obj.wallData.forEach(function(wallobj, index){
+        obj.childrens.forEach(function(wallobj, index){
             var wallWidth = commonWidth;
             var wallDepth = wallobj.depth||commonDepth;
             var positionX = ((wallobj.startDot.x||0) + (wallobj.endDot.x||0)) / 2;
@@ -309,13 +292,17 @@ export default class ThreeMap {
     }
     //模型合并 使用ThreeBSP插件mergeOP计算方式 -表示减去 +表示加上 
     mergeModel(mergeOP, fobj, sobj,commonSkin) {
+        if(!mergeOP){
+            this.addObject(sobj,"scene");
+            return fobj;
+        }
         var fobjBSP = new ThreeBSP(fobj);
         var sobjBSP = new ThreeBSP(sobj);
         var resultBSP = null; 
         if (mergeOP == '-') {
             resultBSP = fobjBSP.subtract(sobjBSP);
         } else if (mergeOP == '+') {
-            var subMesh = new THREE.Mesh(sobj);
+            // var subMesh = new THREE.Mesh(sobj);
             sobj.updateMatrix();
             fobj.geometry.merge(sobj.geometry, sobj.matrix);
             return fobj;
@@ -384,6 +371,21 @@ export default class ThreeMap {
         result.castShadow = true;
         result.receiveShadow = true;
         return result;
+    }
+    CreateLine(obj){
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(
+            new THREE.Vector3(obj.startDot.x, obj.startDot.y, obj.startDot.z),
+            new THREE.Vector3(obj.endDot.x, obj.endDot.y, obj.endDot.z)
+        );
+        //渐变色
+        // geometry.colors.push(
+        //     new THREE.Color( 0x444444 ), 
+        //     new THREE.Color( 0xFF0000 )
+        // )
+        var material = new THREE.LineBasicMaterial({ vertexColors: false ,color:obj.skinColor ,linewidth: 2});
+        return new THREE.Line(geometry, material);
+        this.scene.add( line );
     }
     //挖洞、玻璃、挂东西
     CreateHole ( obj) {

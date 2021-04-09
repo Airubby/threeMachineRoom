@@ -17,7 +17,9 @@ import {OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2'
 import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
-import TWEEN from '@tweenjs/tween.js'
+// import TWEEN from '@tweenjs/tween.js'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   //r100及以上
 // var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
 export default class ThreeMap {
@@ -127,12 +129,57 @@ export default class ThreeMap {
         this.controls.update();
     }
     InitData(){
-        var geometry = new THREE.BoxBufferGeometry( 100, 100, 100 );
-        console.log(geometry)
-        var edges = new THREE.EdgesGeometry( geometry );
-        var line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
-        this.scene.add( line );
-        
+        var geometry = new LineGeometry();
+        // 顶点坐标构成的数组pointArr
+        var pointArr = [-100,0,0,
+                        -100,100,0,
+                        0,0,0,
+                        100,100,0,
+                        100,0,0,]
+        // 几何体传入顶点坐标
+        geometry.setPositions( pointArr);
+        // 自定义的材质
+        var material  = new LineMaterial( {
+          color: 0xdd2222,
+          // 线宽度
+          linewidth: 5,
+        } );
+        // 把渲染窗口尺寸分辨率传值给材质LineMaterial的resolution属性
+        // resolution属性值会在着色器代码中参与计算
+        material.resolution.set(window.innerWidth,window.innerHeight);
+        var line = new THREE.Mesh(geometry, material);
+        var colorArr = [
+            1,0,0,
+            0,1,0,
+            0,0,1,
+            0,1,0,
+            1,0,0,
+            ]
+            // 设定每个顶点对应的颜色值
+            geometry.setColors( colorArr );
+            
+            var material  = new LineMaterial( {
+              // color: 0xfd1232,
+              linewidth: 5,
+              // 注释color设置，启用顶点颜色渲染
+              vertexColors: THREE.VertexColors,
+            } );
+            this.scene.add( line );
+
+    // var geometry = new THREE.Geometry();
+    // geometry.vertices.push(
+    //     new THREE.Vector3(-100, 0, 100),
+    //     new THREE.Vector3(100, 0, -100)
+    // );
+    // geometry.colors.push(
+    //     new THREE.Color( 0x444444 ), 
+    //     new THREE.Color( 0xFF0000 )
+    // )
+    // var material = new THREE.LineBasicMaterial({ vertexColors: true ,color:0xff0000 ,linewidth: 10,});
+    // var line = new THREE.Line(geometry, material);
+    // this.scene.add( line );
+
+
     }
     //刷新视图
     resetView(){

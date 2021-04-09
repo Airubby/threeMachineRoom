@@ -32,5 +32,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    
+    .three-content{
+        background: #000C3F url(/rack/homebg.png) no-repeat center;
+    }
 </style>
