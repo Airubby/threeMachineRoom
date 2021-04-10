@@ -230,6 +230,8 @@ export default class ThreeMap {
                 var newobj ;
                 if(childobj.objType=="line"){
                     newobj = _this.CreateLine(childobj);
+                }else if(childobj.objType=="faceCube"){
+                    newobj=_this.CreateFaceCube(childobj)
                 }else{
                     newobj = _this.CreateHole(childobj);
                 }
@@ -237,6 +239,63 @@ export default class ThreeMap {
             })
         }
         _this.addObject(cube,"scene");
+    }
+    CreateFaceCube(obj){
+        var wallWidth = obj.width||10;
+        var wallDepth = obj.depth||100;
+        var wallHeight = obj.height||100;
+        var positionX = ((obj.startDot.x||0) + (obj.endDot.x||0)) / 2;
+        var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2;
+        var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2;
+        //z相同 表示x方向为长度
+        if (obj.startDot.z == obj.endDot.z) {
+            wallWidth = Math.abs(obj.startDot.x - obj.endDot.x);
+            wallDepth = obj.depth || commonDepth;
+        } else if (obj.startDot.x == obj.endDot.x) {
+            wallWidth = obj.depth || commonDepth;
+            wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
+        }
+        var cubeobj = {
+            width: wallWidth,
+            height: obj.height || wallHeight,
+            depth: wallDepth,
+            rotation: obj.rotation,
+            x: positionX,
+            y: positionY,
+            z: positionZ,
+            uuid: obj.uuid,
+            name:obj.name,
+            style: {
+                skinColor: obj.skin.skinColor,
+                edgeColor: obj.skin.edgeColor,
+                skin:obj.skin,
+                transparent:obj.skin.transparent, 
+                opacity:obj.skin.opacity
+            }
+        }
+        return this.createCube(cubeobj);
+    }
+    CreateWireCube(obj){
+        var cubeobj = {
+            width: obj.width||10,
+            height: obj.height||10,
+            depth: obj.depth||10,
+            rotation: obj.rotation,
+            x: obj.x||0,
+            y: obj.y||0,
+            z: obj.z||0,
+            uuid: obj.uuid,
+            name:obj.name,
+            style: {
+                skinColor: obj.skin.skinColor,
+                edgeColor: obj.skin.edgeColor,
+                skin:obj.skin,
+                transparent:obj.skin.transparent, 
+                opacity:obj.skin.opacity
+            }
+        }
+        var cube=this.createCube(cubeobj);
+        return cube;
     }
     CreateWall (obj) {
         let _this=this;
@@ -283,15 +342,20 @@ export default class ThreeMap {
             var cube = _this.createCube(cubeobj);
             if (_this.commonFunc.hasObj(wallobj.childrens) && wallobj.childrens.length > 0) {
                 wallobj.childrens.forEach(function(walchildobj, index){
-                    var newobj = _this.CreateHole(walchildobj);
-                    cube = _this.mergeModel(walchildobj.op, cube, newobj,commonSkin);
+                    var newobj ;
+                    if(walchildobj.objType=="wireCube"){
+                        newobj=_this.CreateWireCube(walchildobj)
+                    }else{
+                        newobj = _this.CreateHole(walchildobj);
+                    }
+                    cube = _this.mergeModel(walchildobj.op, cube, newobj,commonSkin,walchildobj.skin.edgeColor);
                 })
             }
             _this.addObject(cube,"scene");
         });
     }
     //模型合并 使用ThreeBSP插件mergeOP计算方式 -表示减去 +表示加上 
-    mergeModel(mergeOP, fobj, sobj,commonSkin) {
+    mergeModel(mergeOP, fobj, sobj,commonSkin,edgeColor) {
         if(!mergeOP){
             this.addObject(sobj,"scene");
             return fobj;
@@ -305,6 +369,9 @@ export default class ThreeMap {
             // var subMesh = new THREE.Mesh(sobj);
             sobj.updateMatrix();
             fobj.geometry.merge(sobj.geometry, sobj.matrix);
+            if(edgeColor){
+                return this.setEdgesGeometry(fobj,edgeColor)
+            }
             return fobj;
         //    resultBSP = fobjBSP.union(sobjBSP);
         } else if (mergeOP == '&') {//交集
@@ -408,9 +475,9 @@ export default class ThreeMap {
             wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
         }
         var cubeobj = {
-            width: wallWidth,
+            width: obj.height || wallWidth,
             height: obj.height || commonHeight,
-            depth: wallDepth,
+            depth: obj.height||wallDepth,
             rotation: obj.rotation,
             uuid: obj.uuid,
             name: obj.name,
@@ -420,16 +487,16 @@ export default class ThreeMap {
             z: positionZ,
             style: {
                 skinColor: obj.skinColor || commonSkin,
+                edgeColor: obj.skin.edgeColor||"",
                 skin: obj.skin
             }
         }
         var cube=this.createCube(cubeobj);
         return cube;
     }
-    setEdgesGeometry(obj){
-        console.log(obj)
+    setEdgesGeometry(obj,edgeColor){
         let cubeEdges = new THREE.EdgesGeometry(obj.geometry, 1);
-        let cubeLine = new THREE.LineSegments(cubeEdges, new THREE.LineBasicMaterial( { color: 0x155CAC } ));
+        let cubeLine = new THREE.LineSegments(cubeEdges, new THREE.LineBasicMaterial( { color: edgeColor } ));
         obj.add(cubeLine);
         return obj
     }
@@ -521,7 +588,7 @@ export default class ThreeMap {
             });
         }
         if(edgeColor){
-            cube=this.setEdgesGeometry(cube);
+            cube=this.setEdgesGeometry(cube,edgeColor);
         }
         return cube;
     }

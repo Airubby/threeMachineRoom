@@ -3,7 +3,7 @@
 创建时间:2021年04月07日
 功能描述:3D机房封装
 */
-const width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,doorWidth=20,
+const width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,doorWidth=20,wireWidth=0.1,wireHeight=10,
 skinColor=0x062062,edgeColor=0x155CAC;
 export const ThreeData={
     objects: [
@@ -163,7 +163,38 @@ export const ThreeData={
                         z: 0
                     },
                     childrens:[
-                        
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireWidth, 
+                            height: wireHeight,
+                            x:wallDepth/2+1,
+                            y:wallHeight/2-wallHeight/3,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireWidth, 
+                            height: wireHeight,
+                            x:wallDepth/2+1,
+                            y:wallHeight/3-wallHeight/2,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
                     ]
                 },
             ],
@@ -200,18 +231,21 @@ export const ThreeData={
                 {
                     name: '门把',
                     uuid: "",
-                    objType: 'cube',
+                    objType: 'faceCube',
+                    depth:15,
                     startDot: {
-                        x: width/2+doorWidth+1,
-                        y: wallHeight/2,
-                        z: ladderDepth/2
+                        x: width/2+doorWidth,
+                        y: wallHeight/2+height,
+                        z: -ladderDepth*5/13
                     },
                     endDot: {
-                        x: width/2+doorWidth+1,
-                        y: wallHeight/2,
-                        z: -ladderDepth/2
+                        x: width/2+doorWidth+5,
+                        y: wallHeight/2+height,
+                        z: -ladderDepth*5/13
                     },
-                    skinColor:skinColor,
+                    skin:{
+                        skinColor:edgeColor,
+                    }
                 },
                 {
                     name: 'line1',
