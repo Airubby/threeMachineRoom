@@ -3,7 +3,8 @@
 创建时间:2021年04月07日
 功能描述:3D机房封装
 */
-const width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,doorWidth=20,wireWidth=0.1,wireHeight=10,
+const width=2000,depth=1200,height=90,ladderWidth=40,ladderDepth=400,wallDepth=10,wallHeight=800,
+doorWidth=20,wireWidth=0.1,wireHeight=10,spoolDepth=80,spoolHeight=40,
 skinColor=0x062062,edgeColor=0x155CAC;
 export const ThreeData={
     objects: [
@@ -197,22 +198,233 @@ export const ThreeData={
                         },
                     ]
                 },
+                {
+                    uuid: "",
+                    name: 'wall3',
+                    height:wallDepth,
+                    startDot: {
+                        x: -width/2,
+                        y: height/2+wallHeight-wallDepth/2,
+                        z: 0
+                    },
+                    endDot: {
+                        x: width/2,
+                        y: height/2+wallHeight-wallDepth/2,
+                        z: 0
+                    },
+                    childrens:[
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:0,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:-width/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:-width*2/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:-width*3/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:-width*4/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:width/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:width*2/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:width*3/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireHeight, 
+                            height: wireWidth,
+                            x:width*4/10,
+                            y:wallDepth/2+1,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线柱',
+                            objType: 'wireCube',
+                            depth: spoolDepth,
+                            width: width*9/10, 
+                            height: spoolHeight,
+                            x:0,
+                            y:spoolHeight/2+1,
+                            z:depth*5/16,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线柱',
+                            objType: 'wireCube',
+                            depth: spoolDepth,
+                            width: width*9/10, 
+                            height: spoolHeight,
+                            x:0,
+                            y:spoolHeight/2+1,
+                            z:-depth*5/16,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                    ]
+                }
             ],
         },
-        //顶
-        {
-            uuid: "",
-            name: 'peak',
-            objType: 'cube',
-            width: width,
-            depth: depth,
-            height: wallDepth,
-            y:wallHeight+height/2-wallDepth/2,
-            style: {
-                skinColor: skinColor,
-                edgeColor:edgeColor,
-            }
-        },
+        // //顶
+        // {
+        //     uuid: "",
+        //     name: 'peak',
+        //     objType: 'face',
+        //     width: width,
+        //     depth: depth,
+        //     height: wallDepth,
+        //     y:wallHeight+height/2-wallDepth/2,
+        //     style: {
+        //         skinColor: skinColor,
+        //         edgeColor:edgeColor,
+        //     },
+        //     childrens:[
+        //         {
+        //             op:"+",
+        //             uuid: "",
+        //             name: '线框',
+        //             objType: 'wireCube',
+        //             depth: depth,
+        //             width: wireWidth, 
+        //             height: wireHeight,
+        //             x:wallDepth/2+1,
+        //             y:wallHeight/2-wallHeight/3,
+        //             z:0,
+        //             skin: {
+        //                 skinColor: skinColor,
+        //                 edgeColor:edgeColor,
+        //             },
+        //         },
+        //     ]
+        // },
         //门
         {
             uuid: "",
@@ -313,6 +525,7 @@ export const ThreeData={
                 },
             ]
         },
+        
     ],
     events: {
         dbclick: [
