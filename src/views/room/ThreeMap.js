@@ -426,9 +426,9 @@ export default class ThreeMap {
             wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
         }
         var cubeobj = {
-            width: obj.width || wallWidth,
+            width: wallWidth,
             height: obj.height || commonHeight,
-            depth: obj.depth||wallDepth,
+            depth: wallDepth,
             rotation: obj.rotation,
             uuid: obj.uuid,
             name: obj.name,
