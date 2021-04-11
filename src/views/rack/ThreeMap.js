@@ -368,6 +368,7 @@ export default class ThreeMap {
                 cube.uuid = wallobj.uuid;
                 cube.data= wallobj.data||{name:wallobj.name,alarmInfo:[],tipInfo:wallobj.name};
                 _this.addObject(cube);
+                _this.equipment.push(cube);
             }
 
         });
@@ -817,6 +818,22 @@ export default class ThreeMap {
         }
         return texture;
     }
+    //更新告警状态
+    updateAlarmStatus(arr){
+        console.log(arr,this.equipment)
+        for(let i=0;i<this.equipment.length;i++){
+            for(let j=0;j<arr.length;j++){
+                if(arr[j].devid==this.equipment[i].data.devid&&arr[j].pointid==this.equipment[i].data.pointid){
+                    this.updateCube(this.equipment[i],arr[j].isalarm)
+                    // for(let m=0;m<this.sprite.length;m++){
+                    //     if(this.sprite[m].data.cabinetUUID==this.equipment[i].data.cabinetUUID){
+                    //         this.changeCabinetAlarmObj(arr[j],m,i);
+                    //     }
+                    // }
+                }
+            }
+        }
+    }
     //更新告警
     updateCube(obj,flag){
         let color=flag?0xff0000:0x062062
@@ -999,7 +1016,6 @@ export default class ThreeMap {
             }
         }
         if (this.lastElement != currentElement ) {
-            console.log(currentElement)
             clearTimeout(this.tipTimer);
             // if(this.lastElement){
             //     this.updateCube(this.lastElement,false)

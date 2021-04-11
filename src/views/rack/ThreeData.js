@@ -632,7 +632,7 @@ export const ThreeData={
         //             depth:depth/3,
         //             x:-width/2+wallDepth+100,
         //             y:height/2+wallHeight/2-wallDepth/2,
-        //             z:depth/3,
+        //             z:-depth/3,
         //             data:{
         //                 devid:"01",
         //                 pointid:"0101",
@@ -651,7 +651,7 @@ export const ThreeData={
         //                     height: wireHeight,
         //                     x:0,
         //                     y:wallHeight/2-wallHeight/3+wallDepth/2,
-        //                     z:depth/6+1,
+        //                     z:-(depth/6+1),
         //                     skin: {
         //                         skinColor: skinColor,
         //                         edgeColor:edgeColor,
@@ -667,7 +667,7 @@ export const ThreeData={
         //                     height: wireHeight,
         //                     x:0,
         //                     y:-(wallHeight/2-wallHeight/3)+wallDepth/2,
-        //                     z:depth/6+1,
+        //                     z:-(depth/6+1),
         //                     skin: {
         //                         skinColor: skinColor,
         //                         edgeColor:edgeColor,
@@ -693,7 +693,7 @@ export const ThreeData={
         
     ]
 }
-let number=10,rackWidth=(width-wallDepth*2-10-1)/number;
+let number=10,rackWidth=(width-wallDepth*2-(number+1)*wireHeight)/number;
 let cabinet={
     uuid: "",
     name: '柜子',
@@ -765,13 +765,39 @@ for (var i = 0; i <number;i++){
     let obj=JSON.parse(JSON.stringify(rack));
     obj.name="Rack"+(i+1);
     obj.data.name="JG-"+(i+1);
-    // for(let k=0;k<obj.childrens.length;k++){
-    //     obj.childrens[k].data.devid=obj.childrens[k].data.devid+i;
-    //     obj.childrens[k].data.pointid=obj.childrens[k].data.pointid+i;
-    // }
-    // obj.y=obj.y;
-    // obj.x=obj.x+220*i;
-    // obj.z=obj.z+100*j;
+    obj.data.tipInfo="精密空调柜-"+(i+1);
+    obj.data.devid=obj.data.devid+i;
+    obj.data.pointid=obj.data.pointid+i;
+    obj.x=-width/2+wallDepth+rackWidth/2+rackWidth*i+(i+1)*wireHeight;
     cabinet.childrens.push(obj)
 }
+let cabinet1={
+    uuid: "",
+    name: '柜子',
+    objType: 'rack',
+    depth: depth/3,
+    height: wallHeight-wallDepth,
+    style:{
+        skinColor: skinColor,
+        edgeColor:edgeColor,
+    },
+    childrens:[
+        
+    ]
+}
+for (var i = 0; i <number;i++){ 
+    let obj=JSON.parse(JSON.stringify(rack));
+    obj.name="Rack"+(i+10);
+    obj.data.name="JG-"+(i+10);
+    obj.data.tipInfo="精密空调柜-"+(i+1+10);
+    obj.data.devid=obj.data.devid+(i+10);
+    obj.data.pointid=obj.data.pointid+(i+10);
+    obj.x=-width/2+wallDepth+rackWidth/2+rackWidth*i+(i+1)*wireHeight;
+    obj.z=-depth/3
+    obj.childrens.forEach(element => {
+        element.z=-(depth/6+1);
+    });
+    cabinet1.childrens.push(obj)
+}
 ThreeData.objects.push(cabinet);
+ThreeData.objects.push(cabinet1);
