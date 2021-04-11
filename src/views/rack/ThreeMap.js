@@ -382,7 +382,7 @@ export default class ThreeMap {
         }
         
         var result = resultBSP.toMesh();
-        result.material.shading = THREE.FlatShading;
+        result.material.flatShading = THREE.FlatShading;
         result.geometry.computeFaceNormals();
         result.geometry.computeVertexNormals();
         result.uuid= fobj.uuid+mergeOP+sobj.uuid;
@@ -427,6 +427,7 @@ export default class ThreeMap {
                         result.geometry.faces[i*2].materialIndex=sobj.geometry.faces[j].materialIndex;
                         result.geometry.faces[i*2+1].color.setHex(commonSkin);
                         result.geometry.faces[i*2+1].materialIndex=sobj.geometry.faces[j].materialIndex;
+                        faceset == true
                     }
                 }
                 //最后剩余的一点点给颜色
@@ -463,9 +464,9 @@ export default class ThreeMap {
         //建立墙面
         var wallWidth = commonWidth;
         var wallDepth = obj.depth || commonDepth;
-        var positionX = ((obj.startDot.x || 0) + (obj.endDot.x || 0)) / 2;
-        var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2;
-        var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2;
+        var positionX = ((obj.startDot.x || 0) + (obj.endDot.x || 0)) / 2 || obj.x;
+        var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2 || obj.y;
+        var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2 || obj.z;
         //z相同 表示x方向为长度
         if (obj.startDot.z == obj.endDot.z) {
             wallWidth = Math.abs(obj.startDot.x - obj.endDot.x);
@@ -475,9 +476,9 @@ export default class ThreeMap {
             wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
         }
         var cubeobj = {
-            width: obj.height || wallWidth,
+            width: obj.width || wallWidth,
             height: obj.height || commonHeight,
-            depth: obj.height||wallDepth,
+            depth: obj.depth||wallDepth,
             rotation: obj.rotation,
             uuid: obj.uuid,
             name: obj.name,

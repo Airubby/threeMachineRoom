@@ -348,7 +348,7 @@ export default class ThreeMap {
         }
         
         var result = resultBSP.toMesh();
-        result.material.shading = THREE.FlatShading;
+        result.material.flatShading = THREE.FlatShading;
         result.geometry.computeFaceNormals();
         result.geometry.computeVertexNormals();
         result.uuid= fobj.uuid+mergeOP+sobj.uuid;
@@ -426,9 +426,9 @@ export default class ThreeMap {
             wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
         }
         var cubeobj = {
-            width: wallWidth,
+            width: obj.width || wallWidth,
             height: obj.height || commonHeight,
-            depth: wallDepth,
+            depth: obj.depth||wallDepth,
             rotation: obj.rotation,
             uuid: obj.uuid,
             name: obj.name,

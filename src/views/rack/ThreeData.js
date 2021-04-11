@@ -147,7 +147,38 @@ export const ThreeData={
                         z: 0
                     },
                     childrens:[
-                        
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireWidth, 
+                            height: wireHeight,
+                            x:-wallDepth/2-1,
+                            y:wallHeight/2-wallHeight/3,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '线框',
+                            objType: 'wireCube',
+                            depth: depth,
+                            width: wireWidth, 
+                            height: wireHeight,
+                            x:-wallDepth/2-1,
+                            y:wallHeight/3-wallHeight/2,
+                            z:0,
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
                     ]
                 },
                 {//右面墙
@@ -358,6 +389,28 @@ export const ThreeData={
                             },
                         },
                         {
+                            op: '-',
+                            uuid: "",
+                            name: 'windowHole',
+                            objType: '',
+                            width: width*9/10,
+                            height: wallDepth+10,
+                            startDot: {
+                                x: 0,
+                                y: height/2+wallHeight-wallDepth/2,
+                                z: -depth*4/16
+                            },
+                            endDot: {
+                                x: 0,
+                                y: height/2+wallHeight-wallDepth/2,
+                                z: depth*4/16
+                            },
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
                             op:"+",
                             uuid: "",
                             name: '线柱',
@@ -389,6 +442,41 @@ export const ThreeData={
                                 edgeColor:edgeColor,
                             },
                         },
+                        
+                        {
+                            uuid: "+",
+                            name: 'windowGlasses',
+                            objType: '',
+                            width: width*9/10,
+                            height: wallDepth,
+                            startDot: {
+                                x: 0,
+                                y: height/2+wallHeight-wallDepth/2,
+                                z: -depth*4/16
+                            },
+                            endDot: {
+                                x: 0,
+                                y: height/2+wallHeight-wallDepth/2,
+                                z: depth*4/16
+                            },
+                            skin: {
+                                skin_up: {
+                                    imgurl: "glass.png",
+                                    transparent: true,
+                                    opacity: 0.25,
+                                    repeatx: true,
+                                    repeaty: true,
+                                },
+                                skin_down: {
+                                    imgurl: "glass.png",
+                                    transparent: true,
+                                    opacity: 0.25,
+                                    repeatx: true,
+                                    repeaty: true,
+                                },
+                            },
+                        },
+                        
                     ]
                 }
             ],
