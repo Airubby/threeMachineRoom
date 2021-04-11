@@ -613,69 +613,70 @@ export const ThreeData={
             ]
         },
         //柜子
-        {
-            uuid: "",
-            name: 'wall',
-            objType: 'wall',
-            depth: depth/3,
-            height: wallHeight-wallDepth,
-            style:{
-                skinColor: skinColor,
-                edgeColor:edgeColor,
-            },
-            childrens:[
-                {
-                    uuid: "",
-                    name: 'rack1',
-                    height:wallHeight-wallDepth,
-                    depth:depth/3,
-                    startDot: {
-                        x: -100,
-                        y: height/2+wallHeight/2-wallDepth/2,
-                        z: depth/3
-                    },
-                    endDot: {
-                        x: 100,
-                        y: height/2+wallHeight/2-wallDepth/2,
-                        z: depth/3
-                    },
-                    childrens:[
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: wireWidth,
-                            width: 200, 
-                            height: wireHeight,
-                            x:0,
-                            y:(height/2+wallHeight/2-wallDepth/2)/2-(height/2+wallHeight/2-wallDepth/2)/3,
-                            z:depth/6+1,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: wireWidth,
-                            width: 200, 
-                            height: wireHeight,
-                            x:0,
-                            y:(height/2+wallHeight/2-wallDepth/2)/3-(height/2+wallHeight/2-wallDepth/2)/2,
-                            z:depth/6+1,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                    ]
-                },
-            ]
-        }
+        // {
+        //     uuid: "",
+        //     name: '柜子',
+        //     objType: 'rack',
+        //     depth: depth/3,
+        //     height: wallHeight-wallDepth,
+        //     style:{
+        //         skinColor: skinColor,
+        //         edgeColor:edgeColor,
+        //     },
+        //     childrens:[
+        //         {
+        //             uuid: "",
+        //             name: 'Rack1',
+        //             width:200,
+        //             height:wallHeight-wallDepth,
+        //             depth:depth/3,
+        //             x:-width/2+wallDepth+100,
+        //             y:height/2+wallHeight/2-wallDepth/2,
+        //             z:depth/3,
+        //             data:{
+        //                 devid:"01",
+        //                 pointid:"0101",
+        //                 isalarm:false,
+        //                 tipInfo:"设备1信息***",
+        //                 alarmInfo:"",
+        //             },
+        //             childrens:[
+        //                 {
+        //                     op:"+",
+        //                     uuid: "",
+        //                     name: '线框',
+        //                     objType: 'wireCube',
+        //                     depth: wireWidth,
+        //                     width: 200, 
+        //                     height: wireHeight,
+        //                     x:0,
+        //                     y:wallHeight/2-wallHeight/3+wallDepth/2,
+        //                     z:depth/6+1,
+        //                     skin: {
+        //                         skinColor: skinColor,
+        //                         edgeColor:edgeColor,
+        //                     },
+        //                 },
+        //                 {
+        //                     op:"+",
+        //                     uuid: "",
+        //                     name: '线框',
+        //                     objType: 'wireCube',
+        //                     depth: wireWidth,
+        //                     width: 200, 
+        //                     height: wireHeight,
+        //                     x:0,
+        //                     y:-(wallHeight/2-wallHeight/3)+wallDepth/2,
+        //                     z:depth/6+1,
+        //                     skin: {
+        //                         skinColor: skinColor,
+        //                         edgeColor:edgeColor,
+        //                     },
+        //                 },
+        //             ]
+        //         },
+        //     ]
+        // }
     ],
     events: {
         dbclick: [
@@ -692,3 +693,85 @@ export const ThreeData={
         
     ]
 }
+let number=10,rackWidth=(width-wallDepth*2-10-1)/number;
+let cabinet={
+    uuid: "",
+    name: '柜子',
+    objType: 'rack',
+    depth: depth/3,
+    height: wallHeight-wallDepth,
+    style:{
+        skinColor: skinColor,
+        edgeColor:edgeColor,
+    },
+    childrens:[
+        
+    ]
+}
+let rack={
+    uuid: "",
+    name: 'Rack1',
+    width:rackWidth,
+    height:wallHeight-wallDepth,
+    depth:depth/3,
+    x:-width/2+wallDepth+rackWidth/2,
+    y:height/2+wallHeight/2-wallDepth/2,
+    z:depth/3,
+    data:{
+        name:"",
+        devid:"01",
+        pointid:"0101",
+        isalarm:false,
+        tipInfo:"设备1信息***",
+        alarmInfo:"",
+    },
+    childrens:[
+        {
+            op:"+",
+            uuid: "",
+            name: '线框',
+            objType: 'wireCube',
+            depth: wireWidth,
+            width: rackWidth, 
+            height: wireHeight,
+            x:0,
+            y:wallHeight/2-wallHeight/3+wallDepth/2,
+            z:depth/6+1,
+            skin: {
+                skinColor: skinColor,
+                edgeColor:edgeColor,
+            },
+        },
+        {
+            op:"+",
+            uuid: "",
+            name: '线框',
+            objType: 'wireCube',
+            depth: wireWidth,
+            width: rackWidth, 
+            height: wireHeight,
+            x:0,
+            y:-(wallHeight/2-wallHeight/3)+wallDepth/2,
+            z:depth/6+1,
+            skin: {
+                skinColor: skinColor,
+                edgeColor:edgeColor,
+            },
+        },
+    ]
+}
+
+for (var i = 0; i <number;i++){ 
+    let obj=JSON.parse(JSON.stringify(rack));
+    obj.name="Rack"+(i+1);
+    obj.data.name="JG-"+(i+1);
+    // for(let k=0;k<obj.childrens.length;k++){
+    //     obj.childrens[k].data.devid=obj.childrens[k].data.devid+i;
+    //     obj.childrens[k].data.pointid=obj.childrens[k].data.pointid+i;
+    // }
+    // obj.y=obj.y;
+    // obj.x=obj.x+220*i;
+    // obj.z=obj.z+100*j;
+    cabinet.childrens.push(obj)
+}
+ThreeData.objects.push(cabinet);

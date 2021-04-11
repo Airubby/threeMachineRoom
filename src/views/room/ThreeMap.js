@@ -1397,7 +1397,6 @@ export default class ThreeMap {
         var intersects = this.raycaster.intersectObjects(this.objects);
         if(intersects.length>0){
             let SELECTED = intersects[0].object;
-            console.log(SELECTED)
             if(SELECTED.name.toString().indexOf("equipment")!=-1||SELECTED.name.toString().indexOf("spriteAlarm")!=-1){
                 currentElement = SELECTED;
             }
@@ -1409,6 +1408,7 @@ export default class ThreeMap {
                     console.log(currentElement)
                     let tipInfo="";
                     if(currentElement.name.toString().indexOf("equipment")!=-1){
+                        console.log(currentElement)
                         tipInfo=currentElement.data.tipInfo;
                         _this.tooltip.style.background = _this.tooltipBG;
                         _this.tooltip.querySelector("span").style.borderTop="10px solid "+_this.tooltipBG;
@@ -1432,7 +1432,7 @@ export default class ThreeMap {
                     _this.tooltip.style.display = 'block';
                     _this.tooltip.style.left = (_this.lastEvent.pageX - _this.tooltip.clientWidth/2) + 'px';
                     _this.tooltip.style.top = (_this.lastEvent.pageY - _this.tooltip.clientHeight - 15) + 'px';
-                },1000); 
+                },300); 
             }     
         }
         //设置上一次的网元为当前网元

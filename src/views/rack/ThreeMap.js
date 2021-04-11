@@ -124,6 +124,7 @@ export default class ThreeMap {
             for(let i=0;i<this.objList.length;i++){
                 this.InitAddObject(this.objList[i]);
             }
+            this.InitTooltip();
         }
     }
     Loading(){
@@ -202,7 +203,10 @@ export default class ThreeMap {
                     this.CreateFace(obj);
                     break;
                 case 'wall':
-                    this.CreateWall(obj);
+                    this.CreateWall(obj,"wall");
+                    break;
+                case 'rack':
+                    this.CreateWall(obj,"rack");
                     break;
             }
         }
@@ -297,7 +301,7 @@ export default class ThreeMap {
         var cube=this.createCube(cubeobj);
         return cube;
     }
-    CreateWall (obj) {
+    CreateWall (obj,type) {
         let _this=this;
         var commonDepth = obj.depth || 40;//墙体厚度
         var commonHeight = obj.height || 100;//墙体高度
@@ -310,25 +314,29 @@ export default class ThreeMap {
         obj.childrens.forEach(function(wallobj, index){
             var wallWidth = commonWidth;
             var wallDepth = wallobj.depth||commonDepth;
-            var positionX = ((wallobj.startDot.x||0) + (wallobj.endDot.x||0)) / 2;
-            var positionY = ((wallobj.startDot.y || 0) + (wallobj.endDot.y || 0)) / 2;
-            var positionZ = ((wallobj.startDot.z || 0) + (wallobj.endDot.z || 0)) / 2;
+            var positionX,positionY, positionZ;
             //z相同 表示x方向为长度
-            if (wallobj.startDot.z == wallobj.endDot.z) {
-                wallWidth = Math.abs(wallobj.startDot.x - wallobj.endDot.x);
-                wallDepth = wallobj.depth || commonDepth;
-            } else if (wallobj.startDot.x == wallobj.endDot.x) {
-                wallWidth = wallobj.depth || commonDepth;
-                wallDepth = Math.abs(wallobj.startDot.z - wallobj.endDot.z);
+            if(wallobj.startDot&&wallobj.endDot){
+                positionX = ((wallobj.startDot.x||0) + (wallobj.endDot.x||0)) / 2;
+                positionY = ((wallobj.startDot.y || 0) + (wallobj.endDot.y || 0)) / 2;
+                positionZ = ((wallobj.startDot.z || 0) + (wallobj.endDot.z || 0)) / 2;
+                if (wallobj.startDot.z == wallobj.endDot.z) {
+                    wallWidth = Math.abs(wallobj.startDot.x - wallobj.endDot.x);
+                    wallDepth = wallobj.depth || commonDepth;
+                } else if (wallobj.startDot.x == wallobj.endDot.x) {
+                    wallWidth = wallobj.depth || commonDepth;
+                    wallDepth = Math.abs(wallobj.startDot.z - wallobj.endDot.z);
+                }
             }
+            
             var cubeobj = {
-                width: wallWidth,
+                width: wallobj.width||wallWidth,
                 height: wallobj.height || commonHeight,
-                depth: wallDepth,
+                depth: wallobj.depth||wallDepth,
                 rotation: wallobj.rotation,
-                x: positionX,
-                y: positionY,
-                z: positionZ,
+                x: positionX||wallobj.x,
+                y: positionY||wallobj.y,
+                z: positionZ||wallobj.z,
                 uuid: wallobj.uuid,
                 name:wallobj.name,
                 style: {
@@ -351,7 +359,17 @@ export default class ThreeMap {
                     cube = _this.mergeModel(walchildobj.op, cube, newobj,commonSkin,walchildobj.skin.edgeColor);
                 })
             }
-            _this.addObject(cube,"scene");
+            // _this.addObject(cube,type);
+
+            if(type=="wall"){
+                _this.addObject(cube,"scene");
+            }else if(type=="rack"){
+                cube.name = wallobj.name;
+                cube.uuid = wallobj.uuid;
+                cube.data= wallobj.data||{name:wallobj.name,alarmInfo:[],tipInfo:wallobj.name};
+                _this.addObject(cube);
+            }
+
         });
     }
     //模型合并 使用ThreeBSP插件mergeOP计算方式 -表示减去 +表示加上 
@@ -566,6 +584,7 @@ export default class ThreeMap {
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterialArray);
         cube.castShadow = true;
         cube.receiveShadow = true;
+        cube.needsUpdate=true;
         cube.uuid = obj.uuid;
         cube.name = obj.name;
         cube.position.set(x, y, z);
@@ -648,6 +667,27 @@ export default class ThreeMap {
             });
         }
         return plane;
+    }
+
+    outlineObj( selectedObjects ){
+ 
+        composer = new THREE.EffectComposer( this.renderer ); // 特效组件
+     
+        var renderPass = new THREE.RenderPass( this.scene, this.camera );
+        composer.addPass( renderPass ); // 特效渲染
+     
+        outlinePass = new THREE.OutlinePass( new THREE.Vector2( this.dom.offsetWidth, this.dom.offsetHeight ), this.scene, this.camera );
+        composer.addPass( outlinePass ); // 加入高光特效
+     
+        outlinePass.pulsePeriod = 2; //数值越大，律动越慢
+        outlinePass.visibleEdgeColor.set( 0xff0000 ); // 高光颜色
+        outlinePass.hiddenEdgeColor.set( 0x000000 );// 阴影颜色
+        outlinePass.usePatternTexture = false; // 使用纹理覆盖？
+        outlinePass.edgeStrength = 5; // 高光边缘强度
+        outlinePass.edgeGlow = 1; // 边缘微光强度
+        outlinePass.edgeThickness = 1; // 高光厚度
+     
+        outlinePass.selectedObjects = selectedObjects; // 需要高光的obj
     }
     handleObj(obj){
         if (obj.objHandle != null && typeof (obj.objHandle) != 'undefined' && obj.objHandle.length > 0) {
@@ -777,7 +817,14 @@ export default class ThreeMap {
         }
         return texture;
     }
-    
+    //更新告警
+    updateCube(obj,flag){
+        let color=flag?0xff0000:0x062062
+        obj.geometry.faces.forEach(function (face) {
+            face.color.setHex(color);
+        });
+        obj.geometry.colorsNeedUpdate = true;
+    }
     commonFunc={
         _this:this,
         //判断对象
@@ -938,6 +985,7 @@ export default class ThreeMap {
     }
     //鼠标移动
     onDocumentMouseMove(event){
+        
         let _this=this;
         var currentElement = null;
         this.mouseClick.x = (event.offsetX / this.dom.offsetWidth) * 2 - 1;
@@ -946,34 +994,28 @@ export default class ThreeMap {
         var intersects = this.raycaster.intersectObjects(this.objects);
         if(intersects.length>0){
             let SELECTED = intersects[0].object;
-            console.log(SELECTED)
-            if(SELECTED.name.toString().indexOf("equipment")!=-1||SELECTED.name.toString().indexOf("spriteAlarm")!=-1){
+            if(SELECTED.name.toString().indexOf("Rack")!=-1){
                 currentElement = SELECTED;
             }
         }
         if (this.lastElement != currentElement ) {
+            console.log(currentElement)
             clearTimeout(this.tipTimer);
+            // if(this.lastElement){
+            //     this.updateCube(this.lastElement,false)
+            // }
             if(currentElement){
+                
+                // this.updateCube(currentElement,true);
+                
                 this.tipTimer = setTimeout(function(){
-                    console.log(currentElement)
                     let tipInfo="";
-                    if(currentElement.name.toString().indexOf("equipment")!=-1){
+                    if(currentElement.name.toString().indexOf("Rack")!=-1){
+                        console.log(currentElement)
                         tipInfo=currentElement.data.tipInfo;
+                        
                         _this.tooltip.style.background = _this.tooltipBG;
                         _this.tooltip.querySelector("span").style.borderTop="10px solid "+_this.tooltipBG;
-                    }
-                    if(currentElement.name.toString().indexOf("spriteAlarm")!=-1){
-                        console.log(currentElement)
-                        if(currentElement.data.alarmInfo.length>0){
-                            let levelArr=[];
-                            for(let i=0;i<currentElement.data.alarmInfo.length;i++){
-                                levelArr.push(currentElement.data.alarmInfo[i].level);
-                                tipInfo+=currentElement.data.alarmInfo[i].name+currentElement.data.alarmInfo[i].alarmInfo+"；"
-                            }
-                            let max=Math.max(...levelArr);
-                            _this.tooltip.style.background = _this.alarmColor["level"+max];
-                            _this.tooltip.querySelector("span").style.borderTop="10px solid "+_this.alarmColor["level"+max];
-                        }
                     }
                     let tiplen=tipInfo.length;
                     _this.tooltip.querySelector("#tipdiv").innerHTML=tipInfo
@@ -981,7 +1023,9 @@ export default class ThreeMap {
                     _this.tooltip.style.display = 'block';
                     _this.tooltip.style.left = (_this.lastEvent.pageX - _this.tooltip.clientWidth/2) + 'px';
                     _this.tooltip.style.top = (_this.lastEvent.pageY - _this.tooltip.clientHeight - 15) + 'px';
-                },1000); 
+                    
+                    
+                },300); 
             }     
         }
         //设置上一次的网元为当前网元
@@ -992,245 +1036,5 @@ export default class ThreeMap {
         }
         //设置每次移动时鼠标的事件对象
         this.lastEvent = event;
-    }
-    //测试
-    add(){
-        var _this=this;
-        //测试生成obj带材质
-        // this.createObjContainMtl()
-
-        //3,测点管道
-        // var points = [];
-        // points.push(new THREE.Vector3(0, 0, -10));
-        // points.push(new THREE.Vector3(0, 0, 10));
-        // var curvePath = new THREE.CatmullRomCurve3(points);
-        // var geometry = new THREE.TubeGeometry( curvePath, 20, 2, 8, false );
-        // var material = new THREE.MeshBasicMaterial( { color: 0xff0000 ,side:THREE.DoubleSide } );
-        // var mesh = new THREE.Mesh( geometry, material );
-        // this.scene.add( mesh );
-        ////自定义管道
-        // var cylinderGeo = new THREE.CylinderGeometry(4, 4 ,20 ,48,48);
-        // var cylinderMat = new THREE.MeshLambertMaterial({
-        //     color:0xffffff,
-        //     side:THREE.DoubleSide,
-        //     // map: this.createSkin(64,64,{imgurl:"./images/rack_inside.png"})
-        // });
-        // var cylinderMat2 = new THREE.MeshLambertMaterial({
-        //     color:0xffffff,
-        //     side:THREE.DoubleSide,
-        //     // map: this.createSkin(64,64,{imgurl:"./images/test/camera.png"})
-        // });
-        // var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
-        // var cubeGeometry = new THREE.CubeGeometry(6.5, 20, 6.5, 0, 0, 1);
-        // var cube = new THREE.Mesh(cubeGeometry, cylinderMat);
-        // var pipe = this.mergeModel('+',cylinder,cube);
-        // var cylinderGeo1 = new THREE.CylinderGeometry(3.5, 3.5 ,20 ,48,48);
-        // var cylinder1 = new THREE.Mesh(cylinderGeo1, cylinderMat);
-        // pipe=this.mergeModel("-",pipe,cylinder1);
-        // var cylinderGeo2 = new THREE.CylinderGeometry(2.5, 2.5 ,20 ,48,48);
-        // var cylinder2 = new THREE.Mesh(cylinderGeo2, cylinderMat2);
-        // pipe=this.mergeModel("+",pipe,cylinder2);
-        // pipe.rotateX(0.5*Math.PI);
-        // this.scene.add(pipe);//网格模型添加到场景中
-
-        //4.测试加载模型
-        // var texture = new THREE.TextureLoader().load( './images/test/metal.png' );
-        // var texture1 = new THREE.TextureLoader().load( './images/test/camera_light.png' );
-        // var texture2 = new THREE.TextureLoader().load( './images/test/camera_dot.png' );
-        // var loader =new OBJLoader();
-        // loader.load( './images/test/camera.obj', function ( group ) {
-        //     console.log(group)
-        //     group.traverse( function ( child ) {
-        //         console.log(child)
-        //         if ( child instanceof THREE.Mesh) {
-        //             if(child.name=="archmodels95_044_001"){
-        //                 child.material.map = texture;
-        //             }else if(child.name=="archmodels95_044_003"){
-        //                 child.material.map = texture1;
-        //             }else{
-        //                 child.material.map = texture2;
-        //             }
-                  
-        //         }
-        //     });
-        //     _this.scene.add( group );
-        // })
-
-        //测试加载材质模型
-        // var mtlLoader = new MTLLoader();
-        // mtlLoader.load('./images/test/plant.mtl', function(materials) {
-        //     materials.preload();
-        //     console.log(materials)-
-        //     var objLoader = new OBJLoader();
-        //     objLoader.setMaterials(materials);
-        //     objLoader.load('./images/test/plant.obj', function(object) {
-        //         console.log(object)
-        //         _this.scene.add(object);
-        //     }, onProgress, onError);
-        // });
-        // var onProgress = function(xhr) {
-        //     if (xhr.lengthComputable) {
-        //         var percentComplete = xhr.loaded / xhr.total * 100;
-        //         console.log(Math.round(percentComplete, 2) + '% 已经加载')
-        //     }
-        // }
-        // var onError =function(){}
-
-        //1、测试ThreeBSP用的
-        //几何体对象
-        // let cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
-        // let box = new THREE.BoxGeometry(40,5,40);//立方体
-        // //材质对象
-        // let material=new THREE.MeshPhongMaterial({color:0x0000ff});
-        // //网格模型对象
-        // let cylinderMesh=new THREE.Mesh(cylinder,material);//圆柱
-        // let boxMesh=new THREE.Mesh(box,material);//立方体
-        // //包装成ThreeBSP对象
-        // let cylinderBSP = new ThreeBSP(cylinderMesh);
-        // let boxBSP = new ThreeBSP(boxMesh);
-        // let result = cylinderBSP.subtract(boxBSP);
-        // //ThreeBSP对象转化为网格模型对象
-        // let mesh = result.toMesh();
-        // this.scene.add(mesh);//网格模型添加到场景中
-
-        // //2、试圆柱体贴图
-        // //创建圆柱体
-        // var cylinderGeo = new THREE.CylinderGeometry(28, 30 ,200 ,48,48);
-        // cylinderGeo.computeBoundingBox(); 
-        // var max = cylinderGeo.boundingBox.max,
-        //         min = cylinderGeo.boundingBox.min;
-        //         console.log(cylinderGeo)
-        //         console.log(max)
-        //         console.log(min)
-        // var offset = new THREE.Vector2(0 - min.x, 0 - min.y);
-        // var range = new THREE.Vector2(max.x - min.x, max.y - min.y);
-        // var faces = cylinderGeo.faces; 
-        // cylinderGeo.faceVertexUvs[0] = []; 
-        // for (var i = 0; i < faces.length ; i++) { 
-        //     var v1 = cylinderGeo.vertices[faces[i].a],
-        //             v2 = cylinderGeo.vertices[faces[i].b],
-        //             v3 = cylinderGeo.vertices[faces[i].c]; 
-        //     cylinderGeo.faceVertexUvs[0].push([
-        //         new THREE.Vector2((v1.x + offset.x) / range.x, (v1.y + offset.y) / range.y),
-        //         new THREE.Vector2((v2.x + offset.x) / range.x, (v2.y + offset.y) / range.y),
-        //         new THREE.Vector2((v3.x + offset.x) / range.x, (v3.y + offset.y) / range.y)
-        //     ]);
-        // }
-        // cylinderGeo.uvsNeedUpdate = true;
-        
-
-        // console.log(cylinderGeo)
-        // var cylinderMat = new THREE.MeshLambertMaterial({//创建材料
-        //     color:0xffffff,
-        //     wireframe:false,
-        //     opacity: 0.1,
-        //     map: this.createSkin(60,200,{imgurl:"./images/aircondition.png"})
-        // });
-        // //创建圆柱体网格模型
-        // var cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
-        // this.scene.add(cylinder);//网格模型添加到场景中
-
-    }
-    //测试自己生成obj文件带mtl材质的
-    createObjContainMtl(){
-        //如果obj文件没有包含材质关联的时候，自己生成带材质的关联obj文件
-        let _this=this;
-        var leaftexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_leaf_33.jpg' );
-        var soiltexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_dirt_1.jpg' );
-        var barktexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_bark_1.jpg' );
-        var jardinieretexture = new THREE.TextureLoader().load( './images/plant/Archmodels66_jardiniere.jpg' );
-        var objLoader=new OBJLoader();
-        objLoader.load("./images/plant/plant.obj",function(object ){
-            object.traverse( function ( child ) {
-                if ( child instanceof THREE.Mesh) {
-                    child.material=new THREE.MeshBasicMaterial({color: 0xffffff});
-                    if(child.name=="3DXY_geometry_769"||child.name=="3DXY_geometry_773"){
-                        child.material.name="wire_153228214"
-                        child.material.map = leaftexture;
-                    }else if(child.name=="3DXY_geometry_772"||child.name=="3DXY_geometry_776"||child.name=="3DXY_geometry_777"||child.name=="3DXY_geometry_778"){
-                        child.material.name="wire_108008136"
-                        child.material.map = barktexture;
-                    }else if(child.name=="3DXY_geometry_774"||child.name=="3DXY_geometry_775"){
-                        child.material.name="wire_177148027"
-                        child.material.map = soiltexture;
-                    }else if(child.name=="3DXY_geometry_770"){
-                        child.material.name="wire_198225087"
-                        child.material.map = jardinieretexture;
-                    }
-                }
-            });
-            // _this.scene.add(object)
-            let objExporter = new OBJExporter();
-            var output = objExporter.parse(object);
-            var link = document.createElement( 'a' ); 
-            link.style.display = 'none'; 
-            document.body.appendChild( link );
-            link.href = URL.createObjectURL( new Blob( [ output ], { type: 'text/plain' } ) ); 
-            link.download = "object.obj" ; 
-            link.click();
-            //然后自己制作mtl文件就可以了
-        }, this.onProgress, this.onError)
-    }
-    //测试GLTF文件
-    exportGLTF(){
-        let box = new THREE.BoxGeometry(40,5,40);
-        let material=new THREE.MeshPhongMaterial({color:0x0000ff});
-        let obj=new THREE.Mesh(box,material);//立方体
-        // 单个模型数据 GLTF导出
-        let gltfExporter = new GLTFExporter();
-        gltfExporter.parse(obj, function (result) {
-            console.log(result);
-            var output = JSON.stringify( result, null, 2 );
-            var link = document.createElement( 'a' ); 
-            link.style.display = 'none'; 
-            document.body.appendChild( link );
-            link.href = URL.createObjectURL( new Blob( [ output ], { type: 'text/plain' } ) ); 
-            link.download = "object.gltf" ; 
-            link.click();
-        });
-        //加载GLTF
-        var _this=this;
-        var loader = new GLTFLoader();
-        loader.load( './images/test/object.gltf', function ( gltf ) {
-            console.log('控制台查看加载gltf文件返回的对象结构',gltf)
-            console.log('gltf对象场景属性',gltf.scene)
-            console.log('gltf对象相机属性',gltf.cameras)
-            _this.scene.add( gltf.scene );
-        })
-    }
-    //测试OBJ文件
-    exportOBJ(){
-        let box = new THREE.BoxGeometry(40,5,40);
-        let material=new THREE.MeshPhongMaterial({color:0x0000ff});
-        let obj=new THREE.Mesh(box,material);//立方体
-        // 单个模型数据 OBJ导出
-        let objExporter = new OBJExporter();
-        var output = objExporter.parse(obj);
-        var link = document.createElement( 'a' ); 
-        link.style.display = 'none'; 
-        document.body.appendChild( link );
-        link.href = URL.createObjectURL( new Blob( [ output ], { type: 'text/plain' } ) ); 
-        link.download = "object.obj" ; 
-        link.click();
-        //加载OBJ
-        var _this=this;
-        var loader = new OBJLoader();
-        var loader2=new OBJLoader2();
-        loader.load( './images/test/object.obj', function ( obj ) {
-            console.log(obj)
-            _this.scene.add( obj );
-        })
-        // loader2.load( './images/test/object.obj', function ( obj ) {
-        //     _this.scene.add( obj );
-        // })
-    }
-    //测试
-    createFBX(obj){
-        let _this=this;
-        var fbxLoader = new FBXLoader();
-        fbxLoader.load(_this.commonFunc.getPath('rack/2-5-E-max.fbx'), function(object) {
-            console.log(object)
-            _this.scene.add( object );
-        });
     }
 }

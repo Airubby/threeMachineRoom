@@ -22,6 +22,13 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'   //r100及以上
 // var OrbitControls = require('three-orbit-controls')(THREE)  //r100 以下
+//发光
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
+// import { FXAAShader } from 'three/examples/js/shaders/FXAAShader.js';
+
 export default class ThreeMap {
     constructor(props,dataJson) {
 
@@ -112,6 +119,62 @@ export default class ThreeMap {
     }
     //渲染
     render() {
+        // var vertexShader = [
+        //     'varying vec2 vUv',
+        //     'void main(){',
+        //     '   vUv = uv;',
+        //     '	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
+        //     '}'
+        // ].join('\n');
+        // var fragmentShader = [
+        //     'uniform sampler2D baseTexture;',
+        //     'uniform sampler2D bloomTexture;',
+        //     'varying vec2 vUv;',
+        //     'vec4 getTexture( sampler2D texelToLinearTexture ) {',
+        //     '   return mapTexelToLinear( texture2D( texelToLinearTexture , vUv ) );',
+        //     '}',
+        //     'void main(){',
+        //     '	gl_FragColor = ( getTexture( baseTexture ) + vec4( 1.0 ) * getTexture( bloomTexture ) );',
+        //     '}'
+        // ].join('\n');
+        // var ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
+        // this.bloomLayer = new THREE.Layers();
+        // this.bloomLayer.set( BLOOM_SCENE );
+        // var params = {
+        //     exposure: 1,
+        //     bloomStrength: 5,
+        //     bloomThreshold: 0,
+        //     bloomRadius: 0,
+        //     scene: "Scene with Glow"
+        // };
+        // this.darkMaterial = new THREE.MeshBasicMaterial( { color: "black" } );
+        // this.materials = {};
+        // var renderScene = new RenderPass( this.scene, this.camera );
+        // var bloomPass = new UnrealBloomPass( new THREE.Vector2( this.dom.offsetWidth, this.dom.offsetHeight ), 1.5, 0.4, 0.85 );
+        // bloomPass.threshold = params.bloomThreshold;
+        // bloomPass.strength = params.bloomStrength;
+        // bloomPass.radius = params.bloomRadius;
+        // this.bloomComposer = new EffectComposer( this.renderer );
+        // this.bloomComposer.renderToScreen = false;
+        // this.bloomComposer.addPass( renderScene );
+        // this.bloomComposer.addPass( bloomPass );
+        // this.finalPass = new ShaderPass(
+        // new THREE.ShaderMaterial( {
+        //     uniforms: {
+        //     baseTexture: { value: null },
+        //     bloomTexture: { value: this.bloomComposer.renderTarget2.texture }
+        //     },
+        //     vertexShader: vertexShader,
+        //     fragmentShader: fragmentShader,
+        //     defines: {}
+        // } ), "baseTexture"
+        // );
+        // this.finalPass.needsSwap = true;
+        // this.finalComposer = new EffectComposer( this.renderer );
+        // this.finalComposer.addPass( renderScene );
+        // this.finalComposer.addPass( this.finalPass );
+
+        
         this.animate()
     }
     animate() {
@@ -129,57 +192,81 @@ export default class ThreeMap {
         this.controls.update();
     }
     InitData(){
-        var geometry = new LineGeometry();
-        // 顶点坐标构成的数组pointArr
-        var pointArr = [-100,0,0,
-                        -100,100,0,
-                        0,0,0,
-                        100,100,0,
-                        100,0,0,]
-        // 几何体传入顶点坐标
-        geometry.setPositions( pointArr);
-        // 自定义的材质
-        var material  = new LineMaterial( {
-          color: 0xdd2222,
-          // 线宽度
-          linewidth: 5,
-        } );
-        // 把渲染窗口尺寸分辨率传值给材质LineMaterial的resolution属性
-        // resolution属性值会在着色器代码中参与计算
-        material.resolution.set(window.innerWidth,window.innerHeight);
-        var line = new THREE.Mesh(geometry, material);
-        var colorArr = [
-            1,0,0,
-            0,1,0,
-            0,0,1,
-            0,1,0,
-            1,0,0,
-            ]
-            // 设定每个顶点对应的颜色值
-            geometry.setColors( colorArr );
-            
-            var material  = new LineMaterial( {
-              // color: 0xfd1232,
-              linewidth: 5,
-              // 注释color设置，启用顶点颜色渲染
-              vertexColors: THREE.VertexColors,
-            } );
-            this.scene.add( line );
-
-    // var geometry = new THREE.Geometry();
-    // geometry.vertices.push(
-    //     new THREE.Vector3(-100, 0, 100),
-    //     new THREE.Vector3(100, 0, -100)
-    // );
-    // geometry.colors.push(
-    //     new THREE.Color( 0x444444 ), 
-    //     new THREE.Color( 0xFF0000 )
-    // )
-    // var material = new THREE.LineBasicMaterial({ vertexColors: true ,color:0xff0000 ,linewidth: 10,});
-    // var line = new THREE.Line(geometry, material);
-    // this.scene.add( line );
+        var geometry = new THREE.CubeGeometry(400, 200, 300, 0, 0, 1);
+        var color = new THREE.Color();
+        color.setHSL( Math.random(), 0.7, Math.random() * 0.2 + 0.05 );
+        var material = new THREE.MeshBasicMaterial( { color: color } );
+        var sphere = new THREE.Mesh( geometry, material );
+        sphere.position.x = Math.random() * 10 - 5;
+        sphere.position.y = Math.random() * 10 - 5;
+        sphere.position.z = Math.random() * 10 - 5;
+        sphere.position.normalize().multiplyScalar( Math.random() * 4.0 + 2.0 );
+        sphere.scale.setScalar( Math.random() * Math.random() + 0.5 );
+        this.scene.add( sphere );
+        // sphere.layers.enable( true );
+        this.renderOutside(sphere);
 
 
+
+
+    }
+    renderOutside(selectedObjects){
+        let composer = new EffectComposer( this.renderer ); // 特效组件
+     
+        var renderPass = new RenderPass( this.scene, this.camera );
+        composer.addPass( renderPass ); // 特效渲染
+     
+        let outlinePass = new OutlinePass( new THREE.Vector2( this.dom.offsetWidth, this.dom.offsetHeight ), this.scene, this.camera );
+        composer.addPass( outlinePass ); // 加入高光特效
+     
+        outlinePass.pulsePeriod = 2; //数值越大，律动越慢
+        outlinePass.visibleEdgeColor.set( 0xff0000 ); // 高光颜色
+        outlinePass.hiddenEdgeColor.set( 0x000000 );// 阴影颜色
+        outlinePass.usePatternTexture = false; // 使用纹理覆盖？
+        outlinePass.edgeStrength = 5; // 高光边缘强度
+        outlinePass.edgeGlow = 1; // 边缘微光强度
+        outlinePass.edgeThickness = 1; // 高光厚度
+     
+        outlinePass.selectedObjects = selectedObjects; // 需要高光的obj
+        //描边
+        // this.composer = new EffectComposer(this.renderer);
+        // let renderPass = new RenderPass(this.scene,this.camera);
+        // this.composer.addPass(renderPass);
+        // this.outlinePass = new OutlinePass(new THREE.Vector2(this.dom.offsetWidth, this.dom.offsetHeight),this.scene,this.camera);
+        // this.composer.addPass(this.outlinePass);
+        // this.outlinePass.visibleEdgeColor.set('#3042fc');
+        // this.outlinePass.edgeStrength = 4;
+        // this.outlinePass.edgeGlow = 0;
+        // this.outlinePass.edgeThickness = 1.6;
+        // this.outlinePass.pulsePeriod = 0;
+        
+        // 抗锯齿
+        // let effectFXAA = new ShaderPass(FXAAShader);
+        // effectFXAA.uniforms['resolution'].value.set(1/this.dom.offsetWidth,1/this.dom.offsetHeight);
+        // this.composer.addPass(FXAAShaderPass);
+
+      
+        // this.composer.render();
+
+
+
+        // let _this=this;
+        // this.scene.traverse( darkenNonBloomed );
+        // this.bloomComposer.render();
+        // this.scene.traverse( restoreMaterial );
+        // this.finalComposer.render();
+        // function darkenNonBloomed( obj ) {
+        //     if ( obj.isMesh && _this.bloomLayer.test( obj.layers ) === false ) {
+        //       _this.materials[ obj.uuid ] = obj.material;
+        //       obj.material = _this.darkMaterial;
+        //     }
+        // }
+        // function restoreMaterial( obj ) {
+        //     if (_this.materials[ obj.uuid ] ) {
+        //       obj.material = _this.materials[ obj.uuid ];
+        //       delete _this.materials[ obj.uuid ];
+        //     }
+        // }
     }
     //刷新视图
     resetView(){
