@@ -227,6 +227,34 @@ export const ThreeData={
                                 edgeColor:edgeColor,
                             },
                         },
+                        {
+                            name: 'TV',
+                            uuid: "",
+                            objType: '',
+                            // width:30,
+                            depth:(depth-ladderDepth)/2-wireHeight*2,
+                            height: wallHeight/3-wireHeight,
+                            // x:doorWidth+15,
+                            // y:0,
+                            // z:-ladderDepth/2,
+                            startDot: {
+                                x: width/2,
+                                y: wallHeight/2,
+                                z: -depth/2+ladderDepth/2
+                            },
+                            endDot: {
+                                x: width/2+5,
+                                y: wallHeight/2+height,
+                                z: -depth/2+ladderDepth/2
+                            },
+                            skin:{
+                                skinColor:edgeColor,
+                                edgeColor:edgeColor,
+                                skin_right: {
+                                    imgurl: "tv.png",
+                                },
+                            }
+                        },
                     ]
                 },
                 {

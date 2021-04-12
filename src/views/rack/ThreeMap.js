@@ -341,7 +341,7 @@ export default class ThreeMap {
                 name:wallobj.name,
                 style: {
                     skinColor: commonSkin,
-                    edgeColor: commonEdgeColor||ladderObj.skin.edgeColor,
+                    edgeColor: commonEdgeColor||wallobj.skin.edgeColor,
                     skin:wallobj.skin,
                     transparent:transparent, 
                     opacity:opacity
@@ -362,7 +362,7 @@ export default class ThreeMap {
             // _this.addObject(cube,type);
 
             if(type=="wall"){
-                _this.addObject(cube,"scene");
+                _this.addObject(cube);
             }else if(type=="rack"){
                 cube.name = wallobj.name;
                 cube.uuid = wallobj.uuid;
@@ -476,6 +476,9 @@ export default class ThreeMap {
     }
     //挖洞、玻璃、挂东西
     CreateHole ( obj) {
+        // if(obj.name=="TV"){
+        //     debugger
+        // }
         var commonDepth =  40;//厚度
         var commonHeight =  100;//高度
         var commonWidth =  300;//强体高度
@@ -483,17 +486,20 @@ export default class ThreeMap {
         //建立墙面
         var wallWidth = commonWidth;
         var wallDepth = obj.depth || commonDepth;
-        var positionX = ((obj.startDot.x || 0) + (obj.endDot.x || 0)) / 2 || obj.x;
-        var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2 || obj.y;
-        var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2 || obj.z;
-        //z相同 表示x方向为长度
-        if (obj.startDot.z == obj.endDot.z) {
-            wallWidth = Math.abs(obj.startDot.x - obj.endDot.x);
-            wallDepth = obj.depth || commonDepth;
-        } else if (obj.startDot.x == obj.endDot.x) {
-            wallWidth = obj.depth || commonDepth;
-            wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
+        if(obj.startDot&&obj.endDot){
+            var positionX = ((obj.startDot.x || 0) + (obj.endDot.x || 0)) / 2 ;
+            var positionY = ((obj.startDot.y || 0) + (obj.endDot.y || 0)) / 2 ;
+            var positionZ = ((obj.startDot.z || 0) + (obj.endDot.z || 0)) / 2 ;
+            //z相同 表示x方向为长度
+            if (obj.startDot.z == obj.endDot.z) {
+                wallWidth = Math.abs(obj.startDot.x - obj.endDot.x);
+                wallDepth = obj.depth || commonDepth;
+            } else if (obj.startDot.x == obj.endDot.x) {
+                wallWidth = obj.depth || commonDepth;
+                wallDepth = Math.abs(obj.startDot.z - obj.endDot.z);
+            }
         }
+        
         var cubeobj = {
             width: obj.width || wallWidth,
             height: obj.height || commonHeight,
@@ -502,9 +508,9 @@ export default class ThreeMap {
             uuid: obj.uuid,
             name: obj.name,
             objType: obj.objType,
-            x: positionX,
-            y: positionY,
-            z: positionZ,
+            x: positionX||obj.x,
+            y: positionY||obj.y,
+            z: positionZ||obj.z,
             style: {
                 skinColor: obj.skinColor || commonSkin,
                 edgeColor: obj.skin.edgeColor||"",
@@ -546,6 +552,9 @@ export default class ThreeMap {
             skin_left_obj = skin_up_obj,
             skin_right_obj = skin_up_obj;
         var skin_opacity = 1;
+        // if(obj.name=="TV") {
+        //     debugger
+        // }
         if (obj.style != null && typeof (obj.style) != 'undefined'
             && obj.style.skin != null && typeof (obj.style.skin) != 'undefined') {
             //透明度
