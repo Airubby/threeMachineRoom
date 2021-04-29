@@ -191,23 +191,47 @@ export default class ThreeMap {
         this.controls = new OrbitControls(this.camera,this.dom);
         this.controls.update();
     }
+    //测试函数
     InitData(){
-        var geometry = new THREE.CubeGeometry(400, 200, 300, 0, 0, 1);
-        var color = new THREE.Color();
-        color.setHSL( Math.random(), 0.7, Math.random() * 0.2 + 0.05 );
-        var material = new THREE.MeshBasicMaterial( { color: color } );
-        var sphere = new THREE.Mesh( geometry, material );
-        sphere.position.x = Math.random() * 10 - 5;
-        sphere.position.y = Math.random() * 10 - 5;
-        sphere.position.z = Math.random() * 10 - 5;
-        sphere.position.normalize().multiplyScalar( Math.random() * 4.0 + 2.0 );
-        sphere.scale.setScalar( Math.random() * Math.random() + 0.5 );
-        this.scene.add( sphere );
-        // sphere.layers.enable( true );
-        this.renderOutside(sphere);
+        var triangleShape = new THREE.Shape()
+					.moveTo( -40, 0 )
+					.lineTo( 40, 0 )
+					.lineTo( 40, 40 )
+					.lineTo( -40, 0 ); // close path
+
+        var extrudeSettings = { depth: 20, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+        this.addShape( triangleShape, extrudeSettings, 0x8080f0 );
+
+        // var geometry = new THREE.CubeGeometry(400, 200, 300, 0, 0, 1);
+        // var color = new THREE.Color();
+        // color.setHSL( Math.random(), 0.7, Math.random() * 0.2 + 0.05 );
+        // var material = new THREE.MeshBasicMaterial( { color: color } );
+        // var sphere = new THREE.Mesh( geometry, material );
+        // sphere.position.x = Math.random() * 10 - 5;
+        // sphere.position.y = Math.random() * 10 - 5;
+        // sphere.position.z = Math.random() * 10 - 5;
+        // sphere.position.normalize().multiplyScalar( Math.random() * 4.0 + 2.0 );
+        // sphere.scale.setScalar( Math.random() * Math.random() + 0.5 );
+        // this.scene.add( sphere );
+        // // sphere.layers.enable( true );
+        // this.renderOutside(sphere);
 
 
 
+
+    }
+    addShape( shape, extrudeSettings, color) {
+
+        // extruded shape
+
+        var geometry = new THREE.ExtrudeBufferGeometry( shape, extrudeSettings );
+
+        var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: color } ) );
+        
+        this.scene.add( mesh );
+        
+
+        // addLineShape( shape, color, x, y, z, rx, ry, rz, s );
 
     }
     renderOutside(selectedObjects){

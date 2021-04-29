@@ -679,26 +679,7 @@ export default class ThreeMap {
         return plane;
     }
 
-    outlineObj( selectedObjects ){
- 
-        composer = new THREE.EffectComposer( this.renderer ); // 特效组件
-     
-        var renderPass = new THREE.RenderPass( this.scene, this.camera );
-        composer.addPass( renderPass ); // 特效渲染
-     
-        outlinePass = new THREE.OutlinePass( new THREE.Vector2( this.dom.offsetWidth, this.dom.offsetHeight ), this.scene, this.camera );
-        composer.addPass( outlinePass ); // 加入高光特效
-     
-        outlinePass.pulsePeriod = 2; //数值越大，律动越慢
-        outlinePass.visibleEdgeColor.set( 0xff0000 ); // 高光颜色
-        outlinePass.hiddenEdgeColor.set( 0x000000 );// 阴影颜色
-        outlinePass.usePatternTexture = false; // 使用纹理覆盖？
-        outlinePass.edgeStrength = 5; // 高光边缘强度
-        outlinePass.edgeGlow = 1; // 边缘微光强度
-        outlinePass.edgeThickness = 1; // 高光厚度
-     
-        outlinePass.selectedObjects = selectedObjects; // 需要高光的obj
-    }
+    
     handleObj(obj){
         if (obj.objHandle != null && typeof (obj.objHandle) != 'undefined' && obj.objHandle.length > 0) {
             obj.objHandle.forEach(function(childobj){

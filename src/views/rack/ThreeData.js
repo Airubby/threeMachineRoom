@@ -503,6 +503,23 @@ export const ThreeData={
                             },
                         },
                         {
+                            op:"+",
+                            uuid: "",
+                            name: '线柱',
+                            objType: 'wireCube',
+                            depth: spoolDepth,
+                            width: spoolDepth, 
+                            height: spoolHeight,
+                            x:-width*9/20+spoolDepth/2,
+                            y:spoolHeight*3/2,
+                            z:depth*5/16,
+                            rotation:[{ direction: 'x', degree: 0.05*Math.PI }],
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
                             uuid: "+",
                             name: 'windowGlasses',
                             objType: '',
