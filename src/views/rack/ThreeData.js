@@ -502,18 +502,44 @@ export const ThreeData={
                                 edgeColor:edgeColor,
                             },
                         },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线柱',
+                        //     objType: 'wireCube',
+                        //     depth: spoolDepth,
+                        //     width: spoolDepth, 
+                        //     height: spoolHeight,
+                        //     x:-width*9/20+spoolDepth/2,
+                        //     y:spoolHeight*3/2,
+                        //     z:depth*5/16,
+                        //     rotation:[{ direction: 'x', degree: 0.05*Math.PI }],
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
                         {
                             op:"+",
                             uuid: "",
-                            name: '线柱',
-                            objType: 'wireCube',
+                            name: '三角线体',
+                            objType: 'triangle',
                             depth: spoolDepth,
-                            width: spoolDepth, 
-                            height: spoolHeight,
-                            x:-width*9/20+spoolDepth/2,
-                            y:spoolHeight*3/2,
-                            z:depth*5/16,
-                            rotation:[{ direction: 'x', degree: 0.05*Math.PI }],
+                            startDot:{
+                                x:0,
+                                y:0
+                            },
+                            moveDot:[
+                                {
+                                    x:spoolDepth,
+                                    y:0
+                                }
+                            ],
+                            endDot:{
+                                x:spoolDepth,
+                                y:spoolHeight
+                            },
+                            // rotation:[{ direction: 'x', degree: 0.05*Math.PI }],
                             skin: {
                                 skinColor: skinColor,
                                 edgeColor:edgeColor,

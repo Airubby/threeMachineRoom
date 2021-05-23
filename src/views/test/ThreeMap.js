@@ -193,32 +193,85 @@ export default class ThreeMap {
     }
     //测试函数
     InitData(){
-        var triangleShape = new THREE.Shape()
-					.moveTo( -40, 0 )
-					.lineTo( 40, 0 )
-					.lineTo( 40, 40 )
-					.lineTo( -40, 0 ); // close path
+        this.autoGeometry();
+    }
+    autoGeometry(){
+        /*
+		  5____4
+		0/___1/|
+		| 7__|_6
+		2/___3/
+        
+          5____4
+		1/___0/|
+		| 6__|_7
+		2/___3/
+		0: max.x, max.y, max.z
+		1: min.x, max.y, max.z
+		2: min.x, min.y, max.z
+		3: max.x, min.y, max.z
+		4: max.x, max.y, min.z
+		5: min.x, max.y, min.z
+		6: min.x, min.y, min.z
+		7: max.x, min.y, min.z
+		*/
+        //声明一个几何体对象Geometry
+        var geometry = new THREE.Geometry();
+        //类型数组创建顶点位置position数据
+        var p1 = new THREE.Vector3(0, 0, 0); //顶点1坐标
+        var p2 = new THREE.Vector3(500, 0, 0); //顶点2坐标
+        var p3 = new THREE.Vector3(500, 500, 0); //顶点3坐标
+        var p4 = new THREE.Vector3(0, 500, 0); //顶点4坐标
+        
+        var p5 = new THREE.Vector3(0, 0, 500); //顶点5坐标
+        var p6 = new THREE.Vector3(500, 0, 500); //顶点6坐标
+        var p7 = new THREE.Vector3(500, 500, 500); //顶点7坐标
+        var p8 = new THREE.Vector3(0, 500, 500); //顶点8坐标
+        //顶点坐标添加到geometry对象
+        geometry.vertices.push(p1, p2, p3,p4,p5,p6,p7,p8);
 
-        var extrudeSettings = { depth: 20, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-        this.addShape( triangleShape, extrudeSettings, 0x8080f0 );
+        // Face3构造函数创建一个三角面
+        var face1 = new THREE.Face3(0,1,2);
+        var face2 = new THREE.Face3(0,2,3);
+        var face3 = new THREE.Face3(2,3,6);
+        var face4 = new THREE.Face3(3,6,7);
+        var face5 = new THREE.Face3(1,2,5);
+        var face6 = new THREE.Face3(2,5,6);
+        var face7 = new THREE.Face3(0,3,4);
+        var face8 = new THREE.Face3(3,4,7);
+        var face9 = new THREE.Face3(1,4,5);
+        var face10 = new THREE.Face3(0,1,4);
+        var face11 = new THREE.Face3(4,5,7);
+        var face12 = new THREE.Face3(5,6,7);
+        
+        // 设置三角面法向量
+        face3.normal=new THREE.Vector3(0, 0, 1);
+        
+        // 设置三角面face1三个顶点的颜色
+        face1.color = new THREE.Color(0xff00ff);
+        
+        //三角面face1、face2添加到几何体中
+        geometry.faces.push(face1,face2,face3,face4,face5,face6,face7,face8,face9,face10,face11,face12);
+        
 
-        // var geometry = new THREE.CubeGeometry(400, 200, 300, 0, 0, 1);
-        // var color = new THREE.Color();
-        // color.setHSL( Math.random(), 0.7, Math.random() * 0.2 + 0.05 );
-        // var material = new THREE.MeshBasicMaterial( { color: color } );
-        // var sphere = new THREE.Mesh( geometry, material );
-        // sphere.position.x = Math.random() * 10 - 5;
-        // sphere.position.y = Math.random() * 10 - 5;
-        // sphere.position.z = Math.random() * 10 - 5;
-        // sphere.position.normalize().multiplyScalar( Math.random() * 4.0 + 2.0 );
-        // sphere.scale.setScalar( Math.random() * Math.random() + 0.5 );
-        // this.scene.add( sphere );
-        // // sphere.layers.enable( true );
-        // this.renderOutside(sphere);
 
+        // 三角面(网格)渲染模式
+        var material = new THREE.MeshLambertMaterial({
+            color: 0xff0000, //三角面颜色
+            side: THREE.DoubleSide //两面可见
+        }); //材质对象
+        var mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
 
+        var obj=new THREE.Object3D();
+        obj.add(mesh)
+        this.scene.add(obj)
 
-
+    }
+    setEdgesGeometry(obj,edgeColor){
+        let cubeEdges = new THREE.EdgesGeometry(obj.geometry, 1);
+        let cubeLine = new THREE.LineSegments(cubeEdges, new THREE.LineBasicMaterial( { color: edgeColor } ));
+        obj.add(cubeLine);
+        return obj
     }
     addShape( shape, extrudeSettings, color) {
 
@@ -228,7 +281,7 @@ export default class ThreeMap {
 
         var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: color } ) );
         
-        this.scene.add( mesh );
+        return mesh
         
 
         // addLineShape( shape, color, x, y, z, rx, ry, rz, s );
@@ -350,7 +403,7 @@ export default class ThreeMap {
         let tipdiv=document.createElement('div');
         tipdiv.setAttribute("id","tipdiv");
         let tipspan=document.createElement('span');
-        tipspan.style.marginLeft="50%";
+        tipspan.style.marginLeft="500%";
         tipspan.style.bottom="-10px";
         tipspan.style.left="-10px";
         tipspan.style.position="absolute";
@@ -1485,7 +1538,7 @@ export default class ThreeMap {
             //     tempobj.position.copy(intersects[0].point);
             //     // 沿着法线方向平移移动的网格模型
             //     var normal = intersects[0].face.normal;// 当前位置曲面法线
-            //     tempobj.translateOnAxis(normal,50); //平移50
+            //     tempobj.translateOnAxis(normal,500); //平移50
             // }
 
             var targetPos = new THREE.Vector3(1,0,0);
@@ -1494,7 +1547,7 @@ export default class ThreeMap {
             // matrix.lookAt(obj.position.clone() , obj.position.clone() , targetPos) //设置朝向
             // matrix.multiply(new THREE.Matrix4().makeRotationFromEuler(euler))
             // var toRot = new THREE.Quaternion().setFromRotationMatrix(matrix) 
-            // tempobj.translateOnAxis(toRot,50);
+            // tempobj.translateOnAxis(toRot,500);
             if(obj.doorState=="close"){
                 tempobj.translateOnAxis(targetPos,-obj.geometry.parameters.depth+20);
             }else{
@@ -1510,7 +1563,7 @@ export default class ThreeMap {
             // matrix.lookAt(obj.position.clone() , obj.position.clone() ,targetPos) //设置朝向
             // matrix.multiply(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(0 , offsetAngle , 0 )))
             // var toRot = new THREE.Quaternion().setFromRotationMatrix(matrix)  //计算出需要进行旋转的四元数值
-            // tempobj.translateOnAxis(toRot,50);
+            // tempobj.translateOnAxis(toRot,500);
 
             
 
@@ -1681,7 +1734,7 @@ export default class ThreeMap {
 
         //1、测试ThreeBSP用的
         //几何体对象
-        // let cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
+        // let cylinder = new THREE.CylinderGeometry(500,500,5,40);//圆柱
         // let box = new THREE.BoxGeometry(40,5,40);//立方体
         // //材质对象
         // let material=new THREE.MeshPhongMaterial({color:0x0000ff});

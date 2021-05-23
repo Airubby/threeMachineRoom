@@ -353,7 +353,11 @@ export default class ThreeMap {
                     var newobj ;
                     if(walchildobj.objType=="wireCube"){
                         newobj=_this.CreateWireCube(walchildobj)
-                    }else{
+                    }
+                    // else if(walchildobj.objType=="triangle"){
+                    //     newobj=_this.CreateTriangle(walchildobj)
+                    // }
+                    else{
                         newobj = _this.CreateHole(walchildobj);
                     }
                     cube = _this.mergeModel(walchildobj.op, cube, newobj,commonSkin,walchildobj.skin.edgeColor);
@@ -375,6 +379,7 @@ export default class ThreeMap {
     }
     //模型合并 使用ThreeBSP插件mergeOP计算方式 -表示减去 +表示加上 
     mergeModel(mergeOP, fobj, sobj,commonSkin,edgeColor) {
+
         if(!mergeOP){
             this.addObject(sobj,"scene");
             return fobj;
@@ -520,6 +525,7 @@ export default class ThreeMap {
         var cube=this.createCube(cubeobj);
         return cube;
     }
+    //设置轮廓线
     setEdgesGeometry(obj,edgeColor){
         let cubeEdges = new THREE.EdgesGeometry(obj.geometry, 1);
         let cubeLine = new THREE.LineSegments(cubeEdges, new THREE.LineBasicMaterial( { color: edgeColor } ));
@@ -678,8 +684,25 @@ export default class ThreeMap {
         }
         return plane;
     }
+    //创建三角体
+    CreateTriangle(obj){
 
-    
+        // var triangleShape = new THREE.Shape().moveTo( obj.startDot.x, obj.startDot.y )
+        // for(let i=0;i<obj.moveDot.length;i++){
+        //     triangleShape.lineTo( obj.moveDot[i].x, obj.moveDot[i].y )
+        // }
+        // triangleShape.lineTo(obj.endDot.x,obj.endDot.y);
+        // var extrudeSettings = { depth: obj.depth, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+		// var geometry = new THREE.ExtrudeBufferGeometry( triangleShape, extrudeSettings );
+
+        // var obj = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: obj.skin.skinColor } ) );
+        // obj.material=[obj.material]
+        // console.log(obj)
+        // this.scene.add( obj );
+
+        // return obj
+
+    }    
     handleObj(obj){
         if (obj.objHandle != null && typeof (obj.objHandle) != 'undefined' && obj.objHandle.length > 0) {
             obj.objHandle.forEach(function(childobj){
