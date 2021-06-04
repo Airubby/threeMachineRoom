@@ -49,7 +49,40 @@ export default class ThreeMap {
 
         this.progressSuccess=0;
         this.loadtimer=null;
-        this.BASE_PATH="./rack/"
+        this.BASE_PATH="./rack/";
+        this.commonFunc={
+            _this:this,
+            //判断对象
+            hasObj: function (obj) {
+                if (obj != null && typeof (obj) != 'undefined') {
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            //查找对象
+            findObject: function (objname) {
+                var findedobj = null;
+                this.objects.forEach(function(obj, index){
+                    if (obj.name != null && obj.name != '' && obj.name == objname) {
+                        findedobj = obj;
+                        return findedobj;
+                    }
+                });
+                return findedobj;
+            },
+            //获取路径
+            getPath: function(file){
+                return this._this.BASE_PATH+file;
+            },
+            //生成GUID
+            guid:function(){
+                return (this.guidRandom()+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+this.guidRandom()+this.guidRandom()); 
+            },
+            guidRandom() { 
+                return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+            }
+        }
     }
 
     init() {
@@ -746,14 +779,14 @@ export default class ThreeMap {
         return obj;
     }
     //进度通知
-    onProgress = function ( xhr) {
+    onProgress ( xhr) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
             // console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
         }
-    };
+    }
     //报错通知
-    onError = function ( xhr ) { };
+    onError ( xhr ) { }
     //设置旋转中心
     changePivot(obj,x,y,z){
         let tempobj = new THREE.Object3D();
@@ -855,41 +888,7 @@ export default class ThreeMap {
         });
         obj.geometry.colorsNeedUpdate = true;
     }
-    commonFunc={
-        _this:this,
-        //判断对象
-        hasObj: function (obj) {
-            if (obj != null && typeof (obj) != 'undefined') {
-                return true;
-            }else{
-                return false;
-            }
-        },
-        //查找对象
-        findObject: function (objname) {
-            var findedobj = null;
-            this.objects.forEach(function(obj, index){
-                if (obj.name != null && obj.name != '' && obj.name == objname) {
-                    findedobj = obj;
-                    return findedobj;
-                }
-            });
-            return findedobj;
-        },
-        //获取路径
-        getPath: function(file){
-            return this._this.BASE_PATH+file;
-        },
-        //生成GUID
-        guid:function(){
-            return (this.guidRandom()+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+this.guidRandom()+this.guidRandom()); 
-        },
-        guidRandom() { 
-            return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
-        }
-    }
-
-
+    
     /*
     *事件部分
     */

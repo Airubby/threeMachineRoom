@@ -194,6 +194,7 @@ export default class ThreeMap {
     //测试函数
     InitData(){
         this.autoGeometry();
+    
     }
     autoGeometry(){
         /*
@@ -215,57 +216,51 @@ export default class ThreeMap {
 		6: min.x, min.y, min.z
 		7: max.x, min.y, min.z
 		*/
-        //声明一个几何体对象Geometry
         var geometry = new THREE.Geometry();
-        //类型数组创建顶点位置position数据
-        var p1 = new THREE.Vector3(0, 0, 0); //顶点1坐标
-        var p2 = new THREE.Vector3(500, 0, 0); //顶点2坐标
-        var p3 = new THREE.Vector3(500, 500, 0); //顶点3坐标
-        var p4 = new THREE.Vector3(0, 500, 0); //顶点4坐标
-        
-        var p5 = new THREE.Vector3(0, 0, 500); //顶点5坐标
-        var p6 = new THREE.Vector3(500, 0, 500); //顶点6坐标
-        var p7 = new THREE.Vector3(500, 500, 500); //顶点7坐标
-        var p8 = new THREE.Vector3(0, 500, 500); //顶点8坐标
+        var p0 = new THREE.Vector3(500, 500, 500);
+        var p1 = new THREE.Vector3(0, 500, 500);
+        var p2 = new THREE.Vector3(0, 0, 500);
+        var p3 = new THREE.Vector3(500, 0, 500);
+        var p4 = new THREE.Vector3(500, 500, 0);
+        var p5 = new THREE.Vector3(0, 500, 0);
+        var p6 = new THREE.Vector3(0, 0, 0);
+        var p7 = new THREE.Vector3(500, 0, 0);
         //顶点坐标添加到geometry对象
-        geometry.vertices.push(p1, p2, p3,p4,p5,p6,p7,p8);
+        geometry.vertices.push(p0,p1, p2, p3,p4,p5,p6,p7);
 
-        // Face3构造函数创建一个三角面
-        var face1 = new THREE.Face3(0,1,2);
-        var face2 = new THREE.Face3(0,2,3);
-        var face3 = new THREE.Face3(2,3,6);
-        var face4 = new THREE.Face3(3,6,7);
-        var face5 = new THREE.Face3(1,2,5);
-        var face6 = new THREE.Face3(2,5,6);
-        var face7 = new THREE.Face3(0,3,4);
-        var face8 = new THREE.Face3(3,4,7);
-        var face9 = new THREE.Face3(1,4,5);
-        var face10 = new THREE.Face3(0,1,4);
-        var face11 = new THREE.Face3(4,5,7);
-        var face12 = new THREE.Face3(5,6,7);
-        
-        // 设置三角面法向量
-        face3.normal=new THREE.Vector3(0, 0, 1);
-        
-        // 设置三角面face1三个顶点的颜色
-        face1.color = new THREE.Color(0xff00ff);
-        
+        var face0 = new THREE.Face3(0,3,4);
+        var face1 = new THREE.Face3(3,7,4);
+        var face2 = new THREE.Face3(1,5,2);
+        var face3 = new THREE.Face3(5,6,2);
+        var face4 = new THREE.Face3(0,4,1);
+        var face5 = new THREE.Face3(4,5,1);
+        var face6 = new THREE.Face3(2,6,3);
+        var face7 = new THREE.Face3(6,7,3);
+        var face8 = new THREE.Face3(0,1,3);
+        var face9 = new THREE.Face3(1,2,3);
+        var face10 = new THREE.Face3(5,4,6);
+        var face11 = new THREE.Face3(4,7,6);
+
         //三角面face1、face2添加到几何体中
-        geometry.faces.push(face1,face2,face3,face4,face5,face6,face7,face8,face9,face10,face11,face12);
-        
+        geometry.faces.push(face0,face1,face2,face3,face4,face5,face6,face7,face8,face9,face10,face11);
 
-
-        // 三角面(网格)渲染模式
-        var material = new THREE.MeshLambertMaterial({
-            color: 0xff0000, //三角面颜色
-            side: THREE.DoubleSide //两面可见
-        }); //材质对象
-        var mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
+        //六面颜色
+        for (var i = 0; i < geometry.faces.length; i += 2) {
+            let skinColor=Math.random() * 0xffffff;
+            geometry.faces[i].color.setHex(skinColor);
+            geometry.faces[i + 1].color.setHex(skinColor);
+        }
+        //六面纹理
+        let mats=[];
+        for(let i = 0;i<geometry.faces.length;i++){
+            let material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+            mats.push(material);
+        }
+        var mesh = new THREE.Mesh(geometry, mats); //网格模型对象Mesh
 
         var obj=new THREE.Object3D();
         obj.add(mesh)
         this.scene.add(obj)
-
     }
     setEdgesGeometry(obj,edgeColor){
         let cubeEdges = new THREE.EdgesGeometry(obj.geometry, 1);

@@ -54,9 +54,44 @@ export default class ThreeMap {
         this.lastEvent=null;
         this.tooltipBG='#ACDEFE';
 
+        this.commonFunc={
+            _this:this,
+            //判断对象
+            hasObj: function (obj) {
+                if (obj != null && typeof (obj) != 'undefined') {
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            //查找对象
+            findObject: function (objname) {
+                var findedobj = null;
+                this.objects.forEach(function(obj, index){
+                    if (obj.name != null && obj.name != '' && obj.name == objname) {
+                        findedobj = obj;
+                        return findedobj;
+                    }
+                });
+                return findedobj;
+            },
+            //获取路径
+            getPath: function(file){
+                // if(this._this.BASE_PATH) return this._this.BASE_PATH+"/images/"+file;
+                // return require("./images/"+file)
+                return this._this.BASE_PATH+file;
+            },
+            //生成GUID
+            guid:function(){
+                return (this.guidRandom()+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+this.guidRandom()+this.guidRandom()); 
+            },
+            guidRandom() { 
+                return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+            }
+        }
         this.progressSuccess=0;
         this.loadtimer=null;
-        this.BASE_PATH="./images/"
+        this.BASE_PATH=this.props.BASE_PATH||"./images/";
     }
 
     init() {
@@ -504,6 +539,9 @@ export default class ThreeMap {
 		| 7__|_6
 		2/___3/
         
+        摄像机拍摄不到的模型背面的面顺时针；摄像机拍摄到的模型的正面的面逆时针
+        右手螺旋：右面-上面-前面
+
           5____4
 		1/___0/|
 		| 6__|_7
@@ -1019,14 +1057,14 @@ export default class ThreeMap {
         return obj;
     }
     //进度通知
-    onProgress = function ( xhr) {
+    onProgress ( xhr) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
             // console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
         }
     };
     //报错通知
-    onError = function ( xhr ) { };
+    onError ( xhr ) { };
     //设置旋转中心
     changePivot(obj,x,y,z){
         let tempobj = new THREE.Object3D();
@@ -1229,40 +1267,6 @@ export default class ThreeMap {
         utterThis.volume=1;  //声音的音量，区间范围是0到1，默认是1
         window.speechSynthesis.speak(utterThis);
     }
-    commonFunc={
-        _this:this,
-        //判断对象
-        hasObj: function (obj) {
-            if (obj != null && typeof (obj) != 'undefined') {
-                return true;
-            }else{
-                return false;
-            }
-        },
-        //查找对象
-        findObject: function (objname) {
-            var findedobj = null;
-            this.objects.forEach(function(obj, index){
-                if (obj.name != null && obj.name != '' && obj.name == objname) {
-                    findedobj = obj;
-                    return findedobj;
-                }
-            });
-            return findedobj;
-        },
-        //获取路径
-        getPath: function(file){
-            return this._this.BASE_PATH+file;
-        },
-        //生成GUID
-        guid:function(){
-            return (this.guidRandom()+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+"-"+this.guidRandom()+this.guidRandom()+this.guidRandom()); 
-        },
-        guidRandom() { 
-            return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
-        }
-    }
-
 
     /*
     *事件部分
