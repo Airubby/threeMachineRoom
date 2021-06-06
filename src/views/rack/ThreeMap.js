@@ -238,11 +238,40 @@ export default class ThreeMap {
                 case 'wall':
                     this.CreateWall(obj,"wall");
                     break;
+                case 'objCamera':  
+                    this.createObjCamera(obj);
+                    break;
                 case 'rack':
                     this.CreateWall(obj,"rack");
                     break;
             }
         }
+    }
+    //摄像头
+    createObjCamera(obj){
+        var _this=this;
+        var mtlLoader = new MTLLoader();
+        mtlLoader.load(_this.commonFunc.getPath('camera/camera.mtl'), function(materials) {
+            materials.preload();
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load(_this.commonFunc.getPath('camera/camera.obj'), function(object) {
+                obj.childrens.forEach(function(childobj){
+                    var newobj = object.clone();
+                    if(!newobj.objHandle){
+                        if(childobj.objHandle){
+                            newobj.objHandle=childobj.objHandle;
+                        }else if(obj.objHandle){
+                            newobj.objHandle=obj.objHandle;
+                        }
+                    }
+                    newobj=_this.handleObj(newobj);
+                    newobj.position.set(childobj.x||0, childobj.y||0, childobj.z||0);
+                    _this.scene.add( newobj );
+                });
+                _this.progressSuccess+=1;
+            }, _this.onProgress, _this.onError);
+        });
     }
     CreateFace (obj) {
         let _this=this;

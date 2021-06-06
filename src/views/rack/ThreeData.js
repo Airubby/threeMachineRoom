@@ -710,6 +710,38 @@ export const ThreeData={
                 },
             ]
         },
+        //摄像头
+        {
+            show:true,
+            uuid: "",
+            name: 'camera',
+            objType: 'objCamera',
+            // objHandle:[{ direction: 'arb', handleScale: [0.01,0.01,0.01], handleRotale: [0,1,0,-0.5*Math.PI]}],
+            childrens:[
+                {
+                    name:"camera-one",
+                    uuid:"",
+                    x: -width/2+70,
+                    y: wallHeight+30,
+                    z: depth/2-20,
+                    objHandle:[
+                        { direction: 'arb', handleScale: [0.6,0.6,0.6], handleRotale: [0,1,0,0.5*Math.PI]},
+                        { direction: 'z', degree:0.5*Math.PI},
+                    ],
+                },
+                {
+                    name:"camera-two",
+                    uuid:"",
+                    x: -width/2+70,
+                    y: wallHeight+30,
+                    z: -depth/2+20,
+                    objHandle:[
+                        { direction: 'arb', handleScale: [0.6,0.6,0.6], handleRotale: [0,1,0,0.5*Math.PI]},
+                        { direction: 'z', degree:-0.5*Math.PI},
+                    ],
+                },
+            ]
+        },
         //柜子
         // {
         //     uuid: "",
