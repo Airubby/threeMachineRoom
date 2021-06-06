@@ -387,9 +387,9 @@ export default class ThreeMap {
                     if(walchildobj.objType=="wireCube"){
                         newobj=_this.CreateWireCube(walchildobj)
                     }
-                    // else if(walchildobj.objType=="triangle"){
-                    //     newobj=_this.CreateTriangle(walchildobj)
-                    // }
+                    else if(walchildobj.objType=="triangle"){
+                        newobj=_this.CreateTriangle(walchildobj)
+                    }
                     else{
                         newobj = _this.CreateHole(walchildobj);
                     }
@@ -719,21 +719,95 @@ export default class ThreeMap {
     }
     //创建三角体
     CreateTriangle(obj){
+        /*
+          5____4
+		1/___0/|
+		| 6__|_7
+		2/___3/
+		0: max.x, max.y, max.z
+		1: min.x, max.y, max.z
+		2: min.x, min.y, max.z
+		3: max.x, min.y, max.z
+		4: max.x, max.y, min.z
+		5: min.x, max.y, min.z
+		6: min.x, min.y, min.z
+		7: max.x, min.y, min.z
+		*/
+        //y轴以底面为准
+        let maxX=obj.width/2,maxY=obj.height,maxZ=obj.depth/2,minX=-obj.width/2,minY=0,minZ=-obj.depth/2;
+        var geometry = new THREE.Geometry();
+        var p0 = new THREE.Vector3(maxX, maxY/3, maxZ);
+        var p1 = new THREE.Vector3(minX, maxY/3, maxZ);
+        var p2 = new THREE.Vector3(minX, minY, maxZ);
+        var p3 = new THREE.Vector3(maxX, minY, maxZ);
+        var p4 = new THREE.Vector3(maxX, maxY, minZ);
+        var p5 = new THREE.Vector3(minX, maxY, minZ);
+        var p6 = new THREE.Vector3(minX, minY, minZ);
+        var p7 = new THREE.Vector3(maxX, minY, minZ);
+        //顶点坐标添加到geometry对象
+        geometry.vertices.push(p0,p1, p2, p3,p4,p5,p6,p7);
 
-        // var triangleShape = new THREE.Shape().moveTo( obj.startDot.x, obj.startDot.y )
-        // for(let i=0;i<obj.moveDot.length;i++){
-        //     triangleShape.lineTo( obj.moveDot[i].x, obj.moveDot[i].y )
-        // }
-        // triangleShape.lineTo(obj.endDot.x,obj.endDot.y);
-        // var extrudeSettings = { depth: obj.depth, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-		// var geometry = new THREE.ExtrudeBufferGeometry( triangleShape, extrudeSettings );
+        var face0 = new THREE.Face3(0,3,4);
+        var face1 = new THREE.Face3(3,7,4);
+        var face2 = new THREE.Face3(1,5,2);
+        var face3 = new THREE.Face3(5,6,2);
+        var face4 = new THREE.Face3(0,4,1);
+        var face5 = new THREE.Face3(4,5,1);
+        var face6 = new THREE.Face3(2,6,3);
+        var face7 = new THREE.Face3(6,7,3);
+        var face8 = new THREE.Face3(0,1,3);
+        var face9 = new THREE.Face3(1,2,3);
+        var face10 = new THREE.Face3(5,4,6);
+        var face11 = new THREE.Face3(4,7,6);
 
-        // var obj = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: obj.skin.skinColor } ) );
-        // obj.material=[obj.material]
-        // console.log(obj)
-        // this.scene.add( obj );
+        //三角面face1、face2添加到几何体中
+        geometry.faces.push(face0,face1,face2,face3,face4,face5,face6,face7,face8,face9,face10,face11);
 
-        // return obj
+        //六面颜色
+        for (var i = 0; i < geometry.faces.length; i += 2) {
+            let skinColor=Math.random() * 0xff0000;
+            geometry.faces[i].color.setHex(obj.skin.skinColor);
+            geometry.faces[i + 1].color.setHex(obj.skin.skinColor);
+        }
+        //六面纹理
+        let mats=[];
+        for(let i = 0;i<geometry.faces.length;i++){
+            let material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+            mats.push(material);
+        }
+        var cube = new THREE.Mesh(geometry, mats); //网格模型对象Mesh
+
+        cube.castShadow = true;
+        cube.receiveShadow = true;
+        cube.needsUpdate=true;
+        cube.uuid = obj.uuid;
+        cube.name = obj.name;
+        cube.position.set(obj.x, obj.y, obj.z);
+        if (obj.rotation != null && typeof (obj.rotation) != 'undefined' && obj.rotation.length > 0) {
+            obj.rotation.forEach(function(rotation_obj, index){
+                // rotation: [{ direction: 'x', degree: 0.5*Math.PI }], 
+                switch (rotation_obj.direction) {
+                    case 'x':
+                        cube.rotateX(rotation_obj.degree);
+                        break;
+                    case 'y':
+                        cube.rotateY(rotation_obj.degree);
+                        break;
+                    case 'z':
+                        cube.rotateZ(rotation_obj.degree);
+                        break;
+                    case 'arb':  //{ direction: 'arb', degree: [x,y,z,angle] }  x,y,z是向量0,1,0 表示y轴旋转
+                        cube.rotateOnAxis(new THREE.Vector3(rotation_obj.degree[0], rotation_obj.degree[1], rotation_obj.degree[2]), rotation_obj.degree[3]);
+                        break;
+                }
+            });
+        }
+        var edgeColor=obj.skin.hasOwnProperty('edgeColor')?obj.skin.edgeColor : "";
+        if(edgeColor){
+            cube=this.setEdgesGeometry(cube,edgeColor);
+        }
+
+        return cube
 
     }    
     handleObj(obj){

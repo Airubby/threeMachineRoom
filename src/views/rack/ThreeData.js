@@ -1,3 +1,5 @@
+import { Line } from "three";
+
 /*
 作者:Mr.Xie
 创建时间:2021年04月07日
@@ -272,150 +274,150 @@ export const ThreeData={
                         z: 0
                     },
                     childrens:[
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:0,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:-width/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:-width*2/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:-width*3/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:-width*4/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:width/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:width*2/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:width*3/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
-                        {
-                            op:"+",
-                            uuid: "",
-                            name: '线框',
-                            objType: 'wireCube',
-                            depth: depth,
-                            width: wireHeight, 
-                            height: wireWidth,
-                            x:width*4/10,
-                            y:wallDepth/2+1,
-                            z:0,
-                            skin: {
-                                skinColor: skinColor,
-                                edgeColor:edgeColor,
-                            },
-                        },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:0,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:-width/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:-width*2/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:-width*3/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:-width*4/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:width/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:width*2/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:width*3/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
+                        // {
+                        //     op:"+",
+                        //     uuid: "",
+                        //     name: '线框',
+                        //     objType: 'wireCube',
+                        //     depth: depth,
+                        //     width: wireHeight, 
+                        //     height: wireWidth,
+                        //     x:width*4/10,
+                        //     y:wallDepth/2+1,
+                        //     z:0,
+                        //     skin: {
+                        //         skinColor: skinColor,
+                        //         edgeColor:edgeColor,
+                        //     },
+                        // },
                         {
                             op: '-',
                             uuid: "",
@@ -502,44 +504,69 @@ export const ThreeData={
                                 edgeColor:edgeColor,
                             },
                         },
-                        // {
-                        //     op:"+",
-                        //     uuid: "",
-                        //     name: '线柱',
-                        //     objType: 'wireCube',
-                        //     depth: spoolDepth,
-                        //     width: spoolDepth, 
-                        //     height: spoolHeight,
-                        //     x:-width*9/20+spoolDepth/2,
-                        //     y:spoolHeight*3/2,
-                        //     z:depth*5/16,
-                        //     rotation:[{ direction: 'x', degree: 0.05*Math.PI }],
-                        //     skin: {
-                        //         skinColor: skinColor,
-                        //         edgeColor:edgeColor,
-                        //     },
-                        // },
                         {
                             op:"+",
                             uuid: "",
                             name: '三角线体',
                             objType: 'triangle',
+                            x:-width*9/20+spoolDepth/2,
+                            y:spoolHeight,
+                            z:depth*5/16,
                             depth: spoolDepth,
-                            startDot:{
-                                x:0,
-                                y:0
-                            },
-                            moveDot:[
-                                {
-                                    x:spoolDepth,
-                                    y:0
-                                }
-                            ],
-                            endDot:{
-                                x:spoolDepth,
-                                y:spoolHeight
-                            },
+                            width: spoolDepth, 
+                            height: spoolHeight,
                             // rotation:[{ direction: 'x', degree: 0.05*Math.PI }],
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '三角线体',
+                            objType: 'triangle',
+                            x:-width*9/20+spoolDepth/2,
+                            y:spoolHeight,
+                            z:-depth*5/16,
+                            depth: spoolDepth,
+                            width: spoolDepth, 
+                            height: spoolHeight,
+                            rotation:[{ direction: 'y', degree: Math.PI }],
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '三角线体',
+                            objType: 'triangle',
+                            x:width*9/20-spoolDepth/2,
+                            y:spoolHeight,
+                            z:-depth*5/16,
+                            depth: spoolDepth,
+                            width: spoolDepth, 
+                            height: spoolHeight,
+                            rotation:[{ direction: 'y', degree: Math.PI }],
+                            skin: {
+                                skinColor: skinColor,
+                                edgeColor:edgeColor,
+                            },
+                        },
+                        {
+                            op:"+",
+                            uuid: "",
+                            name: '三角线体',
+                            objType: 'triangle',
+                            x:width*9/20-spoolDepth/2,
+                            y:spoolHeight,
+                            z:depth*5/16,
+                            depth: spoolDepth,
+                            width: spoolDepth, 
+                            height: spoolHeight,
+                            // rotation:[{ direction: 'y', degree: Math.PI }],
                             skin: {
                                 skinColor: skinColor,
                                 edgeColor:edgeColor,
@@ -765,20 +792,7 @@ export const ThreeData={
     ]
 }
 let number=10,rackWidth=(width-wallDepth*2-(number+1)*wireHeight)/number;
-let cabinet={
-    uuid: "",
-    name: '柜子',
-    objType: 'rack',
-    depth: depth/3,
-    height: wallHeight-wallDepth,
-    style:{
-        skinColor: skinColor,
-        edgeColor:edgeColor,
-    },
-    childrens:[
-        
-    ]
-}
+
 let rack={
     uuid: "",
     name: 'Rack1',
@@ -831,7 +845,38 @@ let rack={
         },
     ]
 }
-
+let topLine={
+    op:"+",
+    uuid: "",
+    name: '线框',
+    objType: 'wireCube',
+    depth: depth/3,
+    width: wireHeight, 
+    height: wireWidth,
+    x:0,
+    y:wallDepth/2+1,
+    z:depth/3,
+    skin: {
+        skinColor: skinColor,
+        edgeColor:edgeColor,
+    },
+}
+//前面
+let topLineArrBefore=[];
+let cabinetBefore={
+    uuid: "",
+    name: '柜子',
+    objType: 'rack',
+    depth: depth/3,
+    height: wallHeight-wallDepth,
+    style:{
+        skinColor: skinColor,
+        edgeColor:edgeColor,
+    },
+    childrens:[
+        
+    ]
+}
 for (var i = 0; i <number;i++){ 
     let obj=JSON.parse(JSON.stringify(rack));
     obj.name="Rack"+(i+1);
@@ -840,9 +885,20 @@ for (var i = 0; i <number;i++){
     obj.data.devid=obj.data.devid+i;
     obj.data.pointid=obj.data.pointid+i;
     obj.x=-width/2+wallDepth+rackWidth/2+rackWidth*i+(i+1)*wireHeight;
-    cabinet.childrens.push(obj)
+    cabinetBefore.childrens.push(obj)
+    
+    if(i>0){
+        let line=JSON.parse(JSON.stringify(topLine));
+        line.x=-width/2+wallDepth+rackWidth*i+(i+1/2)*wireHeight;
+        topLineArrBefore.push(line)
+    }
+    
 }
-let cabinet1={
+ThreeData.objects.push(cabinetBefore);
+ThreeData.objects[2].childrens[2].childrens=topLineArrBefore.concat(ThreeData.objects[2].childrens[2].childrens)
+//后面
+let topLineArrAfter=[];
+let cabinetAfter={
     uuid: "",
     name: '柜子',
     objType: 'rack',
@@ -868,7 +924,14 @@ for (var i = 0; i <number;i++){
     obj.childrens.forEach(element => {
         element.z=-(depth/6+1);
     });
-    cabinet1.childrens.push(obj)
+    cabinetAfter.childrens.push(obj)
+
+    if(i>0){
+        let line=JSON.parse(JSON.stringify(topLine));
+        line.x=-width/2+wallDepth+rackWidth*i+(i+1/2)*wireHeight;
+        line.z=-depth/3;
+        topLineArrAfter.push(line)
+    }
 }
-ThreeData.objects.push(cabinet);
-ThreeData.objects.push(cabinet1);
+ThreeData.objects.push(cabinetAfter);
+ThreeData.objects[2].childrens[2].childrens=topLineArrAfter.concat(ThreeData.objects[2].childrens[2].childrens)
