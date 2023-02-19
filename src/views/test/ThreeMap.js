@@ -63,6 +63,10 @@ export default class ThreeMap {
         this.lastEvent=null;
         this.tooltipBG='#ACDEFE';
 
+        //轮廓线
+        this.composer=null;
+        this.outlinePass=null;
+
         this.progressSuccess=0;
         this.loadtimer=null;
         this.BASE_PATH="./images/"
@@ -193,9 +197,31 @@ export default class ThreeMap {
     }
     //测试函数
     InitData(){
-        this.autoGeometry();
+        this.setOutside()
+        // this.autoGeometry();
     
     }
+    setOutside(){
+        //描边
+        this.composer = new EffectComposer(this.renderer);
+        let renderPass = new RenderPass(this.scene,this.camera);
+        this.composer.addPass(renderPass);
+        this.outlinePass = new OutlinePass(new THREE.Vector2(window.innerWidth,window.innerHeight),this.scene,this.camera);
+        this.composer.addPass(this.outlinePass);
+        this.outlinePass,visibleEdgeColor.set('#3042fc');
+        this.outlinePass.edgeStrength = 4;
+        this.outlinePass.edgeGlow = 0;
+        this.outlinePass.edgeThickness = 1.6;
+        this.outlinePass.pulsePeriod = 0;
+        
+        // 抗锯齿
+        let effectFXAA = new ShaderPass(FXAAShader);
+        effectFXAA.uniforms['resolution'].value.set(1/window.innerWidth,1/window.innerHeight);
+        composer.addPass(FXAAShaderPass);
+
+
+    }
+    //六面体形状
     autoGeometry(){
         /*
 		  5____4
