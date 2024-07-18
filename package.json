@@ -22,9 +22,9 @@
     "vuex": "3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
-    "@vue/cli-service": "^3.0.1",
+    "@vue/cli-service": "^5.0.8",
     "imports-loader": "^0.8.0",
     "less": "3.8.1",
     "less-loader": "4.1.0",
